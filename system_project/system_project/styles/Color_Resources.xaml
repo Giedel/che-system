@@ -1,0 +1,90 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ========== 🎨 SOLID COLORS ========== -->
+    <!-- Primary Colors -->
+    <Color x:Key="PrimaryDarkRed">#420303</Color>
+    <Color x:Key="PrimaryMaroon">#6B0606</Color>
+    <Color x:Key="PrimaryGold">#FFDF00</Color>
+    <Color x:Key="PrimaryWhite">#FFFFFF</Color>
+    <Color x:Key="PrimaryBlack">#000000</Color>
+
+    <!-- Alert Colors -->
+    <Color x:Key="SuccessGreen">#4CAF50</Color>
+    <Color x:Key="WarningOrange">#FF9800</Color>
+    <Color x:Key="ErrorRed">#F44336</Color>
+
+    <!-- Variants -->
+    <Color x:Key="DarkRedLight">#9B0C0C</Color>
+    <Color x:Key="DarkRedDarker">#2B0101</Color>
+    <Color x:Key="GoldLight">#FFE766</Color>
+    <Color x:Key="GrayLight">#F5F5F5</Color>
+    <Color x:Key="GrayDark">#333333</Color>
+
+    <!-- Cstom -->
+    <Color x:Key="CreamWhite">#FFDEAD</Color>
+
+    <!-- ========== 🖌 SOLID BRUSHES ========== -->
+    <!-- Backgrounds -->
+    <SolidColorBrush x:Key="BgPrimary" Color="{StaticResource PrimaryDarkRed}"/>
+    <SolidColorBrush x:Key="BgSecondary" Color="{StaticResource PrimaryMaroon}"/>
+    <SolidColorBrush x:Key="BgLight" Color="{StaticResource GrayLight}"/>
+    <SolidColorBrush x:Key="BgDark" Color="{StaticResource GrayDark}"/>
+
+    <!-- Text -->
+    <SolidColorBrush x:Key="FontPrimary" Color="{StaticResource PrimaryWhite}"/>
+    <SolidColorBrush x:Key="FontMaroon" Color="{StaticResource PrimaryMaroon}"/>
+    <SolidColorBrush x:Key="FontDark" Color="{StaticResource GrayDark}"/>
+    <SolidColorBrush x:Key="FontHighlight" Color="{StaticResource PrimaryGold}"/>
+
+    <!-- Borders -->
+    <SolidColorBrush x:Key="BorderPrimary" Color="{StaticResource PrimaryMaroon}"/>
+    <SolidColorBrush x:Key="BorderHighlight" Color="{StaticResource PrimaryGold}"/>
+
+    <!-- Buttons -->
+    <SolidColorBrush x:Key="ButtonBg" Color="{StaticResource PrimaryMaroon}"/>
+    <SolidColorBrush x:Key="ButtonHover" Color="{StaticResource DarkRedLight}"/>
+    <SolidColorBrush x:Key="ButtonPressed" Color="{StaticResource DarkRedDarker}"/>
+    <SolidColorBrush x:Key="ButtonFont" Color="{StaticResource PrimaryWhite}"/>
+
+    <!-- TextBox -->
+    <SolidColorBrush x:Key="TextBoxBg" Color="{StaticResource GrayLight}"/>
+    <SolidColorBrush x:Key="TextBoxBorder" Color="{StaticResource PrimaryMaroon}"/>
+    <SolidColorBrush x:Key="TextBoxFont" Color="{StaticResource GrayDark}"/>
+
+    <!-- Status Brushes -->
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessGreen}"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningOrange}"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorRed}"/>
+
+    <!-- Custom -->
+    <SolidColorBrush x:Key="Color1" Color="{StaticResource CreamWhite}"/>
+    <SolidColorBrush x:Key="OpaqueWhite" Color="{StaticResource PrimaryWhite}" Opacity=".4"/>
+    <SolidColorBrush x:Key="FadeWhite" Color="{StaticResource PrimaryWhite}" Opacity=".15"/>
+
+    <!-- ========== 🌈 GRADIENTS ========== -->
+    <!-- Border Gradient -->
+    <LinearGradientBrush x:Key="BorderGradient" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#FFFFFF" Offset="0" />
+        <GradientStop Color="#800000" Offset="0.5" />
+        <GradientStop Color="#FFDF00" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Background Gradient -->
+    <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,1" EndPoint="1,0" Opacity="0.9">
+        <GradientStop Color="#420303" Offset="0.2" />
+        <GradientStop Color="#6B0606" Offset="0.75" />
+    </LinearGradientBrush>
+
+    <!-- Background Gradient Variants -->
+    <LinearGradientBrush x:Key="BackgroundGradientLight" StartPoint="0,1" EndPoint="1,0">
+        <GradientStop Color="#6B0606" Offset="0.2" />
+        <GradientStop Color="#9B0C0C" Offset="0.75" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BackgroundGradientDark" StartPoint="0,1" EndPoint="1,0">
+        <GradientStop Color="#2B0101" Offset="0.2" />
+        <GradientStop Color="#420303" Offset="0.75" />
+    </LinearGradientBrush>
+
+</ResourceDictionary>
