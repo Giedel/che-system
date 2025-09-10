@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="assets\cross-small.png" />
+    <None Remove="assets\login_background.jpg" />
+    <None Remove="assets\minus-small.png" />
+    <None Remove="assets\padlock.png" />
+    <None Remove="assets\University_of_Mindanao_Logo.png" />
+    <None Remove="assets\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\cross-small.png" />
+    <Resource Include="assets\login_background.jpg" />
+    <Resource Include="assets\minus-small.png" />
+    <Resource Include="assets\padlock.png" />
+    <Resource Include="assets\University_of_Mindanao_Logo.png" />
+    <Resource Include="assets\user.png" />
+  </ItemGroup>
+
+</Project>

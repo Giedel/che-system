@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ================== 🖼 IMAGE SOURCES ================== -->
+
+    <!-- Logo -->
+    <BitmapImage x:Key="AppLogo" UriSource="/assets/University_Of_Mindanao_Logo.png" />
+
+    <!-- Icons -->
+    <BitmapImage x:Key="UserIcon" UriSource="/Assets/Images/user_icon.png" />
+    <BitmapImage x:Key="SettingsIcon" UriSource="/Assets/Images/settings_icon.png" />
+    <BitmapImage x:Key="DashboardIcon" UriSource="/Assets/Images/dashboard_icon.png" />
+
+    <!-- Backgrounds -->
+    <BitmapImage x:Key="MainBackground" UriSource="/assets/login_background.jpg" />
+
+    <!-- ================== 🖌 IMAGE BRUSHES (for Backgrounds) ================== -->
+
+    <ImageBrush x:Key="BackgroundBrush" ImageSource="\assets\login_background.jpg" Stretch="UniformToFill"/>
+    <ImageBrush x:Key="LogoBrush" ImageSource="/Assets/Images/logo.png" Stretch="Uniform"/>
+</ResourceDictionary>
