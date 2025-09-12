@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Giedel\\Desktop\\che_system\\che_system\\che_system.csproj": {}
+    "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\che_system.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Giedel\\Desktop\\che_system\\che_system\\che_system.csproj": {
+    "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\che_system.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Giedel\\Desktop\\che_system\\che_system\\che_system.csproj",
+        "projectUniqueName": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\che_system.csproj",
         "projectName": "che_system",
-        "projectPath": "C:\\Users\\Giedel\\Desktop\\che_system\\che_system\\che_system.csproj",
+        "projectPath": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\che_system.csproj",
         "packagesPath": "C:\\Users\\Giedel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Giedel\\Desktop\\che_system\\che_system\\obj\\",
+        "outputPath": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -60,6 +60,7 @@
     <!-- Custom -->
     <SolidColorBrush x:Key="Color1" Color="{StaticResource CreamWhite}"/>
     <SolidColorBrush x:Key="OpaqueWhite" Color="{StaticResource PrimaryWhite}" Opacity=".4"/>
+    <SolidColorBrush x:Key="HoverWhite" Color="{StaticResource GrayDark}" Opacity=".2"/>
     <SolidColorBrush x:Key="FadeWhite" Color="{StaticResource PrimaryWhite}" Opacity=".15"/>
 
     <!-- ========== 🌈 GRADIENTS ========== -->

@@ -50,22 +50,14 @@
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="LOG IN"
-                               Foreground="{StaticResource BgLight}"
-                               FontSize="15"
-                               FontFamily="Segoe UI"
-                               Grid.Column="0"
-                               VerticalAlignment="Center"
-                               Margin="20,0,0,0"/>
-
                     <Button x:Name="minimize_button"
                             BorderThickness="0"
-                            Content="-"
                             Foreground="{StaticResource BgLight}"
                             FontSize="16"
                             FontFamily="Segoe UI"
                             Grid.Column="1"
                             Click="Minimize_Button_Click">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE921;" FontSize="10"/>
 
                         <Button.Style>
                             <Style TargetType="Button">
@@ -94,12 +86,12 @@
 
                     <Button x:Name="close_button"
                             BorderThickness="0"
-                            Content="x"
                             Foreground="{StaticResource BgLight}"
                             FontSize="16"
                             FontFamily="Segoe UI"
                             Grid.Column="2"
                             Click="Close_Button_Click">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8BB;" FontSize="10"/>
 
                         <Button.Style>
                             <Style TargetType="Button">

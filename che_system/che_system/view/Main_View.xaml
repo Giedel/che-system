@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:che_system.view"
-        xmlns:VModel="clr-namespace:che_system.model"
+        xmlns:VModel="clr-namespace:che_system.view_model"
         xmlns:icon="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1100"
@@ -16,6 +16,16 @@
     <Window.DataContext>
         <VModel:Main_View_Model />
     </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type VModel:Dashboard_View_Model}">
+            <local:Dashboard_View/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type VModel:Inventory_View_Model}">
+            <local:Inventory_View/>
+        </DataTemplate>
+    </Window.Resources>
 
     <Border 
                 CornerRadius="10"
@@ -48,7 +58,9 @@
                     </StackPanel>
                     <!-- Navigation Buttons -->
                     <RadioButton Style="{StaticResource Nav_Button}"
-                                 Tag="{StaticResource ResourceKey=Color1}">
+                                 Tag="{StaticResource ResourceKey=Color1}"
+                                 IsChecked="True"
+                                 Command="{Binding Show_Dashboard_View_Command}">
                         <StackPanel Orientation="Horizontal"
                                     Background="Transparent">
                             <icon:IconImage Icon="Home" Style="{StaticResource Nav_Button_Icon}" />
@@ -57,11 +69,12 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource Nav_Button}"
-                                 Tag="{StaticResource ResourceKey=Color1}">
+                                 Tag="{StaticResource ResourceKey=Color1}"
+                                 Command="{Binding Show_Inventory_View_Command}">
                         <StackPanel Orientation="Horizontal"
                                     Background="Transparent">
-                            <icon:IconImage Icon="UserGroup" Style="{StaticResource Nav_Button_Icon}" />
-                            <TextBlock Text="Employees" Style="{StaticResource Nav_Button_Text}"/>
+                            <icon:IconImage Icon="BoxesPacking" Style="{StaticResource Nav_Button_Icon}" />
+                            <TextBlock Text="Inventory" Style="{StaticResource Nav_Button_Text}"/>
                         </StackPanel>
                     </RadioButton>
 
@@ -69,8 +82,8 @@
                                  Tag="{StaticResource ResourceKey=Color1}">
                         <StackPanel Orientation="Horizontal"
                                     Background="Transparent">
-                            <icon:IconImage Icon="ChartArea" Style="{StaticResource Nav_Button_Icon}" />
-                            <TextBlock Text="Sales" Style="{StaticResource Nav_Button_Text}"/>
+                            <icon:IconImage Icon="HandHoldingHand" Style="{StaticResource Nav_Button_Icon}" />
+                            <TextBlock Text="Borrowing" Style="{StaticResource Nav_Button_Text}"/>
                         </StackPanel>
                     </RadioButton>
 
@@ -78,8 +91,8 @@
                                  Tag="{StaticResource ResourceKey=Color1}">
                         <StackPanel Orientation="Horizontal"
                                     Background="Transparent">
-                            <icon:IconImage Icon="ChartSimple" Style="{StaticResource Nav_Button_Icon}" />
-                            <TextBlock Text="Performance" Style="{StaticResource Nav_Button_Text}"/>
+                            <icon:IconImage Icon="HeartBroken" Style="{StaticResource Nav_Button_Icon}" />
+                            <TextBlock Text="Return &amp; Damages" Style="{StaticResource Nav_Button_Text}"/>
                         </StackPanel>
                     </RadioButton>
 
@@ -88,7 +101,7 @@
                         <StackPanel Orientation="Horizontal"
                                     Background="Transparent">
                             <icon:IconImage Icon="ChartPie" Style="{StaticResource Nav_Button_Icon}" />
-                            <TextBlock Text="Insights &amp; Analytics" Style="{StaticResource Nav_Button_Text}"/>
+                            <TextBlock Text="Reports" Style="{StaticResource Nav_Button_Text}"/>
                         </StackPanel>
                     </RadioButton>
 
@@ -96,30 +109,10 @@
                                  Tag="{StaticResource ResourceKey=Color1}">
                         <StackPanel Orientation="Horizontal"
                                     Background="Transparent">
-                            <icon:IconImage Icon="MoneyCheckDollar" Style="{StaticResource Nav_Button_Icon}" />
-                            <TextBlock Text="Payroll" Style="{StaticResource Nav_Button_Text}"/>
+                            <icon:IconImage Icon="UserGroup" Style="{StaticResource Nav_Button_Icon}" />
+                            <TextBlock Text="User Management" Style="{StaticResource Nav_Button_Text}"/>
                         </StackPanel>
                     </RadioButton>
-
-                    <RadioButton Style="{StaticResource Nav_Button}"
-                                 Tag="{StaticResource ResourceKey=Color1}">
-                        <StackPanel Orientation="Horizontal"
-                                    Background="Transparent">
-                            <icon:IconImage Icon="CalendarDay" Style="{StaticResource Nav_Button_Icon}" />
-                            <TextBlock Text="Leave Management" Style="{StaticResource Nav_Button_Text}"/>
-                        </StackPanel>
-                    </RadioButton>
-
-                    <RadioButton Style="{StaticResource Nav_Button}"
-                                 Tag="{StaticResource ResourceKey=Color1}">
-                        <StackPanel Orientation="Horizontal"
-                                    Background="Transparent">
-                            <icon:IconImage Icon="FileContract" Style="{StaticResource Nav_Button_Icon}" />
-                            <TextBlock Text="Forms &amp; Documents" Style="{StaticResource Nav_Button_Text}"/>
-                        </StackPanel>
-                    </RadioButton>
-
-
                 </StackPanel>
 
             </Border>
@@ -132,26 +125,26 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <!-- Control Bar -->
-                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="40"/>
                         <!-- Header/Caption -->
-                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="50"/>
                         <!-- Content / Child View -->
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    
+
                     <!-- Control Bar -->
                     <StackPanel x:Name="Control_Bar_Panel"
                                 Orientation="Horizontal"
                                 FlowDirection="RightToLeft"
                                 Background="Transparent"
-                                Margin="0,0,5,0"
+                                Margin="2"
                                 MouseLeftButtonDown="Control_Bar_Panel_MouseLeftButtonDown"
                                 MouseEnter="Control_Bar_Panel_MouseEnter">
                         <Button x:Name="Close_Button"
                                 Style="{StaticResource Control_Button}"
                                 Tag="{StaticResource DarkRedDarker}"
                                 Click="Close_Button_Click">
-                            <icon:IconImage Icon="Xmark" Style="{StaticResource Control_Button_Icon}" />
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8BB;" FontSize="10"/>
 
                         </Button>
 
@@ -159,7 +152,7 @@
                                 Style="{StaticResource Control_Button}"
                                 Tag="{StaticResource DarkRedDarker}"
                                 Click="Maximize_Button_Click">
-                            <icon:IconImage Icon="Square" Style="{StaticResource Control_Button_Icon}" />
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE922;" FontSize="10"/>
 
                         </Button>
 
@@ -167,11 +160,66 @@
                                 Style="{StaticResource Control_Button}"
                                 Tag="{StaticResource DarkRedDarker}"
                                 Click="Minimize_Button_Click">
-                            <icon:IconImage Icon="WindowMinimize" Style="{StaticResource Control_Button_Icon}" />
-
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE921;" FontSize="10"/>
                         </Button>
                     </StackPanel>
-                    
+
+                    <!-- Header/Caption -->
+                    <Grid Grid.Row="1"
+                          Margin="0,0,0,0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Caption -->
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+
+                            <icon:IconImage Icon="{Binding Icon}"
+                                            Height="20"
+                                            Width="20"
+                                            Margin="35,0,10,0"
+                                            Foreground="{StaticResource FontDark}"/>
+
+                            <TextBlock Text="{Binding Caption}"
+                                       Foreground="{StaticResource FontDark}"
+                                       FontSize="20"
+                                       FontFamily="Segoe UI"
+                                       FontWeight="Medium"
+                                       VerticalAlignment="Center"/>
+
+                        </StackPanel>
+
+                        <!-- User Option -->
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    FlowDirection="RightToLeft"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,50,0" Grid.ColumnSpan="2">
+                            <Button Style="{StaticResource Icon_Button}"
+                                    Tag="{StaticResource Color1}"
+                                    Height="40"
+                                    Width="40"
+                                    VerticalAlignment="Center">
+                                <Ellipse Height="40"
+                                         Width="40"
+                                         Fill="Aqua">
+
+                                </Ellipse>
+
+                            </Button>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                    <!-- Content / Child View -->
+                    <ContentControl Content="{Binding Current_Child_View}"
+                                    Grid.Row="2"
+                                    Margin="5"/>
+
                 </Grid>
 
             </Border>

@@ -67,8 +67,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"
-                            CornerRadius="4">
+                    <Border Background="{TemplateBinding Background}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                     </Border>
@@ -79,7 +78,7 @@
         <Style.Triggers>
             <!-- Mouse On Hover Back Color -->
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource FadeWhite}"/>
+                <Setter Property="Background" Value="{StaticResource HoverWhite}"/>
                 <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource self}}"/>
             </Trigger>
         </Style.Triggers>
@@ -90,6 +89,38 @@
         <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
         <Setter Property="Width" Value="9"/>
         <Setter Property="Height" Value="9"/>
+    </Style>
+
+    <!-- Icon Bar Button -->
+    <Style x:Key="Icon_Button" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Width" Value="25"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource BgLight}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <!-- Mouse On Hover Back Color -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource self}}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Button Icon -->
+    <Style x:Key="Icon_Button_Icon" TargetType="icon:IconImage">
+        <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
     </Style>
 
 </ResourceDictionary>
