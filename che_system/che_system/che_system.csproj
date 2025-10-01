@@ -20,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,11 @@
     <Resource Include="assets\padlock.png" />
     <Resource Include="assets\University_of_Mindanao_Logo.png" />
     <Resource Include="assets\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="modals\helpers\" />
+    <Folder Include="styles\components\" />
   </ItemGroup>
 
 </Project>

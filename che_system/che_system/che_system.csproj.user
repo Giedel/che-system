@@ -2,10 +2,43 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="custom_controls\Card.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="custom_controls\Card_1.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="custom_controls\Status_Cards.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="modals\view\Add_Item_View.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="modals\view\Add_Slip_View.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="modals\view\Add_User_View.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="modals\view\Slip_Details_View.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\Borrowing_View.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="view\Dashboard_View.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="view\Inventory_View.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\Reports_View.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\Return_Damages_View.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\User_Management_View.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

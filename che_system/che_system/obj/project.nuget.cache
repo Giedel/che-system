@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "rfVxW2bSoTk=",
+  "dgSpecHash": "i797EfWEzH8=",
   "success": true,
   "projectFilePath": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\che_system.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Giedel\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\Giedel\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
+    "C:\\Users\\Giedel\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Giedel\\.nuget\\packages\\fontawesome.sharp\\6.6.0\\fontawesome.sharp.6.6.0.nupkg.sha512",
     "C:\\Users\\Giedel\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
     "C:\\Users\\Giedel\\.nuget\\packages\\microsoft.bcl.cryptography\\8.0.0\\microsoft.bcl.cryptography.8.0.0.nupkg.sha512",

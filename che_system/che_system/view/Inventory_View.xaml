@@ -1,19 +1,139 @@
-﻿<UserControl x:Class="che_system.view.Inventory_View"
+﻿<!-- Inventory_View.cs -->
+
+<UserControl x:Class="che_system.view.Inventory_View"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:che_system.view"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="720" d:DesignWidth="1080">
 
-        <TextBlock Text="Inventory View" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Foreground="{StaticResource FontHighlight}"/>
+    <DockPanel Margin="10">
 
-    </Grid>
+        <!-- Top Search Bar -->
+            <Grid DockPanel.Dock="Top" Margin="0 0 0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <TextBox Style="{DynamicResource InputTextBoxStyle}" VerticalAlignment="Center" x:Name="MyTextBox" FontSize="20" FontFamily="{StaticResource Inter}" Padding="0 5" Width="500" BorderThickness="0 0 0 1" Background="Transparent" CaretBrush="White" Foreground="{StaticResource FontPrimary}"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Search chemicals..." 
+                           Foreground="{StaticResource OpaqueWhite}"
+                           FontFamily="{StaticResource Inter}"
+                           FontSize="20"
+                           Padding="3 0 0 0"
+                           VerticalAlignment="Center"
+                           Margin="5,0,0,0"
+                           IsHitTestVisible="False">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=MyTextBox}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+
+                <Button Style="{DynamicResource OriginalButtonStyle}" Grid.Column="2" Content="➕ Add Chemical" Margin="0 0 5 0" FlowDirection="LeftToRight" Command="{Binding Open_Add_Item_Command}"/>
+                <Button Style="{DynamicResource OriginalButtonStyle}" Grid.Column="3" Content="📤 Export to Excel" Margin="0 0 5 0" FlowDirection="LeftToRight"/>
+            </Grid>
+
+
+            <!-- Tabs for Chemicals & Apparatus -->
+        <TabControl x:Name="Inventory_TabControl">
+            <!-- Chemicals Tab -->
+            <TabItem Header="Chemicals">
+                <!-- Data Table -->
+                    <DataGrid x:Name="ChemicalsGrid"
+                              ItemsSource="{Binding FilteredChemicals}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
+                        <DataGridTextColumn Header="Formula" Binding="{Binding ChemicalFormula}" Width=".4*"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width=".4*"/>
+                        <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width=".4*"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width=".4*"/>
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width=".4*" />
+                        <DataGridTextColumn Header="Expiry Date" Binding="{Binding ExpiryDate, StringFormat=d}" Width=".4*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- Apparatus Tab -->
+            <TabItem Header="Apparatus">
+                <!-- Data Table -->
+                <DataGrid x:Name="ApparatusGrid"
+                          ItemsSource="{Binding FilteredApparatus}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          IsHitTestVisible="False"
+                          Focusable="False"
+                          SelectionMode="Extended">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width=".4*"/>
+                        <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width=".4*"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width=".4*"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width=".4*"/>
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width=".4*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- Supplies Tab -->
+            <TabItem Header="Supplies">
+                <!-- Data Table -->
+                <DataGrid x:Name="SuppliesGrid"
+                          ItemsSource="{Binding FilteredSupplies}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          IsHitTestVisible="False"
+                          Focusable="False"
+                          SelectionMode="Extended">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width=".4*"/>
+                        <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width=".4*"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width=".4*"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width=".4*"/>
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width=".4*"/>
+                        <DataGridTextColumn Header="Expiry Date" Binding="{Binding ExpiryDate, StringFormat=d}" Width=".4*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- Miscellaneous Tab -->
+            <TabItem Header="Miscellaneous">
+                <!-- Data Table -->
+                <DataGrid x:Name="MiscellaneousGrid"
+                          ItemsSource="{Binding FilteredMiscellaneous}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          IsHitTestVisible="False"
+                          Focusable="False"
+                          SelectionMode="Extended">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width=".4*"/>
+                        <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width=".4*"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width=".4*"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width=".4*"/>
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width=".4*"/>
+                        <DataGridTextColumn Header="Expiry Date" Binding="{Binding ExpiryDate, StringFormat=d}" Width=".4*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </UserControl>

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using che_system.model;
+using BCrypt.Net;
 using Microsoft.Data.SqlClient;
+using System.Data;
 using System.Net;
-using che_system.model;
 
 namespace che_system.repositories
 {
@@ -11,7 +10,40 @@ namespace che_system.repositories
     {
         public void Add(User_Model user_Model)
         {
-            throw new NotImplementedException();
+            if (user_Model == null) throw new ArgumentNullException(nameof(user_Model));
+
+            if (string.IsNullOrWhiteSpace(user_Model.user_id) ||
+                string.IsNullOrWhiteSpace(user_Model.first_name) ||
+                string.IsNullOrWhiteSpace(user_Model.last_name) ||
+                string.IsNullOrWhiteSpace(user_Model.username) ||
+                string.IsNullOrWhiteSpace(user_Model.password) ||
+                string.IsNullOrWhiteSpace(user_Model.birthday) ||
+                string.IsNullOrWhiteSpace(user_Model.role))
+            {
+                throw new ArgumentException("All required user fields must be provided.");
+            }
+
+            // Hash the password
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user_Model.password);
+            DateTime birthDate = DateTime.Parse(user_Model.birthday);
+
+            using var connection = GetConnection();
+            using var command = new SqlCommand();
+            connection.Open();
+
+            command.Connection = connection;
+            command.CommandText = @"
+                INSERT INTO [User] (id_number, first_name, last_name, username, [password], birthdate, role)
+                VALUES (@id_number, @first_name, @last_name, @username, @password, @birthdate, @role)";
+            command.Parameters.Add("@id_number", SqlDbType.NVarChar, 50).Value = user_Model.user_id;
+            command.Parameters.Add("@first_name", SqlDbType.NVarChar, 100).Value = user_Model.first_name;
+            command.Parameters.Add("@last_name", SqlDbType.NVarChar, 100).Value = user_Model.last_name;
+            command.Parameters.Add("@username", SqlDbType.NVarChar, 50).Value = user_Model.username;
+            command.Parameters.Add("@password", SqlDbType.NVarChar, 255).Value = hashedPassword;
+            command.Parameters.Add("@birthdate", SqlDbType.Date).Value = birthDate;
+            command.Parameters.Add("@role", SqlDbType.NVarChar, 20).Value = user_Model.role;
+
+            command.ExecuteNonQuery();
         }
 
         public bool Authenticate_User(NetworkCredential credential)
@@ -25,7 +57,7 @@ namespace che_system.repositories
             connection.Open();
 
             command.Connection = connection;
-            command.CommandText = "select 1 from Users_Table where username=@username and [password]=@password";
+            command.CommandText = "select 1 from [User] where username=@username and [password]=@password";
             command.Parameters.Add("@username", SqlDbType.NVarChar).Value = credential.UserName ?? string.Empty;
             command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credential.Password ?? string.Empty;
 
@@ -39,7 +71,28 @@ namespace che_system.repositories
 
         public IEnumerable<User_Model> GetAll()
         {
-            throw new NotImplementedException();
+            List<User_Model> users = new();
+
+            using var connection = GetConnection();
+            using var command = new SqlCommand("SELECT * FROM [User]", connection);
+            connection.Open();
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                users.Add(new User_Model
+                {
+                    user_id = reader[0]?.ToString() ?? string.Empty,
+                    first_name = reader[1]?.ToString() ?? string.Empty,
+                    last_name = reader[2]?.ToString() ?? string.Empty,
+                    username = reader[3]?.ToString() ?? string.Empty,
+                    password = string.Empty, // Hide password
+                    birthday = reader[5]?.ToString() ?? string.Empty,
+                    role = reader[6]?.ToString() ?? string.Empty
+                });
+            }
+
+            return users;
         }
 
         public User_Model GetbyId(int id)
@@ -59,7 +112,7 @@ namespace che_system.repositories
             connection.Open();
 
             command.Connection = connection;
-            command.CommandText = "select * from Users_Table where username=@username";
+            command.CommandText = "select * from [User] where username=@username";
             command.Parameters.Add("@username", SqlDbType.NVarChar).Value = username;
 
             using var reader = command.ExecuteReader();
@@ -67,12 +120,13 @@ namespace che_system.repositories
             {
                 user = new User_Model
                 {
-                    Id = reader[0]?.ToString() ?? string.Empty,
-                    Username = reader[1]?.ToString() ?? string.Empty,
-                    Password = string.Empty, // don’t expose password
-                    First_Name = reader[3]?.ToString() ?? string.Empty,
-                    Last_Name = reader[4]?.ToString() ?? string.Empty,
-                    Email = reader[5]?.ToString() ?? string.Empty,
+                    user_id = reader[0]?.ToString() ?? string.Empty,
+                    first_name = reader[1]?.ToString() ?? string.Empty,
+                    last_name = reader[2]?.ToString() ?? string.Empty,
+                    username = reader[3]?.ToString() ?? string.Empty,
+                    password = string.Empty, // don’t expose password
+                    birthday = reader[5]?.ToString() ?? string.Empty,
+                    role = reader[6]?.ToString() ?? string.Empty
                 };
             }
 

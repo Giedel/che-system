@@ -3,36 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\main_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\main_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\borrowing_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\borrowing_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view_model\\main_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view_model\\main_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\model\\slipdetail_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\model\\slipdetail_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\dashboard_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\dashboard_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\view\\add_slip_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\view\\add_slip_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view_model\\login_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view_model\\login_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\styles\\button_resources.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\styles\\button_resources.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view_model\\inventory_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view_model\\inventory_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view_model\\dashboard_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view_model\\dashboard_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\inventory_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\inventory_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\model\\slip_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\model\\slip_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -41,104 +25,55 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "DockedWidth": 265,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Main_View_Model.cs",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Main_View_Model.cs",
-              "RelativeDocumentMoniker": "che_system\\view_model\\Main_View_Model.cs",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Main_View_Model.cs",
-              "RelativeToolTip": "che_system\\view_model\\Main_View_Model.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T07:26:16.269Z",
+              "DocumentIndex": 0,
+              "Title": "Borrowing_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Borrowing_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\view\\Borrowing_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Borrowing_View.xaml",
+              "RelativeToolTip": "che_system\\view\\Borrowing_View.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-01T09:45:26.629Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SlipDetail_Model.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\SlipDetail_Model.cs",
+              "RelativeDocumentMoniker": "che_system\\modals\\model\\SlipDetail_Model.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\SlipDetail_Model.cs",
+              "RelativeToolTip": "che_system\\modals\\model\\SlipDetail_Model.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAiwFsBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-01T07:46:40.807Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Login_View_Model.cs",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Login_View_Model.cs",
-              "RelativeDocumentMoniker": "che_system\\view_model\\Login_View_Model.cs",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Login_View_Model.cs",
-              "RelativeToolTip": "che_system\\view_model\\Login_View_Model.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAvwBQAAAAqAAAAAAAAAA==",
+              "Title": "Slip_Model.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\Slip_Model.cs",
+              "RelativeDocumentMoniker": "che_system\\modals\\model\\Slip_Model.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\Slip_Model.cs",
+              "RelativeToolTip": "che_system\\modals\\model\\Slip_Model.cs",
+              "ViewState": "AgIAAI0AAAAAAAAAAIAwwJAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T07:26:00.888Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Main_View.xaml",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Main_View.xaml",
-              "RelativeDocumentMoniker": "che_system\\view\\Main_View.xaml",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Main_View.xaml",
-              "RelativeToolTip": "che_system\\view\\Main_View.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-11T07:25:10.266Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Inventory_View.xaml",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Inventory_View.xaml",
-              "RelativeDocumentMoniker": "che_system\\view\\Inventory_View.xaml",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Inventory_View.xaml",
-              "RelativeToolTip": "che_system\\view\\Inventory_View.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-11T07:19:25.931Z"
+              "WhenOpened": "2025-10-01T08:56:52.719Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Dashboard_View.xaml",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Dashboard_View.xaml",
-              "RelativeDocumentMoniker": "che_system\\view\\Dashboard_View.xaml",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Dashboard_View.xaml",
-              "RelativeToolTip": "che_system\\view\\Dashboard_View.xaml",
+              "Title": "Add_Slip_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view\\Add_Slip_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\modals\\view\\Add_Slip_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view\\Add_Slip_View.xaml",
+              "RelativeToolTip": "che_system\\modals\\view\\Add_Slip_View.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-11T07:19:01.791Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Inventory_View_Model.cs",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Inventory_View_Model.cs",
-              "RelativeDocumentMoniker": "che_system\\view_model\\Inventory_View_Model.cs",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Inventory_View_Model.cs",
-              "RelativeToolTip": "che_system\\view_model\\Inventory_View_Model.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T07:17:36.37Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Dashboard_View_Model.cs",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Dashboard_View_Model.cs",
-              "RelativeDocumentMoniker": "che_system\\view_model\\Dashboard_View_Model.cs",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Dashboard_View_Model.cs",
-              "RelativeToolTip": "che_system\\view_model\\Dashboard_View_Model.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-11T07:16:30.856Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Button_Resources.xaml",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\styles\\Button_Resources.xaml",
-              "RelativeDocumentMoniker": "che_system\\styles\\Button_Resources.xaml",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\styles\\Button_Resources.xaml",
-              "RelativeToolTip": "che_system\\styles\\Button_Resources.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-10T07:10:53Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T07:04:46.885Z"
             }
           ]
         }

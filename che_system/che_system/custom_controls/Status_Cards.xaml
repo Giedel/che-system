@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="che_system.custom_controls.Status_Cards"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:che_system.custom_controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <Border Style="{StaticResource StatCardStyle}">
+        <StackPanel>
+            <TextBlock Text="{Binding Icon}" Style="{StaticResource CardIconStyle}"/>
+            <TextBlock Text="{Binding Title}" Style="{StaticResource CardTitleStyle}"/>
+            <TextBlock Text="{Binding Value}" Style="{StaticResource CardValueStyle}"/>
+            <TextBlock Text="{Binding Description}" Style="{StaticResource CardDescriptionStyle}"/>
+        </StackPanel>
+    </Border>
+</UserControl>

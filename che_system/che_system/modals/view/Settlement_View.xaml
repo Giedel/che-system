@@ -1,0 +1,48 @@
+<Window x:Class="che_system.modals.view.Settlement_View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Settle Damage Incident" Height="400" Width="500" 
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Settle Incident Details" FontSize="16" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Incident ID:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SelectedIncident.IncidentId}" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Item:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SelectedIncident.ItemName}" Margin="0,0,0,10"/>  <!-- Assume ItemName added or bind to Item name via repo -->
+
+            <TextBlock Text="Group:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SelectedGroupName}" Margin="0,0,0,10"/> <!-- Bind to formatted group name -->
+
+            <TextBlock Text="Quantity Damaged:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SelectedIncident.Quantity}" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Date of Incident:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SelectedIncident.DateOfIncident, StringFormat={}{0:yyyy-MM-dd}}" Margin="0,0,0,10"/>
+
+            <!-- Inputs -->
+            <TextBlock Text="Settlement Date:" FontWeight="Bold"/>
+            <DatePicker SelectedDate="{Binding DateSettled}" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Reference No:" FontWeight="Bold"/>
+            <TextBox Text="{Binding ReferenceNo}" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Receipt Path:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding ReceiptPath}" Margin="0,0,0,10"/>
+            <Button Content="Upload Receipt" Command="{Binding UploadReceiptCommand}" Margin="0,0,0,20"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Save Settlement" Command="{Binding SaveSettlementCommand}" Width="120" Margin="0,0,10,0" Background="LightGreen"/>
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Width="80"/>
+        </StackPanel>
+    </Grid>
+</Window>

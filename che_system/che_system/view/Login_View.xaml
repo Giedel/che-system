@@ -7,7 +7,7 @@
         xmlns:view_model="clr-namespace:che_system.view_model"
         xmlns:custom_controls="clr-namespace:che_system.custom_controls"
         mc:Ignorable="d"
-        Title="login_view" Height="550" Width="800"
+        Title="login_view" Height="700" Width="1000"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -119,56 +119,67 @@
                     </Button>
                 </Grid>
 
-                <StackPanel Width="250"
-                            Grid.Row="2"
-                            Orientation="Vertical"
-                            Margin="0,25,0,0"
-                            Background="Transparent">
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Image Source="/assets/University_of_Mindanao_Logo.png"
-                           Width="85"
-                           Height="85"/>
-
-                    <TextBlock Text="Chemistry Laboratory"
+                    <StackPanel Grid.Column="0"
+                                VerticalAlignment="Center">
+                        <Image Source="/assets/University_of_Mindanao_Logo.png"
+                           Width="150"
+                           Height="150"/>
+                        <TextBlock Text="CHEMISTRY LABORATORY"
                                Foreground="{StaticResource Color1}"
-                               FontSize="25"
-                               FontFamily="Segoe UI"
+                               FontSize="50"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
                                FontWeight="Medium"
                                HorizontalAlignment="Center"
-                               Margin="0,10,0,0"/>
+                               Margin="0,30,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Width="350"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Orientation="Vertical"
+                                Background="Transparent">
 
 
-                    <TextBlock Text="Username"
+
+                        <TextBlock Text="Username"
                                Foreground="{StaticResource Color1}"
-                               FontSize="15"
+                               FontSize="30"
                                FontWeight="Medium"
                                FontFamily="Segoe UI"
                                Margin="0,35,0,0"/>
 
                     <TextBox x:Name="user_text"
                              Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                             FontSize="13"
+                             FontSize="25"
                              FontWeight="Medium"
                              FontFamily="Segoe UI"
                              Background="Transparent"
                              Foreground="{StaticResource BgLight}"
-                             CaretBrush="{StaticResource FontDark}"
+                             CaretBrush="{StaticResource Color1}"
                              BorderBrush="{StaticResource BgLight}"
                              BorderThickness="0,0,0,1"
-                             Height="28"
+                             Height="Auto"
                              VerticalContentAlignment="Center"
+                             Padding="0 5"
                              Margin="0,5,0,0"/>
 
                     <TextBlock Text="Password"
                                Foreground="{StaticResource Color1}"
-                               FontSize="15"
+                               FontSize="30"
                                FontWeight="Medium"
-                               FontFamily="Segoe UI"
                                Margin="0,35,0,0"/>
 
                     <custom_controls:Bindable_Password_Box
                         Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Height="28"
+                        Height="Auto"
+                        FontSize="25"
                         Margin="0,5,0,0">
                         
                     </custom_controls:Bindable_Password_Box>
@@ -186,11 +197,9 @@
                             Content="LOG IN"
                             Cursor="Hand"
                             Foreground="{StaticResource FontMaroon}"
-                            FontSize="16"
-                            FontFamily="Calibri"
-                            FontWeight="SemiBold"
+                            FontSize="20"
                             Grid.Column="2"
-                            Margin="0,50,0,0">
+                            Margin="0,20,0,0">
 
                         <Button.Style>
                             <Style TargetType="Button">
@@ -207,7 +216,7 @@
                             <ControlTemplate TargetType="Button">
                                 <Border Background="{TemplateBinding Background}"
                                         Height="50"
-                                        Width="250"
+                                        Width="Auto"
                                         CornerRadius="10">
                                     <ContentPresenter VerticalAlignment="Center"
                                                       HorizontalAlignment="Center"/>
@@ -217,26 +226,25 @@
                         </Button.Template>
                     </Button>
 
-                    <StackPanel Orientation="Horizontal"
+                        <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 Margin="0,20,0,0"
                                 Background="Transparent">
-                        
-                        <TextBlock Text="Forgot Password?"
-                               Foreground="{StaticResource Color1}"
-                               FontSize="15"
-                               FontFamily="Segoe UI" />
 
-                        <TextBlock Text="Reset"
+                            <TextBlock Text="Forgot Password?"
+                               Foreground="{StaticResource Color1}"
+                               FontSize="20" />
+
+                            <TextBlock Text="Reset"
                                Foreground="{StaticResource BgLight}"
-                               FontSize="15"
-                               FontFamily="Segoe UI"
+                               FontSize="20"
                                Cursor="Hand"
                                    Margin="10,0,0,0"/>
-                    </StackPanel>
-                    <Grid Height="100"/>
+                        </StackPanel>
 
-                </StackPanel>
+                    </StackPanel>
+                </Grid>
+
             </Grid>
 
         </Border>

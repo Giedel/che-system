@@ -1,6 +1,7 @@
 ﻿using che_system.model;
 using che_system.repositories;
 using FontAwesome.Sharp;
+using System.Security.Principal;
 using System.Windows.Input;
 
 namespace che_system.view_model
@@ -27,25 +28,34 @@ namespace che_system.view_model
             }
         }
 
-        public View_Model_Base Current_Child_View 
-        { 
-            get => _current_child_view; 
+        public View_Model_Base Current_Child_View
+        {
+            get => _current_child_view;
             set
             {
                 _current_child_view = value;
                 OnPropertyChanged(nameof(Current_Child_View));
+                // 🚀 NEW: Notify the UI that the active view's type (Dashboard status) may have changed
+                OnPropertyChanged(nameof(IsDashboardActive));
             }
         }
-        public string Caption 
+
+        // 🚀 NEW: Property for XAML binding to control the Year Filter visibility
+        public bool IsDashboardActive
+        {
+            get => Current_Child_View is Dashboard_View_Model;
+        }
+
+        public string Caption
         {
             get => _caption;
-            set 
+            set
             {
                 _caption = value;
                 OnPropertyChanged(nameof(Caption));
             }
         }
-        public IconChar Icon 
+        public IconChar Icon
         {
             get => _icon;
             set
@@ -58,6 +68,24 @@ namespace che_system.view_model
         //<!-- Commands -->
         public ICommand Show_Dashboard_View_Command { get; }
         public ICommand Show_Inventory_View_Command { get; }
+        public ICommand Show_Borrowing_View_Command { get; }
+        public ICommand Show_Return_Damages_View_Command { get; }
+        public ICommand Show_Reports_View_Command { get; }
+        public ICommand Show_User_Management_View_Command { get; }
+
+        //-- LOG OUT FUNCTIONALITY
+        public event Action Request_Logout;
+        public ICommand Logout_Command { get; }
+
+        private void Execute_Logout_Command(object obj)
+        {
+            // Clear the current user's identity
+            Thread.CurrentPrincipal = new GenericPrincipal(
+                new GenericIdentity(string.Empty), null);
+
+            // Trigger the logout event
+            Request_Logout?.Invoke();
+        }
 
         public Main_View_Model()
         {
@@ -68,6 +96,11 @@ namespace che_system.view_model
 
             Show_Dashboard_View_Command = new View_Model_Command(Execute_Show_Dashboard_View_Command);
             Show_Inventory_View_Command = new View_Model_Command(Execute_Show_Inventory_View_Command);
+            Show_Borrowing_View_Command = new View_Model_Command(Execute_Show_Borrowing_View_Command);
+            Show_Return_Damages_View_Command = new View_Model_Command(Execute_Show_Return_Damages_View_Command);
+            Show_Reports_View_Command = new View_Model_Command(Execute_Show_Reports_View_Command);
+            Show_User_Management_View_Command = new View_Model_Command(Execute_Show_User_Management_View_Command);
+            Logout_Command = new View_Model_Command(Execute_Logout_Command);
 
             //Default View
             Execute_Show_Dashboard_View_Command(null);
@@ -75,10 +108,38 @@ namespace che_system.view_model
             Load_Current_User_Data();
         }
 
+        private void Execute_Show_User_Management_View_Command(object? obj)
+        {
+            Current_Child_View = new User_Management_View_Model();
+            Caption = "User Management";
+            Icon = IconChar.UserGroup;
+        }
+
+        private void Execute_Show_Reports_View_Command(object? obj)
+        {
+            Current_Child_View = new Reports_View_Model();
+            Caption = "Reports";
+            Icon = IconChar.ChartPie;
+        }
+
+        private void Execute_Show_Return_Damages_View_Command(object? obj)
+        {
+            Current_Child_View = new Return_Damages_View_Model();
+            Caption = "Return & Damages";
+            Icon = IconChar.HeartBroken;
+        }
+
+        private void Execute_Show_Borrowing_View_Command(object? obj)
+        {
+            Current_Child_View = new Borrowing_View_Model(this);
+            Caption = "Borrowing Management";
+            Icon = IconChar.HandHoldingHand;
+        }
+
         private void Execute_Show_Inventory_View_Command(object? obj)
         {
             Current_Child_View = new Inventory_View_Model();
-            Caption = "Inventory";
+            Caption = "Inventory Management";
             Icon = IconChar.BoxesPacking;
         }
 
@@ -88,10 +149,22 @@ namespace che_system.view_model
             Caption = "Dashboard";
             Icon = IconChar.Home;
         }
+        private bool _isCustodian;
+        public bool IsCustodian
+        {
+            get => _isCustodian;
+            set { _isCustodian = value; OnPropertyChanged(nameof(IsCustodian)); }
+        }
+
+        private bool _isSTA;
+        public bool IsSTA
+        {
+            get => _isSTA;
+            set { _isSTA = value; OnPropertyChanged(nameof(IsSTA)); }
+        }
 
         private void Load_Current_User_Data()
         {
-            // Identity.Name may be null → guard it
             var username = Thread.CurrentPrincipal?.Identity?.Name;
 
             if (!string.IsNullOrEmpty(username))
@@ -99,14 +172,17 @@ namespace che_system.view_model
                 var user = _user_repository.GetByUsername(username);
                 if (user != null)
                 {
-                    Current_User_Account.Username = user.Username ?? string.Empty;
-                    Current_User_Account.Display_Name = $"{user.First_Name} {user.Last_Name}";
-                    //Current_User_Account.Profile_Picture = user.Profile_Picture;  safe assign
+                    Current_User_Account.Username = user.username ?? string.Empty;
+                    Current_User_Account.Display_Name = $"{user.first_name} {user.last_name}";
+                    Current_User_Account.Role = user.role ?? "STA"; // fallback role
+
+                    // set flags
+                    IsCustodian = user.role == "Custodian";
+                    IsSTA = user.role == "STA";
                     return;
                 }
             }
 
-            // fallback if null or error
             Current_User_Account.Display_Name = "An error has occurred.";
         }
     }

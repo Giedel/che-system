@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using che_system.view;
+using che_system.view_model;
 using System.Runtime.InteropServices;
-using System;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 
 namespace che_system
@@ -11,9 +12,25 @@ namespace che_system
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Main_View_Model _viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            _viewModel = new Main_View_Model();
+            this.DataContext = _viewModel;
+            _viewModel.Request_Logout += OnRequestLogout;
+        }
+
+        private void OnRequestLogout()
+        {
+            // Close the current main window
+            this.Close();
+
+            // Create and show the login window again
+            Login_View loginWindow = new Login_View();
+            Application.Current.MainWindow = loginWindow;
+            loginWindow.Show();
         }
 
         [DllImport("user32.dll")]

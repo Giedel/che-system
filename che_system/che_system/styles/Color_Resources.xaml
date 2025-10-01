@@ -21,15 +21,22 @@
     <Color x:Key="GrayLight">#F5F5F5</Color>
     <Color x:Key="GrayDark">#333333</Color>
 
-    <!-- Cstom -->
+    <!-- Custom -->
     <Color x:Key="CreamWhite">#FFDEAD</Color>
+    <Color x:Key="FaintRed">#FFEBEB</Color>
+    <Color x:Key="HoverRed">#FCC5C5</Color>
 
     <!-- ========== 🖌 SOLID BRUSHES ========== -->
     <!-- Backgrounds -->
     <SolidColorBrush x:Key="BgPrimary" Color="{StaticResource PrimaryDarkRed}"/>
     <SolidColorBrush x:Key="BgSecondary" Color="{StaticResource PrimaryMaroon}"/>
+    <SolidColorBrush x:Key="BgTertiary" Color="{StaticResource DarkRedLight}"/>
+    <SolidColorBrush x:Key="BgMain" Color="{StaticResource FaintRed}"/>
     <SolidColorBrush x:Key="BgLight" Color="{StaticResource GrayLight}"/>
     <SolidColorBrush x:Key="BgDark" Color="{StaticResource GrayDark}"/>
+    <SolidColorBrush x:Key="BgDarkLight" Color="{StaticResource GrayDark}" Opacity=".3"/>
+    <SolidColorBrush x:Key="BgDarkLightest" Color="{StaticResource GrayDark}" Opacity=".1"/>
+    <SolidColorBrush x:Key="BgCard" Color="{StaticResource CreamWhite}"/>
 
     <!-- Text -->
     <SolidColorBrush x:Key="FontPrimary" Color="{StaticResource PrimaryWhite}"/>
@@ -61,7 +68,12 @@
     <SolidColorBrush x:Key="Color1" Color="{StaticResource CreamWhite}"/>
     <SolidColorBrush x:Key="OpaqueWhite" Color="{StaticResource PrimaryWhite}" Opacity=".4"/>
     <SolidColorBrush x:Key="HoverWhite" Color="{StaticResource GrayDark}" Opacity=".2"/>
-    <SolidColorBrush x:Key="FadeWhite" Color="{StaticResource PrimaryWhite}" Opacity=".15"/>
+    <SolidColorBrush x:Key="HoverWhiteLight" Color="{StaticResource GrayDark}" Opacity=".1"/>
+    <SolidColorBrush x:Key="FadeWhite" Color="{StaticResource PrimaryWhite}" Opacity=".05"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFF5F5F5"/>
+    <SolidColorBrush x:Key="CardHoverBrush" Color="#FFE0E0E0"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource GrayDark}" Opacity=".2"/>
+    <SolidColorBrush x:Key="CardColor" Color="{StaticResource DarkRedLight}"/>
 
     <!-- ========== 🌈 GRADIENTS ========== -->
     <!-- Border Gradient -->
@@ -77,6 +89,12 @@
         <GradientStop Color="#6B0606" Offset="0.75" />
     </LinearGradientBrush>
 
+    <!-- Card Gradient -->
+    <LinearGradientBrush x:Key="CardGradient" StartPoint="0,1" EndPoint="1,0" Opacity="0.9">
+        <GradientStop Color="#FFFDF5F5" Offset="0.2" />
+        <GradientStop Color="#FFFBEAEA" Offset="0.75" />
+    </LinearGradientBrush>
+
     <!-- Background Gradient Variants -->
     <LinearGradientBrush x:Key="BackgroundGradientLight" StartPoint="0,1" EndPoint="1,0">
         <GradientStop Color="#6B0606" Offset="0.2" />
@@ -87,5 +105,12 @@
         <GradientStop Color="#2B0101" Offset="0.2" />
         <GradientStop Color="#420303" Offset="0.75" />
     </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BackgroundGradientMidDark" StartPoint="0,1" EndPoint="1,0">
+        <GradientStop Color="#6B1A1A" Offset="0.2" />
+        <GradientStop Color="#8C2A2A" Offset="0.75" />
+    </LinearGradientBrush>
+
+
 
 </ResourceDictionary>

@@ -1,11 +1,9 @@
-﻿using System;
+﻿using che_system.model;
+using che_system.repositories;
 using System.Net;
 using System.Security;
 using System.Security.Principal;
-using System.Threading;
 using System.Windows.Input;
-using che_system.model;
-using che_system.repositories;
 
 
 namespace che_system.view_model
@@ -17,6 +15,7 @@ namespace che_system.view_model
         private SecureString _password;
         private string _error_message;
         private bool _is_view_visible = true;
+        public event Action LoginSuccess;
 
         private readonly IUser_Repository User_Repositroy;
 
@@ -64,7 +63,6 @@ namespace che_system.view_model
 
         // -> Commands
         public ICommand Login_Command { get; }
-        public ICommand Logout_Command { get; }
         public ICommand Recover_Password_Command { get; }
         public ICommand Show_Password_Command { get; }
         public ICommand Remember_Password_Command { get; }
@@ -74,7 +72,7 @@ namespace che_system.view_model
         {
             User_Repositroy = new User_Repository();
             Login_Command = new View_Model_Command(Execute_Login_Command, Can_Execute_Login_Command);
-            Recover_Password_Command = new View_Model_Command(p => Execute_Recovery_Password("",""));
+            Recover_Password_Command = new View_Model_Command(p => Execute_Recovery_Password("", ""));
         }
 
 
@@ -96,7 +94,9 @@ namespace che_system.view_model
             {
                 Thread.CurrentPrincipal = new GenericPrincipal(
                     new GenericIdentity(Username), null);
-                Is_View_Visible = false;
+
+                // Invoke the event to signal a successful login
+                LoginSuccess?.Invoke();
             }
             else
             {

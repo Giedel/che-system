@@ -1,0 +1,15 @@
+﻿using System.Windows.Controls;
+
+namespace che_system.view
+{
+    /// <summary>
+    /// Interaction logic for Reports_View.xaml
+    /// </summary>
+    public partial class Reports_View : UserControl
+    {
+        public Reports_View()
+        {
+            InitializeComponent();
+        }
+    }
+}

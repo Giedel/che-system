@@ -1,8 +1,21 @@
 ﻿
 FC:\Users\Giedel\Documents\che-system\che_system\che_system\App.xaml;;
 FC:\Users\Giedel\Documents\che-system\che_system\che_system\custom_controls\Bindable_Password_Box.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\custom_controls\Card.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\custom_controls\Card_1.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\custom_controls\Status_Cards.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\modals\view\Add_Item_View.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\modals\view\Add_Slip_View.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\modals\view\Add_User_View.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\modals\view\Damage_View.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\modals\view\List_Items_For_Slip_View.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\modals\view\Slip_Details_View.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\view\Borrowing_View.xaml;;
 FC:\Users\Giedel\Documents\che-system\che_system\che_system\view\Dashboard_View.xaml;;
 FC:\Users\Giedel\Documents\che-system\che_system\che_system\view\Inventory_View.xaml;;
 FC:\Users\Giedel\Documents\che-system\che_system\che_system\view\Login_View.xaml;;
 FC:\Users\Giedel\Documents\che-system\che_system\che_system\view\Main_View.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\view\Reports_View.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\view\Return_Damages_View.xaml;;
+FC:\Users\Giedel\Documents\che-system\che_system\che_system\view\User_Management_View.xaml;;
 

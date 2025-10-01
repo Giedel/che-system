@@ -2,9 +2,67 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:icon="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp">
 
+    <DropShadowEffect x:Key="Button_DropShadow" Color="#FFFFFF" BlurRadius="3" Opacity=".1" ShadowDepth="1" Direction="-100"/>
+    
+    <Style x:Key="FocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <SolidColorBrush x:Key="Button.Static.Background" Color="{StaticResource DarkRedLight}"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="{StaticResource DarkRedLight}" Opacity="0.7"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="Transparent"/>
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="{StaticResource DarkRedLight}"/>
+    <SolidColorBrush x:Key="Button.Pressed.Border" Color="Transparent"/>
+    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+    <Style x:Key="OriginalButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+        <Setter Property="Foreground" Value="{StaticResource FontPrimary}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Effect" Value="{StaticResource Button_DropShadow}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" CornerRadius="15" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                            <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    
+    
     <Style x:Key="Nav_Button" TargetType="RadioButton">
-        <Setter Property="Height" Value="50"/>
-        <Setter Property="Height" Value="50"/>
+        <Setter Property="Height" Value="70"/>
         <Setter Property="Margin" Value="-5,0,0,5"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource BgPrimary}"/>
@@ -43,21 +101,20 @@
 
     <!-- Button Icon -->
     <Style x:Key="Nav_Button_Icon" TargetType="icon:IconImage">
-        <Setter Property="Foreground" Value="{StaticResource Color1}"/>
-        <Setter Property="Width" Value="15"/>
-        <Setter Property="Height" Value="15"/>
-        <Setter Property="Margin" Value="20,0,15,0"/>
+        <Setter Property="Foreground" Value="{StaticResource FontPrimary}"/>
+        <Setter Property="Width" Value="25"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Margin" Value="20,0,20,0"/>
     </Style>
 
     <!-- Button Text -->
     <Style x:Key="Nav_Button_Text" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource Color1}"/>
+        <Setter Property="Foreground" Value="{StaticResource FontPrimary}"/>
         <Setter Property="FontFamily" Value="Calibri"/>
         <Setter Property="FontWeight" Value="Medium"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontSize" Value="25"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
-
 
     <!-- Control Bar Button -->
     <Style x:Key="Control_Button" TargetType="Button">
@@ -122,5 +179,78 @@
         <Setter Property="Width" Value="16"/>
         <Setter Property="Height" Value="16"/>
     </Style>
+
+    <!-- Profile Button -->
+    <DropShadowEffect x:Key="DropShadowEffect" 
+                  Color="#55000000" 
+                  BlurRadius="12" 
+                  ShadowDepth="2"/>
+
+    <Style x:Key="Logout_Button" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource HoverWhite}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                        CornerRadius="6"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#F0F0F0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DropShadowEffect x:Key="DropShadow" Color="Gray" ShadowDepth="0" Opacity=".6" BlurRadius="2" />
+
+    <!-- Quick Action Button Style -->
+    <Style x:Key="Quick_Action_Button_Style" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource BgTertiary}"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="12"
+                            Effect="{StaticResource DropShadow}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource BgSecondary}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Quick Action Button Icon -->
+    <Style x:Key="Quick_Button_Icon" TargetType="icon:IconBlock">
+        <Setter Property="Foreground" Value="{StaticResource FontPrimary}"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Margin" Value="20,0,15,10"/>
+    </Style>
+
+    <!-- Quick Action Button Text -->
+    <Style x:Key="Quick_Button_Text" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource FontPrimary}"/>
+        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
 
 </ResourceDictionary>

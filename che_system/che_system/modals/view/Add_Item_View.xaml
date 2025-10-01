@@ -1,0 +1,172 @@
+﻿<Window x:Class="che_system.modals.view.Add_Item_View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:che_system.modals.view" xmlns:view_model="clr-namespace:che_system.modals.view_model" d:DataContext="{d:DesignInstance Type=view_model:Add_Item_View_Model}"
+        mc:Ignorable="d"
+        Title="Add_Item_View"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
+
+    <Border Background="White" CornerRadius="20" Height="600" Width="550">
+        <Grid Margin="20" Height="550" Width="500">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" VerticalAlignment="Center" Margin="0 0 0 20">
+                <!-- Control Bar -->
+                <TextBlock Text="Add New Item" Foreground="{StaticResource FontDark}" FontSize="26" FontWeight="Bold"/>
+                <StackPanel x:Name="Control_Bar_Panel"
+                                Orientation="Horizontal"
+                                FlowDirection="RightToLeft"
+                                Background="Transparent"
+                                Margin="2"
+                                MouseLeftButtonDown="Control_Bar_Panel_MouseLeftButtonDown"
+                                MouseEnter="Control_Bar_Panel_MouseEnter">
+                    <Button x:Name="Close_Button"
+                                Command="{Binding Cancel_Command}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                Style="{StaticResource Control_Button}"
+                                Tag="{StaticResource FontDark}">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8BB;" FontSize="15"/>
+                    </Button>
+
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="Item Name" FontSize="20"/>
+                    <TextBox Text="{Binding New_Item.ItemName, UpdateSourceTrigger=PropertyChanged}" 
+                             Style="{StaticResource InputTextBoxStyle}"
+                             FontSize="16"
+                             Background="{StaticResource InputBackgroundColor}"
+                             BorderThickness="0"
+                             Padding="5 10"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="Chemical Formula (For chemicals only)" FontSize="20"/>
+                    <TextBox Text="{Binding New_Item.ChemicalFormula, UpdateSourceTrigger=PropertyChanged}" 
+                             Style="{StaticResource InputTextBoxStyle}"
+                             FontSize="16"
+                             Background="{StaticResource InputBackgroundColor}"
+                             BorderThickness="0"
+                             Padding="5 10"/>
+                </StackPanel>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width=".05*"/>
+                        <ColumnDefinition Width=".40*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Quantity" FontSize="20"/>
+                        <TextBox Text="{Binding New_Item.Quantity, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBoxStyle}"
+                                 FontSize="16"
+                                 Background="{StaticResource InputBackgroundColor}"
+                                 BorderThickness="0"
+                                 Padding="5 10"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Unit" FontSize="20"/>
+                        <ComboBox SelectedValue="{Binding New_Item.Unit, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Content"
+                                  VerticalContentAlignment="Center" 
+                                  HorizontalContentAlignment="Center"
+                                  Background="Transparent"
+                                  BorderBrush="{StaticResource BorderPrimary}"
+                                  FontSize="16"
+                                  Padding="5 12">
+                            <ComboBoxItem Content="g" IsSelected="True"/>
+                            <ComboBoxItem Content="kg"/>
+                            <ComboBoxItem Content="ml"/>
+                            <ComboBoxItem Content="L"/>
+                            <ComboBoxItem Content="pcs"/>
+                            <ComboBoxItem Content="bxs"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width=".05*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                        <TextBlock Text="Category" FontSize="20"/>
+                        <ComboBox SelectedValue="{Binding New_Item.Category, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Content"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center"
+                                  Background="Transparent"
+                                  BorderBrush="{StaticResource BorderPrimary}"
+                                  FontSize="16"
+                                  Padding="5 12">
+                            <ComboBoxItem Content="Chemical" IsSelected="True"/>
+                            <ComboBoxItem Content="Apparatus"/>
+                            <ComboBoxItem Content="Supplies"/>
+                            <ComboBoxItem Content="Miscellaneous"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Location" FontSize="20"/>
+                        <TextBox Text="{Binding New_Item.Location, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource InputTextBoxStyle}"
+                                 FontSize="16"
+                                 Background="{StaticResource InputBackgroundColor}"
+                                 BorderThickness="0"
+                                 Padding="5 10"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="4" HorizontalAlignment="Left">
+                    <TextBlock Text="Expiry Date" FontSize="20"/>
+                    <DatePicker SelectedDate="{Binding New_Item.ExpiryDate, UpdateSourceTrigger=PropertyChanged}" 
+                                Focusable="False"
+                                Width="200"
+                                FontSize="16"
+                                Padding="5 10"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Footer Buttons -->
+            <StackPanel Orientation="Horizontal"
+                    Grid.Row="4"
+                    HorizontalAlignment="Right"
+                    Margin="0 10 0 0">
+                <Button Style="{DynamicResource OriginalButtonStyle}"
+                    Content="Cancel"
+                    Command="{Binding Cancel_Command}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                    Width="100"
+                    Background="#E0E0E0"
+                    Foreground="{StaticResource FontDark}"
+                    BorderThickness="0"
+                    Margin="0 0 10 0"/>
+                <Button Style="{DynamicResource OriginalButtonStyle}"
+                    BorderThickness="0"
+                    Content="Save"
+                    Command="{Binding Save_Command}"
+                    Width="100"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

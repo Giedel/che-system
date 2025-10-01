@@ -1,0 +1,136 @@
+<!-- List_Items_For_Slip_View.xaml -->
+    
+    <Window x:Class="che_system.modals.view.List_Items_For_Slip_View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:che_system.modals.view"
+        xmlns:cc="clr-namespace:che_system.custom_controls"
+        xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+        mc:Ignorable="d"
+        Title="List_Items_For_Slip_View" 
+        AllowsTransparency="True"
+        Background="Transparent"
+        Width="900"
+        Height="600"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
+
+    <Border CornerRadius="15" Margin="0" Background="White" BorderBrush="{StaticResource BorderGradient}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0">
+                <Grid Height="50" VerticalAlignment="Center" Margin="15 0">
+                    <TextBlock VerticalAlignment="Center" Text="Select Items for Slip" Margin="15 0 0 0" FontSize="24" FontWeight="Bold" Foreground="{StaticResource FontDark}"/>
+                    <StackPanel x:Name="Control_Bar_Panel"
+                                Orientation="Horizontal"
+                                FlowDirection="RightToLeft"
+                                Background="Transparent"
+                                MouseLeftButtonDown="Control_Bar_Panel_MouseLeftButtonDown"
+                                MouseEnter="Control_Bar_Panel_MouseEnter">
+                        <Button x:Name="Close_Button"
+                                Command="{Binding CancelCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                Style="{StaticResource Control_Button}"
+                                Tag="{StaticResource FontDark}">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8BB;" FontSize="15"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Content -->
+            <Grid Grid.Row="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Search -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 0 10">
+                    <TextBlock VerticalAlignment="Center" Text="Search: " FontSize="16" Margin="0 0 5 0"/>
+                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Width="300" FontSize="16"
+                             Style="{StaticResource InputTextBoxStyle}"
+                             Background="{StaticResource InputBackgroundColor}"
+                             Padding="5 10"/>
+                </StackPanel>
+
+                <!-- ListView -->
+                <DataGrid Grid.Row="1"
+                          ItemsSource="{Binding FilteredItems}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          HeadersVisibility="Column"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch">
+
+                    <DataGrid.Columns>
+                        <!-- Item Name -->
+                        <DataGridTemplateColumn Header="Item Name" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item.ItemName}" FontSize="14"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Chemical Formula -->
+                        <DataGridTemplateColumn Header="Chemical Formula" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Item.ChemicalFormula}" FontSize="14"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Current Quantity -->
+                        <DataGridTemplateColumn Header="Current Quantity" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayQuantity}" 
+                               FontSize="14" 
+                               HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Actions -->
+                        <DataGridTemplateColumn Header="Actions" Width="Auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Command="{Binding DataContext.AddItemCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                            CommandParameter="{Binding}" 
+                                            Style="{StaticResource OriginalButtonStyle}" 
+                                            Width="30" Height="30"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center">            
+
+                                        <fa:IconBlock Icon="Plus"  
+                                                      Foreground="White"
+                                                      FontSize="18"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <!-- Footer Buttons -->
+            <Grid Grid.Row="2" HorizontalAlignment="Right" Margin="20">
+                <Button Content="Done" Command="{Binding DoneCommand}" 
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
+                        Style="{StaticResource OriginalButtonStyle}" Margin="0 0 10 20" Width="100"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
