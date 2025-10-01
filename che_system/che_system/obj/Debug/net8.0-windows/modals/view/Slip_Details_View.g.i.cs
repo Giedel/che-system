@@ -55,7 +55,7 @@ namespace che_system.modals.view {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/che_system;component/modals/view/slip_details_view.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/che_system;V1.0.0.0;component/modals/view/slip_details_view.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\modals\view\Slip_Details_View.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
