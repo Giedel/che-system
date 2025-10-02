@@ -72,7 +72,7 @@ namespace che_system.modals.view {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/che_system;V1.0.0.0;component/modals/view/list_items_for_slip_view.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/che_system;component/modals/view/list_items_for_slip_view.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\modals\view\List_Items_For_Slip_View.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

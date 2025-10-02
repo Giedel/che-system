@@ -64,7 +64,7 @@ namespace che_system.view {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/che_system;V1.0.0.0;component/view/user_management_view.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/che_system;component/view/user_management_view.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\view\User_Management_View.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

@@ -7,7 +7,7 @@ namespace che_system.repositories
         private readonly string _connection_string;
         public Repository_Base()
         {
-            _connection_string = "Data Source=LAPTOP-E70PTJD4\\SQLEXPRESS;Initial Catalog=ChemLab_DB;Integrated Security=True;TrustServerCertificate=True;";
+            _connection_string = "Data Source=DESKTOP-8TM8KGG\\SQLEXPRESS;Initial Catalog=ChemLab_DB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
         }
         protected SqlConnection GetConnection()
         {

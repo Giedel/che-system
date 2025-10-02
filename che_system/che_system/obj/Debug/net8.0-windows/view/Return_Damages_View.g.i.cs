@@ -55,7 +55,7 @@ namespace che_system.view {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/che_system;V1.0.0.0;component/view/return_damages_view.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/che_system;component/view/return_damages_view.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\view\Return_Damages_View.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

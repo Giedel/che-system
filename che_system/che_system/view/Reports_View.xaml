@@ -19,8 +19,8 @@
             <Grid Grid.Column="0">
                 <TextBox Style="{DynamicResource InputTextBoxStyle}" VerticalAlignment="Center" x:Name="MyTextBox" FontSize="20" FontFamily="{StaticResource Inter}" Padding="0 5" Width="500" BorderThickness="0 0 0 1" Background="Transparent"
                          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock Text="Search reports..." 
-                           Foreground="Gray"
+                <TextBlock Text="Search reports" 
+                           Foreground="{StaticResource OpaqueWhite}"
                            FontFamily="{StaticResource Inter}"
                            FontSize="20"
                            Padding="3 0 0 0"

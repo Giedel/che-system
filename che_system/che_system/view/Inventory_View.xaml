@@ -23,7 +23,7 @@
             <Grid Grid.Column="0">
                 <TextBox Style="{DynamicResource InputTextBoxStyle}" VerticalAlignment="Center" x:Name="MyTextBox" FontSize="20" FontFamily="{StaticResource Inter}" Padding="0 5" Width="500" BorderThickness="0 0 0 1" Background="Transparent" CaretBrush="White" Foreground="{StaticResource FontPrimary}"
                          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock Text="Search chemicals..." 
+                <TextBlock Text="Search chemicals" 
                            Foreground="{StaticResource OpaqueWhite}"
                            FontFamily="{StaticResource Inter}"
                            FontSize="20"
