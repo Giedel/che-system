@@ -1,4 +1,6 @@
-﻿using che_system.view_model;
+﻿//-- Add_Item_Model.cs --
+
+using che_system.view_model;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -75,6 +77,11 @@ namespace che_system.modals.model
         {
             get => _status;
             set { _status = value; OnPropertyChanged(nameof(Status)); }
+        }
+
+        public string QuantityWithUnit
+        {
+            get => $"{Quantity} {Unit}";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

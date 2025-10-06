@@ -2,8 +2,10 @@
 
 using che_system.modals.model;
 using che_system.modals.view;
+using che_system.modals.view_model;
 using che_system.repositories;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace che_system.view_model
@@ -22,9 +24,9 @@ namespace che_system.view_model
         public ObservableCollection<Slip_Model> FilteredActiveSlips { get; set; } = new();
         public ObservableCollection<Slip_Model> FilteredCompletedSlips { get; set; } = new();
 
+
         // Command to open Add Slip modal
         public ICommand Open_Add_Slip_Command { get; }
-        // Commands for actions (assuming buttons exist for release/check)
         public ICommand Release_Slip_Command { get; }
         public ICommand Check_Slip_Command { get; }
 
@@ -195,18 +197,26 @@ namespace che_system.view_model
         {
             if (parameter is Slip_Model slip)
             {
-                // Load slip details from repository if not already loaded
                 var repo = new Borrower_Repository();
                 slip.Details = new ObservableCollection<SlipDetail_Model>(
                     repo.GetSlipDetails(slip.SlipId)
                 );
 
+                var currentUser = _mainVM.Current_User_Account.Username;
+
+                var detailsVM = new Slip_Details_ViewModel(slip, currentUser);
                 var detailsView = new Slip_Details_View
                 {
-                    DataContext = slip
+                    DataContext = detailsVM
                 };
-                detailsView.ShowDialog();
+
+                if (detailsView.ShowDialog() == true)
+                {
+                    // After saving → reload lists
+                    LoadSlips();
+                }
             }
         }
+
     }
 }

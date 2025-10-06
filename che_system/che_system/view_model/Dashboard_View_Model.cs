@@ -3,9 +3,9 @@
 using che_system.modals.model;
 using che_system.model;
 using che_system.repositories;
-using System; // 👈 ADDED for DateTime.Now
+using System;
 using System.Collections.ObjectModel;
-using System.Linq; // 👈 ADDED for .ToList() and .FirstOrDefault()
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,7 +13,7 @@ namespace che_system.view_model
 {
     public class Dashboard_View_Model : View_Model_Base
     {
-        private Dashboard_Repository _repo = new Dashboard_Repository();
+        private readonly Dashboard_Repository _repo = new Dashboard_Repository();
 
         private ObservableCollection<Quick_Stat_Model> _quickStats;
         public ObservableCollection<Quick_Stat_Model> QuickStats
@@ -29,7 +29,24 @@ namespace che_system.view_model
             set { _itemUsage = value; OnPropertyChanged(nameof(ItemUsage)); }
         }
 
-        // 🔹 Years for filter
+        // 🔹 System Alerts
+        private ObservableCollection<Dashboard_Repository.Alert_Model> _systemAlerts;
+        public ObservableCollection<Dashboard_Repository.Alert_Model> SystemAlerts
+        {
+            get => _systemAlerts;
+            set { _systemAlerts = value; OnPropertyChanged(nameof(SystemAlerts)); }
+        }
+
+        // 🔹 Recent Activities
+        private ObservableCollection<Dashboard_Repository.Activity_Model> _recentActivities;
+        public ObservableCollection<Dashboard_Repository.Activity_Model> RecentActivities
+        {
+            get => _recentActivities;
+            set { _recentActivities = value; OnPropertyChanged(nameof(RecentActivities)); }
+        }
+
+
+        // 🔹 Years for filter (Now supports range)
         private ObservableCollection<int> _availableYears;
         public ObservableCollection<int> AvailableYears
         {
@@ -37,17 +54,32 @@ namespace che_system.view_model
             set { _availableYears = value; OnPropertyChanged(nameof(AvailableYears)); }
         }
 
-        private int? _selectedYear;
-        public int? SelectedYear
+        private int _selectedFromYear;
+        public int SelectedFromYear
         {
-            get => _selectedYear;
+            get => _selectedFromYear;
             set
             {
-                if (_selectedYear != value)
+                if (_selectedFromYear != value)
                 {
-                    _selectedYear = value;
-                    OnPropertyChanged(nameof(SelectedYear));
-                    ReloadDataForYear();
+                    _selectedFromYear = value;
+                    OnPropertyChanged(nameof(SelectedFromYear));
+                    ReloadDataForYearRange();
+                }
+            }
+        }
+
+        private int _selectedToYear;
+        public int SelectedToYear
+        {
+            get => _selectedToYear;
+            set
+            {
+                if (_selectedToYear != value)
+                {
+                    _selectedToYear = value;
+                    OnPropertyChanged(nameof(SelectedToYear));
+                    ReloadDataForYearRange();
                 }
             }
         }
@@ -79,8 +111,19 @@ namespace che_system.view_model
 
             LoadYears();
 
-            // Select the latest year by default
-            SelectedYear = AvailableYears.First();
+            // Default range: From oldest to latest (handles single-year case)
+            if (AvailableYears.Count > 1)
+            {
+                SelectedToYear = AvailableYears.First();   // newest
+                SelectedFromYear = AvailableYears.Last();  // oldest
+            }
+            else
+            {
+                SelectedFromYear = SelectedToYear = AvailableYears.First(); // same year
+            }
+
+
+            ReloadDataForYearRange();
         }
 
         private void LoadYears()
@@ -90,78 +133,76 @@ namespace che_system.view_model
             if (AvailableYears == null || AvailableYears.Count == 0)
             {
                 // fallback if database returns nothing
-                AvailableYears = new ObservableCollection<int> { DateTime.Now.Year };
+                AvailableYears = new ObservableCollection<int>(
+                    Enumerable.Range(DateTime.Now.Year - 5, 6).Reverse()
+                );
             }
-
         }
 
-        private void ReloadDataForYear()
+        // 🔹 Load Data Methods
+        private void LoadDashboardData()
         {
-            if (SelectedYear.HasValue)
-            {
-                int year = SelectedYear.Value;
-
-                QuickStats = _repo.GetQuickStats(year);
-                ItemUsage = _repo.GetItemUsage(year);
-            }
-            else
-            {
-                QuickStats = new ObservableCollection<Quick_Stat_Model>();
-                ItemUsage = new ObservableCollection<Item_Usage_Model>();
-            }
+            SystemAlerts = _repo.GetSystemAlerts();
+            RecentActivities = _repo.GetRecentActivities();
         }
 
-        // Quick Actions command implementations
+        private void ReloadDataForYearRange()
+        {
+            if (SelectedFromYear > SelectedToYear)
+            {
+                MessageBox.Show("Invalid range. 'From Year' cannot be greater than 'To Year'.",
+                    "Year Range Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            QuickStats = _repo.GetQuickStatsRange(SelectedFromYear, SelectedToYear);
+
+            LoadDashboardData();
+        }
+
+        // Quick Actions
         private void Execute_Create_Borrowing_Slip(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
-            // Assuming Main_View_Model is accessible and has the navigation command
-            // mainWindow?.Show_Borrowing_View_Command?.Execute(null);
-
             MessageBox.Show("Navigate to Borrowing View and open Create Slip modal", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Execute_Search_Inventory(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
-            // mainWindow?.Show_Inventory_View_Command?.Execute(null);
         }
 
         private void Execute_Process_Return(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
-            // mainWindow?.Show_Return_Damages_View_Command?.Execute(null);
         }
 
         private void Execute_Generate_Report(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
-            // mainWindow?.Show_Reports_View_Command?.Execute(null);
         }
 
-        // QuickStats navigation command implementations
+        // QuickStats navigation
         private void Execute_Navigate_To_Inventory_Chemicals(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
-            // mainWindow?.Show_Inventory_View_Command?.Execute(null);
         }
 
         private void Execute_Navigate_To_Inventory_Apparatus(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
-            // mainWindow?.Show_Inventory_View_Command?.Execute(null);
         }
 
         private void Execute_Navigate_To_Borrowing_Pending(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
-            // mainWindow?.Show_Borrowing_View_Command?.Execute(null);
         }
 
         private void Execute_Navigate_To_Inventory_Low_Stock(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
-            // mainWindow?.Show_Inventory_View_Command?.Execute(null);
         }
+
+
     }
 }

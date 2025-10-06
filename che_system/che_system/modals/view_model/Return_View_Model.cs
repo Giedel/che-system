@@ -1,3 +1,5 @@
+//-- Return_View_Model.cs --
+
 using che_system.modals.model;
 using che_system.modals.view;
 using che_system.repositories;
@@ -49,6 +51,7 @@ namespace che_system.modals.view_model
             CompleteReturnCommand = new View_Model_Command(ExecuteCompleteReturn);
         }
 
+
         private void LoadActiveSlips()
         {
             ActiveSlips = _borrowerRepo.GetActiveSlips();
@@ -81,8 +84,8 @@ namespace che_system.modals.view_model
                         MessageBox.Show("Returned quantity cannot exceed borrowed.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
-                    _borrowerRepo.UpdateDetailReturn(detail.DetailId, detail.QuantityReturned);
-                    int damagedQty = detail.QuantityBorrowed - detail.QuantityReturned;
+                    _borrowerRepo.UpdateDetailReturn(detail.DetailId, detail.QuantityReturned ?? 0);
+                    int damagedQty = detail.QuantityBorrowed - (detail.QuantityReturned ?? 0);
                     if (damagedQty > 0)
                     {
                         damagedItems.Add((detail.ItemId, damagedQty, detail.DetailId));
@@ -135,5 +138,38 @@ namespace che_system.modals.view_model
                 MessageBox.Show($"Error completing return: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        #region Slip Details View Save Logic
+
+        public ICommand SaveCommand { get; }
+
+        public Return_View_Model()
+        {
+            SaveCommand = new View_Model_Command(ExecuteSave);
+        }
+
+        private void ExecuteSave(object? obj)
+        {
+            var repo = new Borrower_Repository();
+
+            foreach (var detail in SlipDetails)
+            {
+                repo.UpdateDetailRelease(detail.DetailId, detail.QuantityReleased ?? 0);
+                repo.UpdateDetailReturn(detail.DetailId, detail.QuantityReturned ?? 0);
+
+                // optional: update stock here if needed
+            }
+
+            if (obj is Window window)
+            {
+                window.DialogResult = true;
+                window.Close();
+            }
+
+            // Refresh Borrower_View here
+        }
+
+        #endregion
+
     }
 }

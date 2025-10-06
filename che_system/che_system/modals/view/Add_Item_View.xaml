@@ -1,4 +1,6 @@
-﻿<Window x:Class="che_system.modals.view.Add_Item_View"
+﻿<!-- Add_Item_View.xaml -->
+    
+    <Window x:Class="che_system.modals.view.Add_Item_View"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -137,14 +139,37 @@
                     </StackPanel>
                 </Grid>
 
-                <StackPanel Grid.Row="4" HorizontalAlignment="Left">
-                    <TextBlock Text="Expiry Date" FontSize="20"/>
-                    <DatePicker SelectedDate="{Binding New_Item.ExpiryDate, UpdateSourceTrigger=PropertyChanged}" 
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width=".05*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Left">
+                        <TextBlock Text="Expiry Date" FontSize="20"/>
+                        <DatePicker SelectedDate="{Binding New_Item.ExpiryDate, UpdateSourceTrigger=PropertyChanged}" 
                                 Focusable="False"
                                 Width="200"
                                 FontSize="16"
                                 Padding="5 10"/>
-                </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" VerticalAlignment="Top">
+                        <TextBlock Text="Type" FontSize="20"/>
+                        <ComboBox SelectedValue="{Binding New_Item.Type, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Content"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center"
+                                  Background="Transparent"
+                                  BorderBrush="{StaticResource BorderPrimary}"
+                                  FontSize="16"
+                                  Padding="5 12">
+                            <ComboBoxItem Content="Consumable" IsSelected="True"/>
+                            <ComboBoxItem Content="Non-Consumable"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
             </Grid>
 
             <!-- Footer Buttons -->

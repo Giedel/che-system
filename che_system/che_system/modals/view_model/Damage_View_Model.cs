@@ -1,3 +1,5 @@
+﻿//-- Damage_View_Model --
+
 using che_system.modals.model;
 using che_system.repositories;
 using che_system.view_model;
@@ -5,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace che_system.modals.view_model
 {
@@ -46,6 +49,20 @@ namespace che_system.modals.view_model
         {
             get => _description;
             set { _description = value; OnPropertyChanged(nameof(Description)); }
+        }
+
+        private string _subjectCode;
+        public string SubjectCode
+        {
+            get => _subjectCode;
+            set { _subjectCode = value; OnPropertyChanged(nameof(SubjectCode)); }
+        }
+
+        private string _instructor;
+        public string Instructor
+        {
+            get => _instructor;
+            set { _instructor = value; OnPropertyChanged(nameof(Instructor)); }
         }
 
         private GroupModel _selectedGroup;
@@ -139,12 +156,46 @@ namespace che_system.modals.view_model
         private int _returnId;
         private void ExecuteSaveDamage(object? obj)
         {
-            if (Quantity <= 0 || SelectedGroup == null || LiableStudents.Count == 0 || string.IsNullOrWhiteSpace(ItemName))
+            System.Diagnostics.Debug.WriteLine($"[AuditRepository] Received RecordedBy value: {RecordedBy}");
+
+            // 🔍 Step 1 — Validate all required fields
+            if (string.IsNullOrWhiteSpace(ItemName))
             {
-                MessageBox.Show("Please fill all required fields and add at least one liable student.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Item name cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            if (Quantity <= 0)
+            {
+                MessageBox.Show("Quantity must be greater than zero.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (SelectedGroup == null)
+            {
+                MessageBox.Show("Please select a group.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(SubjectCode))
+            {
+                MessageBox.Show("Please enter the subject code.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(Instructor))
+            {
+                MessageBox.Show("Please enter the instructor's name.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (LiableStudents == null || LiableStudents.Count == 0)
+            {
+                MessageBox.Show("Please add at least one liable student.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // 🔍 Step 2 — Verify selected item
             var selectedItem = AvailableItems.FirstOrDefault(i => i.ItemName == ItemName);
             if (selectedItem == null)
             {
@@ -154,11 +205,11 @@ namespace che_system.modals.view_model
 
             try
             {
-                // Add liable students to repo (assume they are new or update if existing)
+                // 🔍 Step 3 — Register students (ensure each has an ID)
                 var studentIds = new List<int>();
                 foreach (var student in LiableStudents)
                 {
-                    if (student.StudentId == 0) // New
+                    if (student.StudentId == 0)
                     {
                         student.GroupId = SelectedGroup.GroupId;
                         int id = _studentRepo.AddStudent(student);
@@ -167,28 +218,30 @@ namespace che_system.modals.view_model
                     studentIds.Add(student.StudentId);
                 }
 
+                // 🔍 Step 4 — Build the incident record
                 var incident = new IncidentModel
                 {
                     GroupId = SelectedGroup.GroupId,
                     ItemId = selectedItem.ItemId,
                     Quantity = Quantity,
                     DateOfIncident = DateOfIncident,
-                    Description = Description,
-                    ReturnId = _returnId > 0 ? (int?)_returnId : null
+                    Description = string.IsNullOrWhiteSpace(Description) ? "No description provided." : Description,
+                    ReturnId = _returnId > 0 ? (int?)_returnId : null,
+                    SubjectCode = SubjectCode.Trim(),
+                    Instructor = Instructor.Trim()
                 };
 
-                int incidentId = _incidentRepo.AddIncident(incident);
-
+                // 🔍 Step 5 — Save the incident and log audit
+                int incidentId = _incidentRepo.AddIncident(incident, RecordedBy);
                 _incidentRepo.LinkStudentsToIncident(incidentId, studentIds);
 
-                // Deduct inventory
+                // 🔍 Step 6 — Deduct from inventory
                 _itemRepo.UpdateStock(selectedItem.ItemId, -Quantity);
 
-                // Audit log
-                _auditRepo.LogAction(RecordedBy, "Record Damage", $"Recorded damage incident {incidentId} for {Quantity} {ItemName} by group {SelectedGroup.GroupNo}", "Incident", incidentId.ToString());
-
+                // 🔍 Step 7 — Success message
                 MessageBox.Show($"Damage incident #{incidentId} recorded successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                // 🔍 Step 8 — Close window
                 if (obj is Window window)
                 {
                     window.DialogResult = true;
@@ -200,6 +253,8 @@ namespace che_system.modals.view_model
                 MessageBox.Show($"Error saving damage: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
 
         private void LoadStudentsFromGroup(int groupId)
         {

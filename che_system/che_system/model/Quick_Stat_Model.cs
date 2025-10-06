@@ -1,7 +1,9 @@
-﻿//-- Quick_Stat_Model.cs
+﻿//-- Quick_Stat_Model.cs --
 
 using che_system.repositories;
 using FontAwesome.Sharp;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace che_system.model
@@ -11,7 +13,7 @@ namespace che_system.model
         private readonly Dashboard_Repository _repository = new();
 
         // 🔹 Basic properties
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         public IconChar Icon { get; set; }
 
         private int _value;
@@ -25,56 +27,72 @@ namespace che_system.model
             }
         }
 
-        // 🔹 Year filter properties
-        public List<int> Years { get; set; } = new();
-
-        private int _selectedYear;
-        public int SelectedYear
+        // 🔹 Year range properties
+        private int _fromYear;
+        public int FromYear
         {
-            get => _selectedYear;
+            get => _fromYear;
             set
             {
-                if (_selectedYear != value)
+                if (_fromYear != value)
                 {
-                    _selectedYear = value;
-                    OnPropertyChanged(nameof(SelectedYear));
-
-                    // Update stat when year changes
+                    _fromYear = value;
+                    OnPropertyChanged(nameof(FromYear));
                     UpdateStat();
                 }
             }
         }
 
-        // 🔹 Empty constructor (for repository object initializer)
+        private int _toYear;
+        public int ToYear
+        {
+            get => _toYear;
+            set
+            {
+                if (_toYear != value)
+                {
+                    _toYear = value;
+                    OnPropertyChanged(nameof(ToYear));
+                    UpdateStat();
+                }
+            }
+        }
+
+        // 🔹 Constructor
         public Quick_Stat_Model() { }
 
-        // 🔹 Constructor for custom initialization with year list
-        public Quick_Stat_Model(string title, List<int> availableYears)
+        public Quick_Stat_Model(string title, IconChar icon)
         {
             Title = title;
-            Years = availableYears;
-
-            if (Years.Count > 0)
-            {
-                SelectedYear = Years[0]; // default
-                UpdateStat();
-            }
+            Icon = icon;
         }
 
-        // 🔹 Update stat value using repository
+        // 🔹 Update stat using the repository range method
         public void UpdateStat()
         {
-            if (!string.IsNullOrEmpty(Title) && SelectedYear > 0)
+            try
             {
-                Value = _repository.GetStatValueForYear(Title, SelectedYear);
+                if (FromYear <= 0 || ToYear <= 0 || FromYear > ToYear)
+                    return;
+
+                // This fetches only one stat value (matching this Title)
+                var stats = _repository.GetQuickStatsRange(FromYear, ToYear);
+                var match = stats?.FirstOrDefault(s => s.Title == Title);
+
+                if (match != null)
+                    Value = match.Value;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Quick_Stat_Model] UpdateStat Error: {ex.Message}");
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        // 🔹 INotifyPropertyChanged Implementation
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
-

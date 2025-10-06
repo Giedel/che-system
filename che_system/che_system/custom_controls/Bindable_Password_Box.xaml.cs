@@ -10,11 +10,11 @@ namespace che_system.custom_controls
     public partial class Bindable_Password_Box : UserControl
     {
         public static readonly DependencyProperty PasswordProperty =
-            DependencyProperty.Register("Password", typeof(SecureString), typeof(Bindable_Password_Box));
+            DependencyProperty.Register("Password", typeof(string), typeof(Bindable_Password_Box));
 
-        public SecureString Password
+        public string Password
         {
-            get { return (SecureString)GetValue(PasswordProperty); }
+            get { return (string)GetValue(PasswordProperty); }
             set { SetValue(PasswordProperty, value); }
         }
 
@@ -26,7 +26,7 @@ namespace che_system.custom_controls
 
         private void on_password_changed(object sender, RoutedEventArgs e)
         {
-            Password = password_text.SecurePassword;
+            Password = password_text.Password;
         }
     }
 }

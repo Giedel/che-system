@@ -1,4 +1,6 @@
-﻿using che_system.model;
+﻿//-- User_Repository.cs -- 
+
+using che_system.model;
 using BCrypt.Net;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -26,6 +28,7 @@ namespace che_system.repositories
             // Hash the password
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user_Model.password);
             DateTime birthDate = DateTime.Parse(user_Model.birthday);
+            DateTime createdAt = DateTime.Now;
 
             using var connection = GetConnection();
             using var command = new SqlCommand();
@@ -33,8 +36,8 @@ namespace che_system.repositories
 
             command.Connection = connection;
             command.CommandText = @"
-                INSERT INTO [User] (id_number, first_name, last_name, username, [password], birthdate, role)
-                VALUES (@id_number, @first_name, @last_name, @username, @password, @birthdate, @role)";
+        INSERT INTO [User] (id_number, first_name, last_name, username, [password], birthdate, role, created_at)
+        VALUES (@id_number, @first_name, @last_name, @username, @password, @birthdate, @role, @created_at)";
             command.Parameters.Add("@id_number", SqlDbType.NVarChar, 50).Value = user_Model.user_id;
             command.Parameters.Add("@first_name", SqlDbType.NVarChar, 100).Value = user_Model.first_name;
             command.Parameters.Add("@last_name", SqlDbType.NVarChar, 100).Value = user_Model.last_name;
@@ -42,9 +45,11 @@ namespace che_system.repositories
             command.Parameters.Add("@password", SqlDbType.NVarChar, 255).Value = hashedPassword;
             command.Parameters.Add("@birthdate", SqlDbType.Date).Value = birthDate;
             command.Parameters.Add("@role", SqlDbType.NVarChar, 20).Value = user_Model.role;
+            command.Parameters.Add("@created_at", SqlDbType.DateTime2).Value = createdAt;
 
             command.ExecuteNonQuery();
         }
+
 
         public bool Authenticate_User(NetworkCredential credential)
         {

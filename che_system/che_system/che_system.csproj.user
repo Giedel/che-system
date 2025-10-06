@@ -20,6 +20,9 @@
     <Compile Update="modals\view\Add_User_View.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="modals\view\Edit_Item_View.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="modals\view\Slip_Details_View.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,4 +1,6 @@
-﻿using che_system.modals.model;
+﻿//-- Item_Repository.cs --
+
+using che_system.modals.model;
 using Microsoft.Data.SqlClient;
 using System.Collections.ObjectModel;
 
@@ -34,6 +36,38 @@ namespace che_system.repositories
             }
             return items;
         }
+
+        public void Update_Item(Add_Item_Model item)
+        {
+            using var connection = GetConnection();
+            string query = @"
+        UPDATE Item
+        SET
+            name = @Name,
+            alt_name = @Alt_Name,
+            quantity = @Quantity,
+            unit = @Unit,
+            category = @Category,
+            location = @Location,
+            expiry_date = @Expiry_Date,
+            type = @Type
+        WHERE item_id = @ItemId";
+
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@ItemId", item.ItemId);
+            command.Parameters.AddWithValue("@Name", item.ItemName);
+            command.Parameters.AddWithValue("@Alt_Name", string.IsNullOrEmpty(item.ChemicalFormula) ? DBNull.Value : item.ChemicalFormula);
+            command.Parameters.AddWithValue("@Quantity", item.Quantity);
+            command.Parameters.AddWithValue("@Unit", item.Unit);
+            command.Parameters.AddWithValue("@Category", item.Category);
+            command.Parameters.AddWithValue("@Location", item.Location);
+            command.Parameters.AddWithValue("@Expiry_Date", item.ExpiryDate.HasValue ? item.ExpiryDate.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@Type", item.Type);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+        }
+
 
         public void UpdateStock(int itemId, int quantityChange)
         {

@@ -1,6 +1,11 @@
-﻿using che_system.modals.model;
+﻿//-- Reports_View_Model.cs --
+
+using che_system.modals.model;
 using che_system.repositories;
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace che_system.view_model
@@ -16,14 +21,6 @@ namespace che_system.view_model
         public ObservableCollection<Item_Usage_Model> FilteredItemUsage { get; set; } = new();
         public ObservableCollection<Borrower_Activity_Model> FilteredBorrowerActivity { get; set; } = new();
 
-        public ICommand Refresh_Command { get; }
-
-        public Reports_View_Model()
-        {
-            Refresh_Command = new View_Model_Command(Execute_Refresh);
-            LoadReports();
-        }
-
         protected override void OnSearchTextChanged()
         {
             ApplyFilters();
@@ -33,18 +30,15 @@ namespace che_system.view_model
         {
             if (string.IsNullOrWhiteSpace(SearchText))
             {
-                // No search text, use original collections
                 FilteredItemUsage = new ObservableCollection<Item_Usage_Model>(ItemUsage);
                 FilteredBorrowerActivity = new ObservableCollection<Borrower_Activity_Model>(BorrowerActivity);
             }
             else
             {
-                // Apply search filter for Item Usage
                 FilteredItemUsage = FilterCollection(ItemUsage, SearchText,
                     item => item.ItemName ?? "",
                     item => item.Category ?? "");
 
-                // Apply search filter for Borrower Activity
                 FilteredBorrowerActivity = FilterCollection(BorrowerActivity, SearchText,
                     borrower => borrower.Name ?? "",
                     borrower => borrower.SubjectCode ?? "");
@@ -52,24 +46,6 @@ namespace che_system.view_model
 
             OnPropertyChanged(nameof(FilteredItemUsage));
             OnPropertyChanged(nameof(FilteredBorrowerActivity));
-        }
-
-        private void LoadReports()
-        {
-            ItemUsage = _repository.GetItemUsage();
-            OnPropertyChanged(nameof(ItemUsage));
-
-            // Load borrower activity summary (aggregate for all or top borrowers)
-            BorrowerActivity = _repository.GetBorrowerActivitySummary();
-            OnPropertyChanged(nameof(BorrowerActivity));
-
-            // Apply current search filter to updated collections
-            ApplyFilters();
-        }
-
-        private void Execute_Refresh(object? obj)
-        {
-            LoadReports();
         }
     }
 }

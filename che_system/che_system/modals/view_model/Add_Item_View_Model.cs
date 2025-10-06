@@ -1,4 +1,6 @@
-﻿using che_system.modals.model;
+﻿//-- Add_Item_View_Model.cs --
+
+using che_system.modals.model;
 using che_system.modals.repositories;
 using che_system.view_model;
 using System.Windows;

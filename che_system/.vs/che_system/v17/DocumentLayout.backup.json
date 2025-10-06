@@ -7,16 +7,68 @@
       "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\borrowing_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\model\\slipdetail_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\model\\slipdetail_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\styles\\inputtextboxstyle.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\styles\\inputtextboxstyle.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\view\\add_slip_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\view\\add_slip_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\reports_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\reports_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\model\\slip_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\model\\slip_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\main_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\main_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\user_management_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\user_management_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\user_management_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\user_management_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\return_damages_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\return_damages_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\return_damages_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\return_damages_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\reports_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\reports_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\main_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\main_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\login_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\login_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\login_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\login_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\inventory_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\inventory_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\inventory_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\inventory_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\dashboard_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\dashboard_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\dashboard_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\dashboard_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view\\borrowing_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view\\borrowing_view.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,8 +78,208 @@
       "DocumentGroups": [
         {
           "DockedWidth": 265,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 16,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "InputTextBoxStyle.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\styles\\InputTextBoxStyle.xaml",
+              "RelativeDocumentMoniker": "che_system\\styles\\InputTextBoxStyle.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\styles\\InputTextBoxStyle.xaml",
+              "RelativeToolTip": "che_system\\styles\\InputTextBoxStyle.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-06T03:26:52.848Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "User_Management_View.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\User_Management_View.xaml.cs",
+              "RelativeDocumentMoniker": "che_system\\view\\User_Management_View.xaml.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\User_Management_View.xaml.cs",
+              "RelativeToolTip": "che_system\\view\\User_Management_View.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T03:25:35.939Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "User_Management_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\User_Management_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\view\\User_Management_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\User_Management_View.xaml",
+              "RelativeToolTip": "che_system\\view\\User_Management_View.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-06T03:25:35.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Return_Damages_View.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Return_Damages_View.xaml.cs",
+              "RelativeDocumentMoniker": "che_system\\view\\Return_Damages_View.xaml.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Return_Damages_View.xaml.cs",
+              "RelativeToolTip": "che_system\\view\\Return_Damages_View.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T03:25:35.178Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Return_Damages_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Return_Damages_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\view\\Return_Damages_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Return_Damages_View.xaml",
+              "RelativeToolTip": "che_system\\view\\Return_Damages_View.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-06T03:25:34.703Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Reports_View.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Reports_View.xaml.cs",
+              "RelativeDocumentMoniker": "che_system\\view\\Reports_View.xaml.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Reports_View.xaml.cs",
+              "RelativeToolTip": "che_system\\view\\Reports_View.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T03:25:34.467Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Reports_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Reports_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\view\\Reports_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Reports_View.xaml",
+              "RelativeToolTip": "che_system\\view\\Reports_View.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-06T03:25:33.819Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Main_View.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Main_View.xaml.cs",
+              "RelativeDocumentMoniker": "che_system\\view\\Main_View.xaml.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Main_View.xaml.cs",
+              "RelativeToolTip": "che_system\\view\\Main_View.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T03:25:33.596Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Main_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Main_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\view\\Main_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Main_View.xaml",
+              "RelativeToolTip": "che_system\\view\\Main_View.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-06T03:25:33.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Login_View.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Login_View.xaml.cs",
+              "RelativeDocumentMoniker": "che_system\\view\\Login_View.xaml.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Login_View.xaml.cs",
+              "RelativeToolTip": "che_system\\view\\Login_View.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T03:25:32.805Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Login_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Login_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\view\\Login_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Login_View.xaml",
+              "RelativeToolTip": "che_system\\view\\Login_View.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-06T03:25:32.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Inventory_View.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Inventory_View.xaml.cs",
+              "RelativeDocumentMoniker": "che_system\\view\\Inventory_View.xaml.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Inventory_View.xaml.cs",
+              "RelativeToolTip": "che_system\\view\\Inventory_View.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T03:25:31.815Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Inventory_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Inventory_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\view\\Inventory_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Inventory_View.xaml",
+              "RelativeToolTip": "che_system\\view\\Inventory_View.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-06T03:25:31.194Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Dashboard_View.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Dashboard_View.xaml.cs",
+              "RelativeDocumentMoniker": "che_system\\view\\Dashboard_View.xaml.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Dashboard_View.xaml.cs",
+              "RelativeToolTip": "che_system\\view\\Dashboard_View.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T03:25:30.978Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Dashboard_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Dashboard_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\view\\Dashboard_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Dashboard_View.xaml",
+              "RelativeToolTip": "che_system\\view\\Dashboard_View.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-06T03:25:27.407Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Borrowing_View.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Borrowing_View.xaml.cs",
+              "RelativeDocumentMoniker": "che_system\\view\\Borrowing_View.xaml.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Borrowing_View.xaml.cs",
+              "RelativeToolTip": "che_system\\view\\Borrowing_View.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T03:25:27.151Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -37,43 +289,8 @@
               "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view\\Borrowing_View.xaml",
               "RelativeToolTip": "che_system\\view\\Borrowing_View.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-01T09:45:26.629Z",
+              "WhenOpened": "2025-10-06T03:25:25.697Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SlipDetail_Model.cs",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\SlipDetail_Model.cs",
-              "RelativeDocumentMoniker": "che_system\\modals\\model\\SlipDetail_Model.cs",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\SlipDetail_Model.cs",
-              "RelativeToolTip": "che_system\\modals\\model\\SlipDetail_Model.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAiwFsBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T07:46:40.807Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Slip_Model.cs",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\Slip_Model.cs",
-              "RelativeDocumentMoniker": "che_system\\modals\\model\\Slip_Model.cs",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\Slip_Model.cs",
-              "RelativeToolTip": "che_system\\modals\\model\\Slip_Model.cs",
-              "ViewState": "AgIAAI0AAAAAAAAAAIAwwJAAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T08:56:52.719Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Add_Slip_View.xaml",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view\\Add_Slip_View.xaml",
-              "RelativeDocumentMoniker": "che_system\\modals\\view\\Add_Slip_View.xaml",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view\\Add_Slip_View.xaml",
-              "RelativeToolTip": "che_system\\modals\\view\\Add_Slip_View.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-01T07:04:46.885Z"
             }
           ]
         }

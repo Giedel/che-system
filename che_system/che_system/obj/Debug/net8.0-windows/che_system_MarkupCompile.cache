@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\Giedel\Documents\che-system\che_system\che_system\App.xaml
-32-1998254393
+33906423907
 
-762058154344
+892058393320
 228-1333540516
-custom_controls\Bindable_Password_Box.xaml;custom_controls\Card.xaml;custom_controls\Card_1.xaml;custom_controls\NumericUpDown.xaml;custom_controls\Status_Cards.xaml;modals\view\Add_Item_View.xaml;modals\view\Add_Slip_View.xaml;modals\view\Add_User_View.xaml;modals\view\Damage_View.xaml;modals\view\List_Items_For_Slip_View.xaml;modals\view\Return_View.xaml;modals\view\Settlement_View.xaml;modals\view\Slip_Details_View.xaml;styles\Button_Resources.xaml;styles\Cards_Resources.xaml;styles\Color_Resources.xaml;styles\ComboBox_Style.xaml;styles\DataGrid_Style.xaml;styles\DatePicker_Style.xaml;styles\Image_Resources.xaml;styles\InputTextBoxStyle.xaml;styles\Inventory_Resources.xaml;styles\Resources.xaml;styles\TabItem_Style.xaml;view\Borrowing_View.xaml;view\Dashboard_View.xaml;view\Inventory_View.xaml;view\Login_View.xaml;view\Main_View.xaml;view\Reports_View.xaml;view\Return_Damages_View.xaml;view\User_Management_View.xaml;
+custom_controls\Bindable_Password_Box.xaml;custom_controls\Card.xaml;custom_controls\Card_1.xaml;custom_controls\NumericUpDown.xaml;custom_controls\Status_Cards.xaml;modals\view\Add_Item_View.xaml;modals\view\Add_Slip_View.xaml;modals\view\Add_User_View.xaml;modals\view\Damage_View.xaml;modals\view\Edit_Item_View.xaml;modals\view\List_Items_For_Slip_View.xaml;modals\view\Return_View.xaml;modals\view\Settlement_View.xaml;modals\view\Slip_Details_View.xaml;styles\Button_Resources.xaml;styles\Cards_Resources.xaml;styles\Color_Resources.xaml;styles\ComboBox_Style.xaml;styles\DataGrid_Style.xaml;styles\DatePicker_Style.xaml;styles\Image_Resources.xaml;styles\InputTextBoxStyle.xaml;styles\Inventory_Resources.xaml;styles\Resources.xaml;styles\TabItem_Style.xaml;view\Borrowing_View.xaml;view\Dashboard_View.xaml;view\Inventory_View.xaml;view\Login_View.xaml;view\Main_View.xaml;view\Reports_View.xaml;view\Return_Damages_View.xaml;view\User_Management_View.xaml;
 
 False
 

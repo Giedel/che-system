@@ -7,6 +7,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using FontAwesome.Sharp;
 
 namespace che_system.view_model
 {
@@ -43,8 +44,8 @@ namespace che_system.view_model
         {
             QuickStats = new ObservableCollection<Status_Cards_Model>
             {
-                new Status_Cards_Model { Title="Total Returns", Icon="🔬", Value = _returnRepo.GetTotalReturnsCount() },
-                new Status_Cards_Model { Title="Pending Replacements", Icon="⚗️", Value = UnsettledIncidents.Count }
+                new Status_Cards_Model { Title="Total Returns", Icon=IconChar.Share, Value = _returnRepo.GetTotalReturnsCount() },
+                new Status_Cards_Model { Title="Pending Replacements", Icon=IconChar.Check, Value = UnsettledIncidents.Count }
             };
         }
 

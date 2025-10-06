@@ -2,6 +2,7 @@
 
 using che_system.modals.model;
 using che_system.modals.view;
+using che_system.modals.view_model;
 using che_system.repositories;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -178,14 +179,18 @@ namespace che_system.view_model
         {
             if (obj is Add_Item_Model item)
             {
-                var modal = new Add_Item_View(); // Assume modal supports edit
+                var modal = new Edit_Item_View
+                {
+                    DataContext = new Edit_Item_View_Model(item) // attach a ViewModel
+                };
+
                 if (modal.ShowDialog() == true)
                 {
-                    // Assume modal updates the item or returns updated
-                    Load_Items(); // Refresh
+                    Load_Items(); // refresh after saving edits
                 }
             }
         }
+
 
         private void Execute_Delete_Item(object? obj)
         {

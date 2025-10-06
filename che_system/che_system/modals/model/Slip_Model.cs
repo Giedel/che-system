@@ -132,6 +132,16 @@ namespace che_system.modals.model
             set { _remarks = value; OnPropertyChanged(); }
         }
 
+        public bool IsActive
+        {
+            get
+            {
+                // Slip is active if any released quantity is > 0
+                return Details != null && Details.Any(d => d.QuantityReleased > 0);
+            }
+        }
+
+
         public ObservableCollection<SlipDetail_Model> Details
         {
             get => _details;

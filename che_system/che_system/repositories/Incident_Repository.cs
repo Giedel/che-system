@@ -1,3 +1,5 @@
+﻿//-- Incident_Repository.cs --
+
 using che_system.modals.model;
 using Microsoft.Data.SqlClient;
 using System.Collections.ObjectModel;
@@ -13,7 +15,7 @@ namespace che_system.repositories
             var incidents = new ObservableCollection<IncidentModel>();
 
             using var connection = GetConnection();
-            string query = @"SELECT incident_id, group_id, return_id, item_id, quantity, date_of_incident, date_settled, reference_no, description, receipt_path
+            string query = @"SELECT incident_id, group_id, return_id, item_id, quantity, date_of_incident, date_settled, reference_no, description, receipt_path, subject_code, instructor
                              FROM Incident";
 
             if (settled.HasValue)
@@ -40,7 +42,9 @@ namespace che_system.repositories
                     DateSettled = reader.IsDBNull("date_settled") ? null : reader.GetDateTime("date_settled"),
                     ReferenceNo = reader.IsDBNull("reference_no") ? null : reader.GetString("reference_no"),
                     Description = reader.IsDBNull("description") ? null : reader.GetString("description"),
-                    ReceiptPath = reader.IsDBNull("receipt_path") ? null : reader.GetString("receipt_path")
+                    ReceiptPath = reader.IsDBNull("receipt_path") ? null : reader.GetString("receipt_path"),
+                    SubjectCode = reader.IsDBNull("subject_code") ? null : reader.GetString("subject_code"),
+                    Instructor = reader.IsDBNull("instructor") ? null : reader.GetString("instructor")
                 });
             }
 
@@ -51,7 +55,7 @@ namespace che_system.repositories
         {
             using var connection = GetConnection();
             using var command = new SqlCommand(
-                @"SELECT incident_id, group_id, return_id, item_id, quantity, date_of_incident, date_settled, reference_no, description, receipt_path
+                @"SELECT incident_id, group_id, return_id, item_id, quantity, date_of_incident, date_settled, reference_no, description, receipt_path, subject_code, instructor
                   FROM Incident WHERE incident_id = @incident_id", connection);
             command.Parameters.AddWithValue("@incident_id", incidentId);
             connection.Open();
@@ -70,20 +74,24 @@ namespace che_system.repositories
                     DateSettled = reader.IsDBNull("date_settled") ? null : reader.GetDateTime("date_settled"),
                     ReferenceNo = reader.IsDBNull("reference_no") ? null : reader.GetString("reference_no"),
                     Description = reader.IsDBNull("description") ? null : reader.GetString("description"),
-                    ReceiptPath = reader.IsDBNull("receipt_path") ? null : reader.GetString("receipt_path")
+                    ReceiptPath = reader.IsDBNull("receipt_path") ? null : reader.GetString("receipt_path"),
+                    SubjectCode = reader.IsDBNull("subject_code") ? null : reader.GetString("subject_code"),
+                    Instructor = reader.IsDBNull("instructor") ? null : reader.GetString("instructor")
                 };
             }
 
             return null;
         }
 
-        public int AddIncident(IncidentModel incident)
+        public int AddIncident(IncidentModel incident, string currentUser)
         {
             using var connection = GetConnection();
             using var command = new SqlCommand(
-                @"INSERT INTO Incident (group_id, return_id, item_id, quantity, date_of_incident, date_settled, reference_no, description, receipt_path)
-                  VALUES (@group_id, @return_id, @item_id, @quantity, @date_of_incident, @date_settled, @reference_no, @description, @receipt_path);
-                  SELECT SCOPE_IDENTITY();", connection);
+                @"INSERT INTO Incident (group_id, return_id, item_id, quantity, date_of_incident, date_settled,
+                                reference_no, description, receipt_path, subject_code, instructor)
+          VALUES (@group_id, @return_id, @item_id, @quantity, @date_of_incident, @date_settled,
+                  @reference_no, @description, @receipt_path, @subject_code, @instructor);
+          SELECT SCOPE_IDENTITY();", connection);
 
             command.Parameters.AddWithValue("@group_id", incident.GroupId);
             command.Parameters.AddWithValue("@return_id", (object)incident.ReturnId ?? DBNull.Value);
@@ -94,20 +102,29 @@ namespace che_system.repositories
             command.Parameters.AddWithValue("@reference_no", (object)incident.ReferenceNo ?? DBNull.Value);
             command.Parameters.AddWithValue("@description", (object)incident.Description ?? DBNull.Value);
             command.Parameters.AddWithValue("@receipt_path", (object)incident.ReceiptPath ?? DBNull.Value);
+            command.Parameters.AddWithValue("@subject_code", (object)incident.SubjectCode ?? DBNull.Value);
+            command.Parameters.AddWithValue("@instructor", (object)incident.Instructor ?? DBNull.Value);
 
             connection.Open();
             var id = command.ExecuteScalar();
             int incidentId = Convert.ToInt32(id);
-            new AuditRepository().LogAction("System", "Add Incident", $"Added incident for group {incident.GroupId}", "Incident", incidentId.ToString());
+
+            new AuditRepository().LogAction(currentUser, "Add Incident",
+                $"Added incident for group {incident.GroupId}", "Incident", incidentId.ToString());
+
             return incidentId;
         }
 
-        public void UpdateIncident(IncidentModel incident)
+
+        public void UpdateIncident(IncidentModel incident, string currentUser)
         {
             using var connection = GetConnection();
             using var command = new SqlCommand(
-                @"UPDATE Incident SET group_id = @group_id, return_id = @return_id, item_id = @item_id, quantity = @quantity,
-                  date_of_incident = @date_of_incident, date_settled = @date_settled, reference_no = @reference_no, description = @description, receipt_path = @receipt_path
+                @"UPDATE Incident 
+                  SET group_id = @group_id, return_id = @return_id, item_id = @item_id, quantity = @quantity,
+                      date_of_incident = @date_of_incident, date_settled = @date_settled,
+                      reference_no = @reference_no, description = @description, receipt_path = @receipt_path,
+                      subject_code = @subject_code, instructor = @instructor
                   WHERE incident_id = @incident_id", connection);
 
             command.Parameters.AddWithValue("@incident_id", incident.IncidentId);
@@ -120,18 +137,24 @@ namespace che_system.repositories
             command.Parameters.AddWithValue("@reference_no", (object)incident.ReferenceNo ?? DBNull.Value);
             command.Parameters.AddWithValue("@description", (object)incident.Description ?? DBNull.Value);
             command.Parameters.AddWithValue("@receipt_path", (object)incident.ReceiptPath ?? DBNull.Value);
+            command.Parameters.AddWithValue("@subject_code", (object)incident.SubjectCode ?? DBNull.Value);
+            command.Parameters.AddWithValue("@instructor", (object)incident.Instructor ?? DBNull.Value);
 
             connection.Open();
             command.ExecuteNonQuery();
-            new AuditRepository().LogAction("System", "Update Incident", $"Updated incident {incident.IncidentId}", "Incident", incident.IncidentId.ToString());
+
+            // ✅ Log with actual username instead of "System"
+            new AuditRepository().LogAction(currentUser, "Update Incident",
+                $"Updated incident {incident.IncidentId}", "Incident", incident.IncidentId.ToString());
         }
+
 
         public ObservableCollection<IncidentModel> GetUnsettledIncidents()
         {
             var incidents = new ObservableCollection<IncidentModel>();
 
             using var connection = GetConnection();
-            string query = @"SELECT incident_id, group_id, return_id, item_id, quantity, date_of_incident, date_settled, reference_no, description, receipt_path
+            string query = @"SELECT incident_id, group_id, return_id, item_id, quantity, date_of_incident, date_settled, reference_no, description, receipt_path, subject_code, instructor
                              FROM Incident
                              WHERE date_settled IS NULL
                              ORDER BY date_of_incident DESC";
@@ -153,7 +176,9 @@ namespace che_system.repositories
                     DateSettled = reader.IsDBNull("date_settled") ? null : reader.GetDateTime("date_settled"),
                     ReferenceNo = reader.IsDBNull("reference_no") ? null : reader.GetString("reference_no"),
                     Description = reader.IsDBNull("description") ? null : reader.GetString("description"),
-                    ReceiptPath = reader.IsDBNull("receipt_path") ? null : reader.GetString("receipt_path")
+                    ReceiptPath = reader.IsDBNull("receipt_path") ? null : reader.GetString("receipt_path"),
+                    SubjectCode = reader.IsDBNull("subject_code") ? null : reader.GetString("subject_code"),
+                    Instructor = reader.IsDBNull("instructor") ? null : reader.GetString("instructor")
                 });
             }
 
@@ -187,5 +212,60 @@ namespace che_system.repositories
                 throw;
             }
         }
+
+        // Returns item name or null
+        public string GetItemNameById(int itemId)
+        {
+            using var connection = GetConnection();
+            using var command = new SqlCommand("SELECT name FROM Item WHERE item_id = @id", connection);
+            command.Parameters.AddWithValue("@id", itemId);
+            connection.Open();
+            var res = command.ExecuteScalar();
+            return res == null || res == DBNull.Value ? null : res.ToString();
+        }
+
+        // Returns group number string or null
+        public string GetGroupNoById(int groupId)
+        {
+            using var connection = GetConnection();
+            using var command = new SqlCommand("SELECT group_no FROM [Group] WHERE group_id = @id", connection);
+            command.Parameters.AddWithValue("@id", groupId);
+            connection.Open();
+            var res = command.ExecuteScalar();
+            return res == null || res == DBNull.Value ? null : res.ToString();
+        }
+
+        // Returns list of students linked to an incident (Incident_Student -> Student)
+        public List<StudentModel> GetStudentsByIncidentId(int incidentId)
+        {
+            var list = new List<StudentModel>();
+
+            using var connection = GetConnection();
+            using var command = new SqlCommand(@"
+        SELECT s.student_id, s.group_id, s.first_name, s.last_name, s.id_number
+        FROM Incident_Student isd
+        INNER JOIN Student s ON isd.student_id = s.student_id
+        WHERE isd.incident_id = @incident_id
+        ORDER BY s.last_name, s.first_name", connection);
+
+            command.Parameters.AddWithValue("@incident_id", incidentId);
+            connection.Open();
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(new StudentModel
+                {
+                    StudentId = reader.GetInt32("student_id"),
+                    GroupId = reader.GetInt32("group_id"),
+                    FirstName = reader.IsDBNull("first_name") ? "" : reader.GetString("first_name"),
+                    LastName = reader.IsDBNull("last_name") ? "" : reader.GetString("last_name"),
+                    IdNumber = reader.IsDBNull("id_number") ? "" : reader.GetString("id_number")
+                });
+            }
+
+            return list;
+        }
+
     }
 }

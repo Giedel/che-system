@@ -141,104 +141,81 @@ namespace che_system.modals.model
             }
         }
 
-        private int _quantityReleased;
-        public int QuantityReleased
+        private int? _quantityReleased;
+        public int? QuantityReleased
         {
             get => _quantityReleased;
             set
             {
-                if (value > QuantityBorrowed)
+                if (!value.HasValue || value <= 0)
+                {
+                    _quantityReleased = null;
+                    DateReleased = null;
+                }
+                else if (value > QuantityBorrowed)
                 {
                     _quantityReleased = QuantityBorrowed;
-                    MessageBox.Show("Released quantity cannot exceed borrowed quantity.", 
+                    MessageBox.Show("Released quantity cannot exceed borrowed quantity.",
                         "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DateReleased = DateTime.Now;
                 }
                 else
                 {
                     _quantityReleased = value;
-                }
-                
-                // Auto-fill DateReleased when items are released
-                if (_quantityReleased > 0 && DateReleased == null)
-                {
                     DateReleased = DateTime.Now;
-                }
-
-                // Update database
-                if (DetailId > 0) // Only if record exists
-                {
-                    try
-                    {
-                        var repo = new Borrower_Repository();
-                        repo.UpdateDetailRelease(DetailId, _quantityReleased);
-                        
-                        // Update stock for consumable items
-                        if (Type == "Consumable")
-                        {
-                            repo.UpdateItemStock(ItemId, -_quantityReleased);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error updating release quantity: {ex.Message}",
-                            "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
                 }
 
                 OnPropertyChanged(nameof(QuantityReleased));
                 OnPropertyChanged(nameof(DateReleased));
-                OnPropertyChanged(nameof(Status)); // Status may change
+                OnPropertyChanged(nameof(Status));
             }
         }
 
-        private int _quantityReturned;
         /// <summary>
         /// Quantity returned by borrower. Only applicable for non-consumable items.
         /// Updates DateReturned when set. Triggers database update when modified.
         /// </summary>
-        public int QuantityReturned
+        private int? _quantityReturned;
+        public int? QuantityReturned
         {
             get => _quantityReturned;
             set
             {
-                // Prevent returns for consumable items
-                if (Type == "Consumable")
+                if (Type == "consumable")
                 {
-                    MessageBox.Show("Consumable items cannot be returned.", 
-                        "Invalid Operation", MessageBoxButton.OK, MessageBoxImage.Information);
+                    _quantityReturned = null;
+                    DateReturned = null;
                     return;
                 }
 
-                if (value > QuantityReleased)
+                if (!value.HasValue || value <= 0)
+                {
+                    _quantityReturned = null;
+                    DateReturned = null;
+                }
+                else if (value > QuantityReleased)
                 {
                     _quantityReturned = QuantityReleased;
-                    MessageBox.Show("Returned quantity cannot exceed released quantity.", 
+                    MessageBox.Show("Returned quantity cannot exceed released quantity.",
                         "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DateReturned = DateTime.Now;
                 }
                 else
                 {
                     _quantityReturned = value;
-                }
-
-                // Auto-fill DateReturned when items are returned
-                if (_quantityReturned > 0 && DateReturned == null)
-                {
                     DateReturned = DateTime.Now;
                 }
 
-                // Update database
-                if (DetailId > 0) // Only if record exists
+                // Update DB
+                if (DetailId > 0)
                 {
                     try
                     {
                         var repo = new Borrower_Repository();
-                        repo.UpdateDetailReturn(DetailId, _quantityReturned);
-                        
-                        // Update stock for non-consumable items
-                        if (Type == "Non-Consumable")
-                        {
-                            repo.UpdateItemStock(ItemId, _quantityReturned);
-                        }
+                        repo.UpdateDetailReturn(DetailId, _quantityReturned ?? 0);
+
+                        if (Type == "non-consumable" && _quantityReturned.HasValue)
+                            repo.UpdateItemStock(ItemId, _quantityReturned.Value);
                     }
                     catch (Exception ex)
                     {
@@ -249,7 +226,7 @@ namespace che_system.modals.model
 
                 OnPropertyChanged(nameof(QuantityReturned));
                 OnPropertyChanged(nameof(DateReturned));
-                OnPropertyChanged(nameof(Status)); // Status may change
+                OnPropertyChanged(nameof(Status));
             }
         }
 
@@ -298,11 +275,11 @@ namespace che_system.modals.model
         public string AvailableQuantity => SelectedItem == null ? "" : $"{SelectedItem.Quantity}{SelectedItem.Unit}";
 
         // --- Type property (Consumable / Non-Consumable) --- //
-        private string _type = "Consumable";
+        private string _type = "consumable";
         public string Type
         {
             get => _type;
-            set { _type = value; OnPropertyChanged(nameof(Type)); }
+            set { _type = value?.ToLower() ?? "consumable"; System.Diagnostics.Debug.WriteLine($"SlipDetail_Model.Type set to: {_type}"); OnPropertyChanged(nameof(Type)); }
         }
 
         #endregion
@@ -317,7 +294,7 @@ namespace che_system.modals.model
             get
             {
                 // For consumable items
-                if (Type == "Consumable")
+                if (Type == "consumable")
                 {
                     if (QuantityReleased == 0)
                         return "Pending";

@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:che_system.view"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1080">
 
@@ -21,8 +22,8 @@
                 </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <TextBox Style="{DynamicResource InputTextBoxStyle}" VerticalAlignment="Center" x:Name="MyTextBox" FontSize="20" FontFamily="{StaticResource Inter}" Padding="0 5" Width="500" BorderThickness="0 0 0 1" Background="Transparent" CaretBrush="White" Foreground="{StaticResource FontPrimary}"
-                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox VerticalAlignment="Center" x:Name="MyTextBox" FontSize="20" FontFamily="{StaticResource Inter}" Padding="0 5" Width="500" BorderThickness="0 0 0 1" Background="Transparent" CaretBrush="White" Foreground="{StaticResource FontPrimary}"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Margin="5 0 0 0"/>
                 <TextBlock Text="Search chemicals..." 
                            Foreground="{StaticResource OpaqueWhite}"
                            FontFamily="{StaticResource Inter}"
@@ -44,28 +45,51 @@
                 </TextBlock>
             </Grid>
 
-                <Button Style="{DynamicResource OriginalButtonStyle}" Grid.Column="2" Content="➕ Add Chemical" Margin="0 0 5 0" FlowDirection="LeftToRight" Command="{Binding Open_Add_Item_Command}"/>
-                <Button Style="{DynamicResource OriginalButtonStyle}" Grid.Column="3" Content="📤 Export to Excel" Margin="0 0 5 0" FlowDirection="LeftToRight"/>
-            </Grid>
+            <Button Style="{DynamicResource OriginalButtonStyle}" BorderThickness="1" Grid.Column="2" Content="➕ Add Chemical" Margin="0 0 5 0" FlowDirection="LeftToRight" Command="{Binding Open_Add_Item_Command}"/>
+        </Grid>
 
 
             <!-- Tabs for Chemicals & Apparatus -->
         <TabControl x:Name="Inventory_TabControl">
             <!-- Chemicals Tab -->
             <TabItem Header="Chemicals">
-                <!-- Data Table -->
-                    <DataGrid x:Name="ChemicalsGrid"
-                              ItemsSource="{Binding FilteredChemicals}"
-                              AutoGenerateColumns="False"
-                              IsReadOnly="True">
+                <DataGrid x:Name="ChemicalsGrid"
+              ItemsSource="{Binding FilteredChemicals}"
+              AutoGenerateColumns="False"
+              IsReadOnly="True"
+              Margin="0,5,0,0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
                         <DataGridTextColumn Header="Formula" Binding="{Binding ChemicalFormula}" Width=".4*"/>
-                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width=".4*"/>
-                        <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width=".4*"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding QuantityWithUnit}" Width=".4*"/>
                         <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width=".4*"/>
                         <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width=".4*" />
                         <DataGridTextColumn Header="Expiry Date" Binding="{Binding ExpiryDate, StringFormat=d}" Width=".4*"/>
+
+                        <!-- 👇 Action Buttons -->
+                        <DataGridTemplateColumn Header="Actions" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <!-- Edit Button -->
+                                        <Button Command="{Binding DataContext.Edit_Item_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Edit"
+                                                Style="{StaticResource IconButtonStyle}">
+                                            <fa:IconBlock Icon="Edit" Foreground="#FFD966" Width="20" Height="20" FontSize="18"/>
+                                        </Button>
+                                        <!-- Delete Button -->
+                                        <Button Command="{Binding DataContext.Delete_Item_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                Margin="10 0 0 0"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Delete"
+                                                Style="{StaticResource IconButtonStyle}">
+                                            <fa:IconBlock Icon="Trash" Foreground="#FF6B6B" Width="20" Height="20" FontSize="18"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
@@ -76,10 +100,7 @@
                 <DataGrid x:Name="ApparatusGrid"
                           ItemsSource="{Binding FilteredApparatus}"
                           AutoGenerateColumns="False"
-                          IsReadOnly="True"
-                          IsHitTestVisible="False"
-                          Focusable="False"
-                          SelectionMode="Extended">
+                          IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
                         <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width=".4*"/>
@@ -87,6 +108,30 @@
                         <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width=".4*"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width=".4*"/>
                         <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width=".4*"/>
+                        <!-- 👇 Action Buttons -->
+                        <DataGridTemplateColumn Header="Actions" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <!-- Edit Button -->
+                                        <Button Command="{Binding DataContext.Edit_Item_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Edit"
+                                                Style="{StaticResource IconButtonStyle}">
+                                            <fa:IconBlock Icon="Edit" Foreground="#FFD966" Width="20" Height="20" FontSize="18"/>
+                                        </Button>
+                                        <!-- Delete Button -->
+                                        <Button Command="{Binding DataContext.Delete_Item_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                Margin="10 0 0 0"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Delete"
+                                                Style="{StaticResource IconButtonStyle}">
+                                            <fa:IconBlock Icon="Trash" Foreground="#FF6B6B" Width="20" Height="20" FontSize="18"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
@@ -98,7 +143,6 @@
                           ItemsSource="{Binding FilteredSupplies}"
                           AutoGenerateColumns="False"
                           IsReadOnly="True"
-                          IsHitTestVisible="False"
                           Focusable="False"
                           SelectionMode="Extended">
                     <DataGrid.Columns>
@@ -109,6 +153,30 @@
                         <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width=".4*"/>
                         <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width=".4*"/>
                         <DataGridTextColumn Header="Expiry Date" Binding="{Binding ExpiryDate, StringFormat=d}" Width=".4*"/>
+                        <!-- 👇 Action Buttons -->
+                        <DataGridTemplateColumn Header="Actions" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <!-- Edit Button -->
+                                        <Button Command="{Binding DataContext.Edit_Item_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Edit"
+                                                Style="{StaticResource IconButtonStyle}">
+                                            <fa:IconBlock Icon="Edit" Foreground="#FFD966" Width="20" Height="20" FontSize="18"/>
+                                        </Button>
+                                        <!-- Delete Button -->
+                                        <Button Command="{Binding DataContext.Delete_Item_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                Margin="10 0 0 0"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Delete"
+                                                Style="{StaticResource IconButtonStyle}">
+                                            <fa:IconBlock Icon="Trash" Foreground="#FF6B6B" Width="20" Height="20" FontSize="18"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
@@ -120,7 +188,6 @@
                           ItemsSource="{Binding FilteredMiscellaneous}"
                           AutoGenerateColumns="False"
                           IsReadOnly="True"
-                          IsHitTestVisible="False"
                           Focusable="False"
                           SelectionMode="Extended">
                     <DataGrid.Columns>
@@ -131,6 +198,30 @@
                         <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width=".4*"/>
                         <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width=".4*"/>
                         <DataGridTextColumn Header="Expiry Date" Binding="{Binding ExpiryDate, StringFormat=d}" Width=".4*"/>
+                        <!-- 👇 Action Buttons -->
+                        <DataGridTemplateColumn Header="Actions" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <!-- Edit Button -->
+                                        <Button Command="{Binding DataContext.Edit_Item_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Edit"
+                                                Style="{StaticResource IconButtonStyle}">
+                                            <fa:IconBlock Icon="Edit" Foreground="#FFD966" Width="20" Height="20" FontSize="18"/>
+                                        </Button>
+                                        <!-- Delete Button -->
+                                        <Button Command="{Binding DataContext.Delete_Item_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                Margin="10 0 0 0"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Delete"
+                                                Style="{StaticResource IconButtonStyle}">
+                                            <fa:IconBlock Icon="Trash" Foreground="#FF6B6B" Width="20" Height="20" FontSize="18"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

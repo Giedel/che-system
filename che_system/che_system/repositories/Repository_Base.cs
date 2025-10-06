@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿//-- Repository_Base.cs --
+
+using Microsoft.Data.SqlClient;
 
 namespace che_system.repositories
 {

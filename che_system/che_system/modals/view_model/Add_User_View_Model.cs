@@ -1,8 +1,11 @@
+//-- Add_User_View_Model.cs --
+
 using che_system.model;
 using che_system.repositories;
 using che_system.view_model;
 using System;
 using System.Collections.ObjectModel;
+using System.Security;
 using System.Windows;
 using System.Windows.Input;
 
@@ -99,6 +102,17 @@ namespace che_system.modals.view_model
 
         private void ExecuteSave(object? obj)
         {
+            MessageBox.Show(
+                $"IdNumber: {IdNumber}\n" +
+                $"FirstName: {FirstName}\n" +
+                $"LastName: {LastName}\n" +
+                $"Username: {Username}\n" +
+                $"Password: {Password}\n" +
+                $"ConfirmPassword: {ConfirmPassword}\n" +
+                $"Birthday: {Birthday}\n" +
+                $"Role: {Role}"
+            );
+
             // Validation
             if (string.IsNullOrWhiteSpace(IdNumber) || string.IsNullOrWhiteSpace(FirstName) ||
                 string.IsNullOrWhiteSpace(LastName) || string.IsNullOrWhiteSpace(Username) ||
@@ -129,7 +143,7 @@ namespace che_system.modals.view_model
                     first_name = FirstName,
                     last_name = LastName,
                     username = Username,
-                    password = Password, // Plain text, hashed in repo
+                    password = Password,
                     birthday = Birthday.Value.ToString("yyyy-MM-dd"),
                     role = Role
                 };

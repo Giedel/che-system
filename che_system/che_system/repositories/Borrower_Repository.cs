@@ -184,16 +184,19 @@ namespace che_system.repositories
 
             using var connection = GetConnection();
             string query = @"SELECT sd.slip_detail_id, 
-                               sd.item_id, 
-                               i.name AS item_name, 
-                               sd.quantity_borrowed, 
-                               sd.quantity_returned, 
-                               sd.date_released,
-                               sd.date_returned,
-                               sd.remarks
-                        FROM Slip_Detail sd 
-                        INNER JOIN Item i ON sd.item_id = i.item_id 
-                        WHERE sd.slip_id = @slipId";
+                                   sd.item_id, 
+                                   i.name AS item_name,
+                                   i.type AS type,
+                                   sd.quantity_borrowed, 
+                                   sd.quantity_released,
+                                   sd.quantity_returned, 
+                                   sd.date_released,
+                                   sd.date_returned,
+                                   sd.remarks
+                            FROM Slip_Detail sd 
+                            INNER JOIN Item i ON sd.item_id = i.item_id 
+                            WHERE sd.slip_id = @slipId
+                            ";
 
 
             using var command = new SqlCommand(query, connection);
@@ -208,7 +211,11 @@ namespace che_system.repositories
                     DetailId = Convert.ToInt32(reader["slip_detail_id"]),
                     ItemId = Convert.ToInt32(reader["item_id"]),
                     ItemName = reader["item_name"].ToString() ?? string.Empty,
+                    Type = reader["type"].ToString() ?? string.Empty,
                     QuantityBorrowed = Convert.ToInt32(reader["quantity_borrowed"]),
+                    QuantityReleased = reader["quantity_released"] != DBNull.Value 
+                                        ? Convert.ToInt32(reader["quantity_released"]) 
+                                        : 0,
                     QuantityReturned = reader["quantity_returned"] != DBNull.Value
                                         ? Convert.ToInt32(reader["quantity_returned"])
                                         : 0,
@@ -302,14 +309,20 @@ namespace che_system.repositories
         public void UpdateDetailRelease(int detailId, int quantityReleased)
         {
             using var connection = GetConnection();
-            string query = @"UPDATE Slip_Detail 
-                 SET quantity_returned = @quantity_returned, 
-                     date_returned = GETDATE() 
-                 WHERE slip_detail_id = @slip_detail_id";
+
+            string query = quantityReleased > 0
+                ? @"UPDATE Slip_Detail 
+            SET quantity_released = @quantity_released, 
+                date_released = GETDATE() 
+            WHERE slip_detail_id = @slip_detail_id"
+                : @"UPDATE Slip_Detail 
+            SET quantity_released = @quantity_released, 
+                date_released = NULL 
+            WHERE slip_detail_id = @slip_detail_id";
 
             using var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@slip_detail_id", detailId);
-            command.Parameters.AddWithValue("@quantity_returned", quantityReleased);
+            command.Parameters.AddWithValue("@quantity_released", quantityReleased);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -317,10 +330,16 @@ namespace che_system.repositories
         public void UpdateDetailReturn(int detailId, int quantityReturned)
         {
             using var connection = GetConnection();
-            string query = @"UPDATE Slip_Detail 
-                 SET quantity_returned = @quantity_returned, 
-                     date_returned = GETDATE() 
-                 WHERE slip_detail_id = @slip_detail_id";
+
+            string query = quantityReturned > 0
+                ? @"UPDATE Slip_Detail 
+              SET quantity_returned = @quantity_returned, 
+                  date_returned = GETDATE() 
+              WHERE slip_detail_id = @slip_detail_id"
+                : @"UPDATE Slip_Detail 
+              SET quantity_returned = @quantity_returned, 
+                  date_returned = NULL 
+              WHERE slip_detail_id = @slip_detail_id";
 
             using var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@slip_detail_id", detailId);

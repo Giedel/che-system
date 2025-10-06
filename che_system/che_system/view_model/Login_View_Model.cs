@@ -12,7 +12,7 @@ namespace che_system.view_model
     {
         //Fields
         private string _username;
-        private SecureString _password;
+        private string _password;
         private string _error_message;
         private bool _is_view_visible = true;
         public event Action LoginSuccess;
@@ -30,7 +30,7 @@ namespace che_system.view_model
                 OnPropertyChanged(nameof(Username));
             }
         }
-        public SecureString Password
+        public string Password
         {
             get => _password;
 

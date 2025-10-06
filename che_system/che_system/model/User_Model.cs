@@ -1,4 +1,6 @@
-﻿namespace che_system.model
+﻿//-- User_Model.cs --
+
+namespace che_system.model
 {
     public class User_Model
     {

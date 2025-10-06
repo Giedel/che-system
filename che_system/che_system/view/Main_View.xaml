@@ -1,4 +1,6 @@
-﻿<Window x:Class="che_system.MainWindow"
+﻿<!-- Main_View.xaml -->
+    
+    <Window x:Class="che_system.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -235,30 +237,47 @@
                                                VerticalAlignment="Center"/>
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="2" 
+                                <StackPanel Grid.Column="2"
                                             Orientation="Horizontal"
+                                            VerticalAlignment="Center"
                                             Visibility="{Binding IsDashboardActive, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Text="As of" 
-                                               FontSize="20" 
+                                    <TextBlock Text="From:"
+                                               FontSize="20"
                                                Foreground="{StaticResource FontPrimary}"
-                                               VerticalAlignment="Center"/>
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,5,0"/>
 
-                                    <!-- Year Filter -->
-                                    <ComboBox ItemContainerStyle="{DynamicResource ComboBoxItemContainerStyle1}" 
-                                          ItemsSource="{Binding Current_Child_View.AvailableYears}"
-                                          SelectedItem="{Binding Current_Child_View.SelectedYear}"
-                                          Width="Auto"
-                                          Margin="10 0 0 0"
-                                          Padding="10"
-                                          FontSize="20"
-                                          Background="Transparent"
-                                          Foreground="{StaticResource FontPrimary}"
-                                          BorderThickness="0"
-                                          FontWeight="SemiBold"
-                                          HorizontalAlignment="Right"
-                                          VerticalAlignment="Center"
-                                          Visibility="{Binding IsDashboardActive, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <!-- FROM YEAR -->
+                                    <ComboBox ItemsSource="{Binding Current_Child_View.AvailableYears}"
+                                              SelectedItem="{Binding Current_Child_View.SelectedFromYear}"
+                                              Width="Auto"
+                                              Margin="5,0,10,0"
+                                              Padding="10"
+                                              FontSize="20"
+                                              Background="Transparent"
+                                              Foreground="{StaticResource FontPrimary}"
+                                              BorderThickness="0"
+                                              FontWeight="SemiBold"/>
+
+                                    <TextBlock Text="To:"
+                                               FontSize="20"
+                                               Foreground="{StaticResource FontPrimary}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,5,0"/>
+
+                                    <!-- TO YEAR -->
+                                    <ComboBox ItemsSource="{Binding Current_Child_View.AvailableYears}"
+                                              SelectedItem="{Binding Current_Child_View.SelectedToYear}"
+                                              Width="Auto"
+                                              Margin="5,0,0,0"
+                                              Padding="10"
+                                              FontSize="20"
+                                              Background="Transparent"
+                                              Foreground="{StaticResource FontPrimary}"
+                                              BorderThickness="0"
+                                              FontWeight="SemiBold"/>
                                 </StackPanel>
+
                             </Grid>
                         </Grid>
 

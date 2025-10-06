@@ -24,7 +24,7 @@ namespace che_system.view
                 if (passwordBox != null)
                 {
                     // Update the SecureString in the ViewModel
-                    viewModel.Password = passwordBox.SecurePassword;
+                    viewModel.Password = passwordBox.Password;
                 }
             }
         }

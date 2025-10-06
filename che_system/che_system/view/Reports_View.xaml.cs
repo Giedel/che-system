@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using che_system.view_model;
+using System.Windows.Controls;
 
 namespace che_system.view
 {
@@ -10,6 +11,7 @@ namespace che_system.view
         public Reports_View()
         {
             InitializeComponent();
+            DataContext = new Reports_ViewModel();
         }
     }
 }

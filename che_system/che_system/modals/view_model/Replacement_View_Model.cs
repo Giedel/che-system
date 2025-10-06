@@ -71,6 +71,8 @@ namespace che_system.modals.view_model
             set { _dateReturned = value; OnPropertyChanged(nameof(DateReturned)); }
         }
 
+        public string RecordedBy { get; private set; }
+
         // Commands
         public ICommand SaveReplacement_Command { get; }
         public ICommand CancelReplacement_Command { get; }
@@ -114,7 +116,7 @@ namespace che_system.modals.view_model
                 SelectedIncident.ReferenceNo = ReferenceNo;
                 SelectedIncident.ReceiptPath = ReceiptPath;
 
-                _incidentRepo.UpdateIncident(SelectedIncident);
+                _incidentRepo.UpdateIncident(SelectedIncident, RecordedBy);
 
                 // Add to inventory (exact match)
                 _itemRepo.UpdateStock(SelectedIncident.ItemId, ReplacementQuantity);

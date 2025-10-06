@@ -6,10 +6,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:che_system.view"
+             xmlns:conv="clr-namespace:che_system.converters"
              xmlns:icon="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:Stat_View="clr-namespace:che_system.custom_controls"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1080">
+
+    <UserControl.Resources>
+        <conv:AlertColorConverter x:Key="AlertColorConverter" />
+    </UserControl.Resources>
+
 
     <Grid>
         <!-- Quick Stats -->
@@ -44,25 +50,119 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0">
-                    <Border Style="{StaticResource CardStyle}">
-                        <TextBlock Text="System Alerts"
-                                   Padding="10"
-                                   FontSize="25"
-                                   FontWeight="SemiBold"
-                                   Foreground="{StaticResource FontDark}"/>
-                    </Border>
-                </Grid>
+                <!-- 🧠 SYSTEM ALERTS -->
+                <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                <Grid Grid.Column="1">
-                    <Border Style="{StaticResource CardStyle}">
-                        <TextBlock Text="Recent Activity"
-                                   Padding="10"
-                                   FontSize="25"
-                                   FontWeight="SemiBold"
-                                   Foreground="{StaticResource FontDark}"/>
-                    </Border>
-                </Grid>
+                        <!-- Header with Refresh -->
+                        <DockPanel Grid.Row="0" Margin="10,5">
+                            <TextBlock Text="System Alerts"
+                                       FontSize="25"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource FontDark}"
+                                       DockPanel.Dock="Left"/>
+
+                            <!-- Refresh Button -->
+                            <Button Command="{Binding RefreshDashboardCommand}" 
+                                    ToolTip="Refresh Alerts"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    HorizontalAlignment="Right">
+                                <icon:IconBlock Icon="RotateRight" Foreground="{StaticResource FontDark}" Width="20" Height="20"/>
+                            </Button>
+                        </DockPanel>
+
+                        <!-- Alerts List -->
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding SystemAlerts}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="#EEE" Padding="8,6">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <!-- Colored Dot Indicator -->
+                                                <Ellipse Width="10" Height="10" Margin="0,3,8,0">
+                                                    <Ellipse.Fill>
+                                                        <Binding Path="Type" Converter="{StaticResource AlertColorConverter}" />
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+
+                                                <!-- Alert Text -->
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Message}" FontSize="18" Foreground="{StaticResource FontDark}"/>
+                                                    <TextBlock Text="{Binding LoggedAt, StringFormat='{}{0:MMM dd, yyyy}'}"
+                                               FontSize="14" Foreground="Gray"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+
+                <!-- 🧠 RECENT ACTIVITY -->
+                <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Header with Refresh -->
+                        <DockPanel Grid.Row="0" Margin="10,5">
+                            <TextBlock Text="Recent Activity"
+                       FontSize="25"
+                       FontWeight="SemiBold"
+                       Foreground="{StaticResource FontDark}"
+                       DockPanel.Dock="Left"/>
+
+                            <Button Command="{Binding RefreshDashboardCommand}" 
+                    ToolTip="Refresh Activity"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    HorizontalAlignment="Right">
+                                <icon:IconBlock Icon="RotateRight" Foreground="{StaticResource FontDark}" Width="20" Height="20"/>
+                            </Button>
+                        </DockPanel>
+
+                        <!-- Activities List -->
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding RecentActivities}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="#EEE" Padding="8,6">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Description}"
+                                           FontSize="18"
+                                           Foreground="{StaticResource FontDark}"
+                                           TextWrapping="Wrap"/>
+
+                                                <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                                    <TextBlock Text="{Binding UserId}"
+                                               FontSize="14"
+                                               Foreground="Gray"/>
+                                                    <TextBlock Text=" • " FontSize="14" Foreground="Gray" Margin="3,0"/>
+                                                    <TextBlock Text="{Binding ActionType}"
+                                               FontSize="14"
+                                               Foreground="Gray"/>
+                                                    <TextBlock Text=" • " FontSize="14" Foreground="Gray" Margin="3,0"/>
+                                                    <TextBlock Text="{Binding DateTime, StringFormat='{}{0:MMM dd, yyyy hh:mm tt}'}"
+                                               FontSize="14"
+                                               Foreground="Gray"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
             </Grid>
 
             <!-- Quick Actions -->

@@ -1,4 +1,6 @@
-﻿<UserControl x:Class="che_system.view.Reports_View"
+﻿<!-- Reports_View.xaml -->
+    
+    <UserControl x:Class="che_system.view.Reports_View"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,7 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
         <!-- Top Search Bar -->
-        <Grid DockPanel.Dock="Top" Margin="0 0 0 10">
+        <Grid DockPanel.Dock="Top" Margin="10 10 0 10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -17,10 +19,10 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <TextBox Style="{DynamicResource InputTextBoxStyle}" VerticalAlignment="Center" x:Name="MyTextBox" FontSize="20" FontFamily="{StaticResource Inter}" Padding="0 5" Width="500" BorderThickness="0 0 0 1" Background="Transparent"
-                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox VerticalAlignment="Center" x:Name="MyTextBox" FontSize="20" FontFamily="{StaticResource Inter}" Padding="0 5" Width="500" BorderThickness="0 0 0 1" Background="Transparent" CaretBrush="White" Foreground="{StaticResource FontPrimary}"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Margin="5 0 0 0"/>
                 <TextBlock Text="Search reports..." 
-                           Foreground="Gray"
+                           Foreground="{StaticResource OpaqueWhite}"
                            FontFamily="{StaticResource Inter}"
                            FontSize="20"
                            Padding="3 0 0 0"
@@ -46,35 +48,26 @@
         <!-- TabControl for Reports -->
         <TabControl Margin="5">
             <!-- Monthly Usage -->
-            <TabItem Header="Monthly Usage">
+            <TabItem Header="Monthly Chemical Usage">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <TextBlock Text="Monthly Chemical Usage Ranking" 
+                   FontSize="20" FontWeight="Bold" Margin="10"/>
 
-                        <Grid Grid.Column="0">
-                            <TextBlock Text="Monthly Chemical Usage Report" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Margin="10"/>
-                        </Grid>
-                    </Grid>
-
-                    <Grid Grid.Row="1">
-                        <DataGrid ItemsSource="{Binding FilteredItemUsage}" AutoGenerateColumns="False" Focusable="False" IsReadOnly="True">
+                    <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding ChemicalUsage}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="*"/>
-                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*"/>
-                            <DataGridTextColumn Header="Total Borrowed" Binding="{Binding TotalBorrowed}" Width="*"/>
-                            <DataGridTextColumn Header="Total Returned" Binding="{Binding TotalReturned}" Width="*"/>
-                            <DataGridTextColumn Header="Usage Count" Binding="{Binding UsageCount}" Width="*"/>
+                            <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" Width="Auto"/>
+                            <DataGridTextColumn Header="Chemical Name" Binding="{Binding ChemicalName}" Width="*"/>
+                            <DataGridTextColumn Header="Total Consumption" Binding="{Binding TotalConsumption}" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    </Grid>
                 </Grid>
             </TabItem>
 
@@ -86,61 +79,57 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <TextBlock Text="Inventory Status Report" FontSize="20" FontWeight="Bold" Margin="10"/>
 
-                        <Grid Grid.Column="0">
-                            <TextBlock Text="Inventory Status Report" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Margin="10"/>
-                        </Grid>
-                    </Grid>
+                    <DataGrid Grid.Row="1" 
+                              ItemsSource="{Binding InventoryItems}" 
+                              AutoGenerateColumns="False" 
+                              IsReadOnly="True" 
+                              Margin="10">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="*"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*"/>
+                            <DataGridTextColumn Header="Total Stock" Binding="{Binding TotalStock}" Width="*"/>
+                            <DataGridTextColumn Header="Available" Binding="{Binding AvailableQuantity}" Width="*"/>
+                            <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="*"/>
+                            <DataGridTextColumn Header="Threshold" Binding="{Binding Threshold}" Width="*"/>
+                            <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="*"/>
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
+                            <DataGridTextColumn Header="Last Released" Binding="{Binding LastReleased}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
 
-                    <Grid Grid.Row="1">
-                        <DataGrid ItemsSource="{Binding FilteredBorrowerActivity}" AutoGenerateColumns="False" Focusable="False" IsReadOnly="True">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Borrower" Binding="{Binding Name}" Width="*"/>
-                                <DataGridTextColumn Header="Subject Code" Binding="{Binding SubjectCode}" Width="*"/>
-                                <DataGridTextColumn Header="Total Slips" Binding="{Binding TotalSlips}" Width="*"/>
-                                <DataGridTextColumn Header="Completed" Binding="{Binding CompletedSlips}" Width="*"/>
-                                <DataGridTextColumn Header="Active" Binding="{Binding ActiveSlips}" Width="*"/>
-                                <DataGridTextColumn Header="Pending" Binding="{Binding PendingSlips}" Width="*"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Grid>
                 </Grid>
             </TabItem>
 
-            <!-- Pending Replacements -->
-            <TabItem  Header="Pending Replacements">
+            <!-- Replacements History -->
+            <TabItem Header="Replacements History">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <TextBlock Text="Damages for Replacement Report"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   Margin="10"/>
 
-                        <Grid Grid.Column="0">
-                            <TextBlock Text="Damages for Replacement Report" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Margin="10"/>
-                        </Grid>
-                    </Grid>
-
-                    <Grid Grid.Row="1">
-                        <DataGrid ItemsSource="{Binding FilteredItemUsage}" AutoGenerateColumns="False" Focusable="False" IsReadOnly="True">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="*"/>
-                                <DataGridTextColumn Header="Quantity Needed" Binding="{Binding TotalBorrowed}" Width="*"/>
-                                <DataGridTextColumn Header="Group" Binding="{Binding Category}" Width="*"/>
-                                <DataGridTextColumn Header="Date Needed" Binding="{Binding UsageCount}" Width="*"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Grid>
+                    <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding ReplacementHistory}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  Margin="10">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="*"/>
+                            <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
+                            <DataGridTextColumn Header="Group" Binding="{Binding GroupName}" Width="*"/>
+                            <DataGridTextColumn Header="Subject Code" Binding="{Binding SubjectCode}" Width="*"/>
+                            <DataGridTextColumn Header="Instructor" Binding="{Binding Instructor}" Width="*"/>
+                            <DataGridTextColumn Header="Reference No." Binding="{Binding ReferenceNo}" Width="*"/>
+                            <DataGridTextColumn Header="Date Settled" Binding="{Binding DateSettled}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
         </TabControl>
