@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿//-- Inventory_View.xaml.cs --
+
+using System.Windows.Controls;
 
 namespace che_system.view
 {

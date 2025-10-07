@@ -1,3 +1,5 @@
+//-- Borrower_Activity_Model.cs --
+
 using System.ComponentModel;
 
 namespace che_system.modals.model

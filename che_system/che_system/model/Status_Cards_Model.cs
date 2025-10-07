@@ -1,13 +1,15 @@
-﻿using FontAwesome.Sharp;
+﻿//-- Status_Cards_Model.cs --
+
+using FontAwesome.Sharp;
 
 namespace che_system.model
 {
     public class Status_Cards_Model
     {
-        public string Title { get; set; }
-        public IconChar Icon { get; set; } // could be FontAwesome/Glyph or image path
+        public string? Title { get; set; }
+        public IconChar Icon { get; set; } 
         public int Value { get; set; }
-        public string Description { get; set; } // optional (e.g., "5 chemicals below threshold")
-        public string NavigationTarget { get; set; } // name of module/page to navigate
+        public string? Description { get; set; }
+        public string? NavigationTarget { get; set; } // name of module/page to navigate
     }
 }

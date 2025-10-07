@@ -202,3 +202,5 @@ C:\Users\Giedel\Documents\che-system\che_system\che_system\obj\Debug\net8.0-wind
 C:\Users\Giedel\Documents\che-system\che_system\che_system\obj\Debug\net8.0-windows\ref\che_system.dll
 C:\Users\Giedel\Documents\che-system\che_system\che_system\obj\Debug\net8.0-windows\modals\view\Edit_Item_View.g.cs
 C:\Users\Giedel\Documents\che-system\che_system\che_system\obj\Debug\net8.0-windows\modals\view\Edit_Item_View.baml
+C:\Users\Giedel\Documents\che-system\che_system\che_system\obj\Debug\net8.0-windows\modals\view\Edit_User_View.g.cs
+C:\Users\Giedel\Documents\che-system\che_system\che_system\obj\Debug\net8.0-windows\modals\view\Edit_User_View.baml

@@ -267,5 +267,40 @@ namespace che_system.repositories
             return list;
         }
 
+        public void DeleteIncident(int incidentId, string currentUser)
+        {
+            using var connection = GetConnection();
+            connection.Open();
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                // Remove dependent rows first
+                using (var cmd = new SqlCommand("DELETE FROM Incident_Student WHERE incident_id = @id", connection, transaction))
+                {
+                    cmd.Parameters.AddWithValue("@id", incidentId);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Delete the incident
+                using (var cmd = new SqlCommand("DELETE FROM Incident WHERE incident_id = @id", connection, transaction))
+                {
+                    cmd.Parameters.AddWithValue("@id", incidentId);
+                    int affected = cmd.ExecuteNonQuery();
+                    if (affected == 0)
+                        throw new InvalidOperationException($"Incident {incidentId} not found.");
+                }
+
+                transaction.Commit();
+
+                new AuditRepository().LogAction(currentUser, "Delete Incident",
+                    $"Deleted incident {incidentId}", "Incident", incidentId.ToString());
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
     }
 }

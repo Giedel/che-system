@@ -1,4 +1,6 @@
-<Window x:Class="che_system.modals.view.Return_View"
+<!-- Return_View.xaml -->
+    
+    <Window x:Class="che_system.modals.view.Return_View"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Process Item Returns" Height="600" Width="800" 

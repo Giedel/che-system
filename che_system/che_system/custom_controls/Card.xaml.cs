@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿//-- Card.xaml.cs --
+
+using System.Windows.Controls;
 
 namespace che_system.custom_controls
 {

@@ -14,18 +14,19 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen">
 
-    <Border Background="White" CornerRadius="20" Height="600" Width="550">
-        <Grid Margin="20" Height="550" Width="500">
+    <Border Background="White" CornerRadius="20" Height="Auto" Width="550">
+        <Grid Margin="20" Height="Auto" Width="500">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" VerticalAlignment="Center" Margin="0 0 0 20">
                 <!-- Control Bar -->
-                <TextBlock Text="Add New Item" Foreground="{StaticResource FontDark}" FontSize="26" FontWeight="Bold"/>
+                <TextBlock Text="Add Item" Foreground="{StaticResource FontDark}" FontSize="26" FontWeight="Bold"/>
                 <StackPanel x:Name="Control_Bar_Panel"
                                 Orientation="Horizontal"
                                 FlowDirection="RightToLeft"
@@ -51,26 +52,27 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
+                <StackPanel Grid.Row="0" Margin="0 0 0 20">
                     <TextBlock Text="Item Name" FontSize="20"/>
                     <TextBox Text="{Binding New_Item.ItemName, UpdateSourceTrigger=PropertyChanged}" 
                              Style="{StaticResource InputTextBoxStyle}"
                              FontSize="16"
                              Background="{StaticResource InputBackgroundColor}"
                              BorderThickness="0"
-                             Padding="5 10"/>
+                             Padding="5 12"/>
                 </StackPanel>
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Row="1" Margin="0 0 0 20">
                     <TextBlock Text="Chemical Formula (For chemicals only)" FontSize="20"/>
                     <TextBox Text="{Binding New_Item.ChemicalFormula, UpdateSourceTrigger=PropertyChanged}" 
                              Style="{StaticResource InputTextBoxStyle}"
                              FontSize="16"
                              Background="{StaticResource InputBackgroundColor}"
                              BorderThickness="0"
-                             Padding="5 10"/>
+                             Padding="5 12"/>
                 </StackPanel>
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="2" Margin="0 0 0 20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width=".05*"/>
@@ -84,7 +86,7 @@
                                  FontSize="16"
                                  Background="{StaticResource InputBackgroundColor}"
                                  BorderThickness="0"
-                                 Padding="5 10"/>
+                                 Padding="5 12"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="Unit" FontSize="20"/>
@@ -105,7 +107,7 @@
                         </ComboBox>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Row="3">
+                <Grid Grid.Row="3" Margin="0 0 0 20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width=".05*"/>
@@ -125,6 +127,7 @@
                             <ComboBoxItem Content="Chemical" IsSelected="True"/>
                             <ComboBoxItem Content="Apparatus"/>
                             <ComboBoxItem Content="Supplies"/>
+                            <ComboBoxItem Content="Equipment"/>
                             <ComboBoxItem Content="Miscellaneous"/>
                         </ComboBox>
                     </StackPanel>
@@ -135,11 +138,11 @@
                                  FontSize="16"
                                  Background="{StaticResource InputBackgroundColor}"
                                  BorderThickness="0"
-                                 Padding="5 10"/>
+                                 Padding="5 12"/>
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Row="4">
+                <Grid Grid.Row="4" Margin="0 0 0 20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width=".05*" />
@@ -170,6 +173,33 @@
                         </ComboBox>
                     </StackPanel>
                 </Grid>
+
+                <Grid Grid.Row="5" Margin="0 0 0 20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width=".05*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Threshold" FontSize="20"/>
+                        <TextBox Text="{Binding New_Item.Threshold, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource InputTextBoxStyle}"
+                                 FontSize="16"
+                                 Background="{StaticResource InputBackgroundColor}"
+                                 BorderThickness="0"
+                                 Padding="5 12"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Calibration Date (if any)" FontSize="20"/>
+                        <DatePicker SelectedDate="{Binding New_Item.CalibrationDate, UpdateSourceTrigger=PropertyChanged}"
+                                    Focusable="False"
+                                    Width="240"
+                                    FontSize="16"
+                                    Padding="5 10"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
 
             <!-- Footer Buttons -->
@@ -190,6 +220,7 @@
                     BorderThickness="0"
                     Content="Save"
                     Command="{Binding Save_Command}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                     Width="100"/>
             </StackPanel>
         </Grid>

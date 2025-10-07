@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿//-- Status_Cards.xaml.cs --
+
+using System.Windows.Controls;
 
 namespace che_system.custom_controls
 {

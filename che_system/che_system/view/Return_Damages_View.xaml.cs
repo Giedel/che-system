@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿//-- Return_Damages_View.xaml.cs --
+
+using System.Windows.Controls;
 using che_system.view_model;
 
 namespace che_system.view

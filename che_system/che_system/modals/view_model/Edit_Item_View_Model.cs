@@ -16,19 +16,32 @@ namespace che_system.modals.view_model
         public ICommand Save_Command { get; }
         public ICommand Cancel_Command { get; }
 
-        public Edit_Item_View_Model(Add_Item_Model item)
+        public Edit_Item_View_Model(Add_Item_Model item, string? username)
         {
             Edited_Item = item;
-            Save_Command = new View_Model_Command(Execute_Save);
+            Save_Command = new View_Model_Command(Execute_Save_Item);
             Cancel_Command = new View_Model_Command(Execute_Cancel);
         }
 
-        private void Execute_Save(object? obj)
+        private void Execute_Save_Item(object? obj)
         {
-            _repository.Update_Item(Edited_Item);
-            MessageBox.Show("Item updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            if (obj is Window window) window.DialogResult = true;
-            
+            try
+            {
+                // Save item to database
+                _repository.Update_Item(Edited_Item);
+                
+                // Close the window with success result
+                if (obj is Window window)
+                {
+                    window.DialogResult = true; // This signals success to the calling window
+                    window.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating item: {ex.Message}", "Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Execute_Cancel(object? obj)

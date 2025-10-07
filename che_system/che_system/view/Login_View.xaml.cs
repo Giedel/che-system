@@ -1,4 +1,6 @@
-﻿using che_system.view_model;
+﻿//-- Login_View.xaml.cs --
+
+using che_system.view_model;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

@@ -1,3 +1,5 @@
+//-- Damage_View.xaml.cs --
+
 using System.Windows;
 using System.Windows.Input;
 using che_system.modals.view_model;

@@ -1,4 +1,6 @@
-﻿using che_system.modals.view_model;
+﻿//-- Add_Item_View.xaml.cs --
+
+using che_system.modals.view_model;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;

@@ -1,4 +1,6 @@
-﻿using System.Security;
+﻿//-- Bindable_Password_Box.xaml.cs --
+
+using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 

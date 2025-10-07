@@ -13,7 +13,20 @@ namespace che_system.repositories
             var items = new ObservableCollection<Add_Item_Model>();
 
             using var connection = GetConnection();
-            string query = @"SELECT item_id, name AS Name, alt_name AS Alt_Name, quantity AS Quantity, unit AS Unit, category AS Category, location AS Location, expiry_date AS Expiry_Date, type AS Type FROM Item";
+            string query = @"
+                SELECT 
+                    item_id,
+                    name AS Name,
+                    alt_name AS Alt_Name,
+                    quantity AS Quantity,
+                    unit AS Unit,
+                    category AS Category,
+                    location AS Location,
+                    expiry_date AS Expiry_Date,
+                    calibration_date AS Calibration_Date,
+                    type AS Type,
+                    threshold AS Threshold
+                FROM Item";
 
             using var command = new SqlCommand(query, connection);
             connection.Open();
@@ -31,7 +44,9 @@ namespace che_system.repositories
                     Category = reader["Category"].ToString()!,
                     Type = reader["Type"].ToString()!,
                     Location = reader["Location"].ToString()!,
-                    ExpiryDate = reader["Expiry_Date"] != DBNull.Value ? Convert.ToDateTime(reader["Expiry_Date"]) : (DateTime?)null
+                    ExpiryDate = reader["Expiry_Date"] != DBNull.Value ? Convert.ToDateTime(reader["Expiry_Date"]) : (DateTime?)null,
+                    CalibrationDate = reader["Calibration_Date"] != DBNull.Value ? Convert.ToDateTime(reader["Calibration_Date"]) : (DateTime?)null,
+                    Threshold = reader["Threshold"] != DBNull.Value ? Convert.ToInt32(reader["Threshold"]) : 0
                 });
             }
             return items;
@@ -50,7 +65,10 @@ namespace che_system.repositories
             category = @Category,
             location = @Location,
             expiry_date = @Expiry_Date,
-            type = @Type
+            type = @Type,
+            threshold = @Threshold,
+            calibration_date = @Calibration_Date,
+            status = @Status
         WHERE item_id = @ItemId";
 
             using var command = new SqlCommand(query, connection);
@@ -60,14 +78,16 @@ namespace che_system.repositories
             command.Parameters.AddWithValue("@Quantity", item.Quantity);
             command.Parameters.AddWithValue("@Unit", item.Unit);
             command.Parameters.AddWithValue("@Category", item.Category);
-            command.Parameters.AddWithValue("@Location", item.Location);
-            command.Parameters.AddWithValue("@Expiry_Date", item.ExpiryDate.HasValue ? item.ExpiryDate.Value : DBNull.Value);
-            command.Parameters.AddWithValue("@Type", item.Type);
+            command.Parameters.AddWithValue("@Location", string.IsNullOrWhiteSpace(item.Location) ? DBNull.Value : item.Location);
+            command.Parameters.AddWithValue("@Expiry_Date", item.ExpiryDate.HasValue ? item.ExpiryDate : (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Type", string.IsNullOrWhiteSpace(item.Type) ? DBNull.Value : item.Type);
+            command.Parameters.AddWithValue("@Threshold", item.Threshold > 0 ? item.Threshold : (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Calibration_Date", item.CalibrationDate.HasValue ? item.CalibrationDate : (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Status", string.IsNullOrWhiteSpace(item.Status) ? "Available" : item.Status);
 
             connection.Open();
             command.ExecuteNonQuery();
         }
-
 
         public void UpdateStock(int itemId, int quantityChange)
         {

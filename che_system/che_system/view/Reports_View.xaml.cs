@@ -1,4 +1,6 @@
-﻿using che_system.view_model;
+﻿//-- Reports_View.xaml.cs --
+
+using che_system.view_model;
 using System.Windows.Controls;
 
 namespace che_system.view

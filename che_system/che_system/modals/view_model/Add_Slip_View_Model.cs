@@ -148,15 +148,6 @@ namespace che_system.modals.view_model
             {
                 var slipId = _repository.InsertSlip(this);
 
-                // Update stock after insert
-                foreach (var detail in SlipDetails)
-                {
-                    if (detail.ItemId > 0 && detail.QuantityBorrowed > 0)
-                    {
-                        _itemRepo.UpdateStock(detail.ItemId, -detail.QuantityBorrowed);
-                    }
-                }
-
                 MessageBox.Show($"Borrower Slip #{slipId} saved successfully!",
                     "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }

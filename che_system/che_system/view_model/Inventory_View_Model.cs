@@ -17,6 +17,7 @@ namespace che_system.view_model
         public ObservableCollection<Add_Item_Model> Apparatus { get; set; } = new();
         public ObservableCollection<Add_Item_Model> Supplies { get; set; } = new();
         public ObservableCollection<Add_Item_Model> Miscellaneous { get; set; } = new();
+        public ObservableCollection<Add_Item_Model> Equipment { get; set; } = new();
 
 
         public ObservableCollection<Add_Item_Model> LowStockItems { get; set; } = new();
@@ -29,6 +30,7 @@ namespace che_system.view_model
         public ObservableCollection<Add_Item_Model> FilteredApparatus { get; set; } = new();
         public ObservableCollection<Add_Item_Model> FilteredSupplies { get; set; } = new();
         public ObservableCollection<Add_Item_Model> FilteredMiscellaneous { get; set; } = new();
+        public ObservableCollection<Add_Item_Model> FilteredEquipment { get; set; } = new();
 
 
         public ICommand Open_Add_Item_Command { get; }
@@ -85,6 +87,10 @@ namespace che_system.view_model
                     item => item.ItemName ?? "",
                     item => item.Category ?? "",
                     item => item.Location ?? "");
+                FilteredEquipment = FilterCollection(Equipment, SearchText,
+                    item => item.ItemName ?? "",
+                    item => item.Category ?? "",
+                    item => item.Location ?? "");
             }
             else
             {
@@ -94,6 +100,7 @@ namespace che_system.view_model
                 FilteredApparatus = FilterCollection(Apparatus, filters);
                 FilteredSupplies = FilterCollection(Supplies, filters);
                 FilteredMiscellaneous = FilterCollection(Miscellaneous, filters);
+                FilteredEquipment = FilterCollection(Equipment, filters);
             }
 
             OnPropertyChanged(nameof(FilteredItems));
@@ -101,6 +108,7 @@ namespace che_system.view_model
             OnPropertyChanged(nameof(FilteredApparatus));
             OnPropertyChanged(nameof(FilteredSupplies));
             OnPropertyChanged(nameof(FilteredMiscellaneous));
+            OnPropertyChanged(nameof(FilteredEquipment));
         }
 
         protected override bool ApplyFieldFilterToItem<T>(T item, SearchFilter filter) where T : class
@@ -181,7 +189,7 @@ namespace che_system.view_model
             {
                 var modal = new Edit_Item_View
                 {
-                    DataContext = new Edit_Item_View_Model(item) // attach a ViewModel
+                    DataContext = new Edit_Item_View_Model(item, null) // attach a ViewModel
                 };
 
                 if (modal.ShowDialog() == true)
@@ -238,6 +246,9 @@ namespace che_system.view_model
 
             Miscellaneous = new ObservableCollection<Add_Item_Model>(Items.Where(i => i.Category == "Miscellaneous"));
             OnPropertyChanged(nameof(Miscellaneous));
+
+            Equipment = new ObservableCollection<Add_Item_Model>(Items.Where(i => i.Category == "Equipment"));
+            OnPropertyChanged(nameof(Equipment));
 
             // Apply current search filter to updated collections
             ApplyFilters();

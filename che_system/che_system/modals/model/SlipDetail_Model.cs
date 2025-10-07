@@ -61,10 +61,26 @@ namespace che_system.modals.model
 
         #region Quantity Management
 
+        private int? _originalQuantityReleased;
+        public int? OriginalQuantityReleased
+        {
+            get => _originalQuantityReleased;
+            set { _originalQuantityReleased = value; OnPropertyChanged(nameof(OriginalQuantityReleased)); }
+        }
+
+        private int? _originalQuantityReturned;
+        public int? OriginalQuantityReturned
+        {
+            get => _originalQuantityReturned;
+            set { _originalQuantityReturned = value; OnPropertyChanged(nameof(OriginalQuantityReturned)); }
+        }
+
+        public void AcceptReleaseChanges() => OriginalQuantityReleased = QuantityReleased;
+        public void AcceptReturnChanges() => OriginalQuantityReturned = QuantityReturned;
+
+
+
         private int _quantityBorrowed;
-        /// <summary>
-        /// Initial quantity requested to borrow. Cannot be modified after slip creation.
-        /// </summary>
         public int QuantityBorrowed
         {
             get => _quantityBorrowed;
@@ -164,7 +180,6 @@ namespace che_system.modals.model
                     _quantityReleased = value;
                     DateReleased = DateTime.Now;
                 }
-
                 OnPropertyChanged(nameof(QuantityReleased));
                 OnPropertyChanged(nameof(DateReleased));
                 OnPropertyChanged(nameof(Status));
@@ -204,24 +219,6 @@ namespace che_system.modals.model
                 {
                     _quantityReturned = value;
                     DateReturned = DateTime.Now;
-                }
-
-                // Update DB
-                if (DetailId > 0)
-                {
-                    try
-                    {
-                        var repo = new Borrower_Repository();
-                        repo.UpdateDetailReturn(DetailId, _quantityReturned ?? 0);
-
-                        if (Type == "non-consumable" && _quantityReturned.HasValue)
-                            repo.UpdateItemStock(ItemId, _quantityReturned.Value);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error updating return quantity: {ex.Message}",
-                            "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
                 }
 
                 OnPropertyChanged(nameof(QuantityReturned));
@@ -293,28 +290,33 @@ namespace che_system.modals.model
         {
             get
             {
-                // For consumable items
-                if (Type == "consumable")
+                int released = QuantityReleased ?? 0;
+                int returned = QuantityReturned ?? 0;
+                int borrowed = QuantityBorrowed;
+
+                // Pending if nothing released yet
+                if (released == 0)
+                    return "Pending";
+
+                // Not all released yet
+                if (released < borrowed)
+                    return "Partially Released";
+
+                // Fully released
+                if (string.Equals(Type, "consumable", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (QuantityReleased == 0)
-                        return "Pending";
-                    if (QuantityReleased < QuantityBorrowed)
-                        return "Partially Released";
+                    // Consumables are considered consumed once fully released
                     return "Consumed";
                 }
 
-                // For non-consumable items
-                if (QuantityReleased == 0)
-                    return "Pending";
-                if (QuantityReleased < QuantityBorrowed)
-                    return "Partially Released";
-                if (QuantityReleased == QuantityBorrowed && QuantityReturned == 0)
-                    return "Released";
-                if (QuantityReturned < QuantityReleased)
-                    return "Partially Returned";
-                if (QuantityReturned == QuantityReleased)
-                    return "Returned";
-                
+                // Non-consumable paths
+                if (returned == 0)
+                    return "Released";              // Fully released, none returned yet
+                if (returned < released)
+                    return "Partially Returned";    // Some returned
+                if (returned == released)
+                    return "Returned";              // All returned
+
                 return "Unknown";
             }
         }

@@ -1,4 +1,6 @@
-﻿using che_system.modals.view_model;
+﻿//-- Add_Slip_Repository.cs --
+
+using che_system.modals.view_model;
 using che_system.repositories;
 using Microsoft.Data.SqlClient;
 using System.Data;

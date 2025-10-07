@@ -1,4 +1,6 @@
-﻿using che_system.view;
+﻿//-- Main_View.xaml.cs --
+
+using che_system.view;
 using che_system.view_model;
 using System.Runtime.InteropServices;
 using System.Windows;

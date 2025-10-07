@@ -142,5 +142,50 @@ namespace che_system.repositories
         {
             throw new NotImplementedException();
         }
+
+        public void Update(User_Model user) {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            using var connection = GetConnection();
+            using var command = new SqlCommand();
+            connection.Open();
+
+            command.Connection = connection;
+            command.CommandText = @"
+        UPDATE [User] 
+        SET 
+            first_name = @first_name, 
+            last_name = @last_name, 
+            username = @username, 
+            password = @password, 
+            birthdate = @birthdate, 
+            role = @role
+        WHERE 
+            id_number = @id_number";
+
+            command.Parameters.Add("@id_number", SqlDbType.NVarChar, 50).Value = user.user_id;
+            command.Parameters.Add("@first_name", SqlDbType.NVarChar, 100).Value = user.first_name;
+            command.Parameters.Add("@last_name", SqlDbType.NVarChar, 100).Value = user.last_name;
+            command.Parameters.Add("@username", SqlDbType.NVarChar, 50).Value = user.username;
+            command.Parameters.Add("@password", SqlDbType.NVarChar, 255).Value = BCrypt.Net.BCrypt.HashPassword(user.password);
+            command.Parameters.Add("@birthdate", SqlDbType.Date).Value = DateTime.Parse(user.birthday);
+            command.Parameters.Add("@role", SqlDbType.NVarChar, 20).Value = user.role;
+
+            command.ExecuteNonQuery();
+        }
+
+        public void Delete(string userId) {
+            if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException(nameof(userId));
+
+            using var connection = GetConnection();
+            using var command = new SqlCommand();
+            connection.Open();
+
+            command.Connection = connection;
+            command.CommandText = "DELETE FROM [User] WHERE id_number = @id_number";
+            command.Parameters.Add("@id_number", SqlDbType.NVarChar, 50).Value = userId;
+
+            command.ExecuteNonQuery();
+        }
     }
 }

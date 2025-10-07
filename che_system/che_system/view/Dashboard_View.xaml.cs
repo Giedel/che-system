@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿//-- Dashboard_View.xaml.cs --
+
+using System.Windows.Controls;
 
 namespace che_system.view
 {

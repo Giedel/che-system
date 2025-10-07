@@ -1,4 +1,6 @@
-﻿using che_system.modals.view_model;
+﻿//-- Add_User_View.xaml.cs --
+
+using che_system.modals.view_model;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;

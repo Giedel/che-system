@@ -159,7 +159,7 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-                            <Button Content="Add Student" Command="{Binding AddStudentCommand}" Margin="0 0 5 0" Width="100"/>
+                            <Button Style="{StaticResource OriginalButtonStyle}" Content="Add Student" FontSize="16" Command="{Binding AddStudentCommand}" Margin="0 0 5 0"/>
                         </StackPanel>
 
                         <DataGrid Grid.Row="1" ItemsSource="{Binding LiableStudents}"

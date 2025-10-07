@@ -1,4 +1,6 @@
-﻿using che_system.view;
+﻿//-- App.xaml.cs --
+
+using che_system.view;
 using che_system.view_model;
 using System.Windows;
 

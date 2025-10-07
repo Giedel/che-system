@@ -102,8 +102,8 @@
                   HorizontalScrollBarVisibility="Auto"
                   MinWidth="800">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Item" Binding="{Binding ItemName}" Width="300"/>
-                <DataGridTextColumn Header="Qty Borrowed" Binding="{Binding QuantityBorrowed}" Width="150"/>
+                <DataGridTextColumn Header="Item" Binding="{Binding ItemName}" Width="300" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Qty Borrowed" Binding="{Binding QuantityBorrowed}" Width="150" IsReadOnly="True"/>
                 
                 <!-- Qty Released: Editable, integer only -->
                 <DataGridTemplateColumn Header="Qty Released" Width="150">
@@ -121,7 +121,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Date Released" Binding="{Binding DateReleased, StringFormat=d, TargetNullValue=''}" Width="150"/>
+                <DataGridTextColumn Header="Date Released" Binding="{Binding DateReleased, StringFormat=d, TargetNullValue=''}" Width="150" IsReadOnly="True"/>
                 
                 <!-- Qty Returned: Editable, integer only -->
                 <DataGridTemplateColumn Header="Qty Returned" Width="150">
@@ -131,6 +131,8 @@
                                      IsEnabled="{Binding Type, Converter={StaticResource NonConsumableToBoolConverter}}"
                                      Width="140"
                                      Background="Transparent"
+                                     IsReadOnly="True"
+                                     IsHitTestVisible="False"
                                      BorderThickness="0"
                                      Padding="0 10"
                                      VerticalContentAlignment="Center"
@@ -140,15 +142,28 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Date Returned" Binding="{Binding DateReturned, StringFormat=d, TargetNullValue=''}" />
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="150"/>
-                <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" Width="Auto"/>
+                <DataGridTextColumn Header="Date Returned" Binding="{Binding DateReturned, StringFormat=d, TargetNullValue=''}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="150" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" Width="Auto" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Buttons -->
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-            <Button Content="Save" Style="{StaticResource OriginalButtonStyle}" Width="100" Command="{Binding SaveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <Button Content="Delete"
+                    Width="100"
+                    Margin="0 0 10 0"
+                    Style="{StaticResource OriginalButtonStyle}"
+                    Background="#FF5C5C"
+                    Foreground="White"
+                    Command="{Binding DeleteCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                    IsEnabled="{Binding CanDelete}"/>   
+            <Button Content="Save"
+                    Style="{StaticResource OriginalButtonStyle}"
+                    Width="100"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
         </StackPanel>
     </Grid>
 </Window>

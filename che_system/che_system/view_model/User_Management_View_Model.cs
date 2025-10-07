@@ -1,4 +1,6 @@
-﻿using che_system.model;
+﻿//-- User_Management_View_Model.cs --
+
+using che_system.model;
 using che_system.modals.view;
 using che_system.modals.view_model;
 using che_system.repositories;
@@ -19,7 +21,6 @@ namespace che_system.view_model
             set { _userStats = value; OnPropertyChanged(nameof(UserStats)); }
         }
 
-        // User management data
         public ObservableCollection<User_Model> Users { get; set; } = new();
         public ObservableCollection<User_Model> FilteredUsers { get; set; } = new();
 
@@ -50,22 +51,88 @@ namespace che_system.view_model
         }
 
         public ICommand AddUserCommand { get; }
+        public ICommand EditUserCommand { get; }
+        public ICommand DeleteUserCommand { get; }
 
         public User_Management_View_Model()
         {
             LoadUserStats();
             LoadUsers();
 
-            SelectedDate = DateTime.Today; // Default to today
-            UpdateSelectedBirthdayUsers(); // Initial computation
+            SelectedDate = DateTime.Today;
+            UpdateSelectedBirthdayUsers();
 
             AddUserCommand = new View_Model_Command(ExecuteAddUser);
+            EditUserCommand = new View_Model_Command(ExecuteEditUser, CanModifyUser);
+            DeleteUserCommand = new View_Model_Command(ExecuteDeleteUser, CanModifyUser);
         }
 
-        protected override void OnSearchTextChanged()
+        private bool CanModifyUser(object? obj) => obj is User_Model;
+
+        private void ExecuteAddUser(object? obj)
         {
-            ApplyUserFilters();
+            var wnd = new Add_User_View();
+            var result = wnd.ShowDialog();
+            if (result == true)
+            {
+                LoadUsers();
+            }
         }
+
+        private void ExecuteEditUser(object? obj)
+        {
+            if (obj is not User_Model user) return;
+
+            // Clone to avoid editing live reference until save
+            var editable = CloneUser(user);
+            var wnd = new Edit_User_View(editable);
+            var result = wnd.ShowDialog();
+            if (result == true)
+            {
+                // Replace original with updated values
+                user.first_name = editable.first_name;
+                user.last_name = editable.last_name;
+                user.username = editable.username;
+                user.role = editable.role;
+                user.birthday = editable.birthday;
+                // (Password handled inside repository; not exposed directly unless logic requires)
+                LoadUsers(); // refresh to reflect DB truth
+            }
+        }
+
+        private void ExecuteDeleteUser(object? obj)
+        {
+            if (obj is not User_Model user) return;
+
+            var confirm = MessageBox.Show($"Delete user '{user.username}'?", "Confirm Delete",
+                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
+            try
+            {
+                _userRepository.Delete(user.user_id);
+                LoadUsers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error deleting user: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private User_Model CloneUser(User_Model u) => new User_Model
+        {
+            user_id = u.user_id,
+            first_name = u.first_name,
+            last_name = u.last_name,
+            username = u.username,
+            role = u.role,
+            birthday = u.birthday,
+            password = u.password
+        };
+
+        protected override void OnSearchTextChanged() => ApplyUserFilters();
 
         private void ApplyUserFilters()
         {
@@ -73,7 +140,6 @@ namespace che_system.view_model
 
             if (filters.Count == 0 || string.IsNullOrWhiteSpace(SearchText))
             {
-                // Global text search
                 FilteredUsers = FilterCollection(Users, SearchText,
                     user => user.first_name ?? "",
                     user => user.last_name ?? "",
@@ -87,9 +153,8 @@ namespace che_system.view_model
             }
 
             OnPropertyChanged(nameof(FilteredUsers));
-            LoadUserStats(); // Refresh stats
+            LoadUserStats();
 
-            // Compute unique birthday dates for calendar highlights
             var birthdaySet = new HashSet<DateTime>();
             var currentYear = DateTime.Now.Year;
             foreach (var user in FilteredUsers)
@@ -102,59 +167,16 @@ namespace che_system.view_model
             }
             BirthdayDates = new ObservableCollection<DateTime>(birthdaySet);
 
-            UpdateSelectedBirthdayUsers(); // Refresh selected birthday users on filter change
-        }
-
-        protected override bool ApplyFieldFilterToItem<T>(T item, SearchFilter filter) where T : class
-        {
-            if (item is not User_Model model) return false;
-
-            switch (filter.Field.ToLower())
-            {
-                case "first":
-                case "firstname":
-                case "first_name":
-                    return ParseTextMatch(model.first_name, filter);
-                case "last":
-                case "last_name":
-                    return ParseTextMatch(model.last_name, filter);
-                case "username":
-                    return ParseTextMatch(model.username, filter);
-                case "role":
-                    return ApplyExactMatch(model.role ?? "", filter);
-                case "id":
-                case "user_id":
-                    return ParseTextMatch(model.user_id, filter);
-                case "birthday":
-                case "birthdate":
-                    return ApplyDateFilter(DateTime.Parse(model.birthday), filter.Op, filter.Value);
-                default:
-                    return false;
-            }
+            UpdateSelectedBirthdayUsers();
         }
 
         private void LoadUserStats()
         {
             UserStats = new ObservableCollection<Quick_Stat_Model>
             {
-                new Quick_Stat_Model
-                {
-                    Title = "Total Users",
-                    Value = Users.Count, // you can later fetch from repo/db
-                    Icon = IconChar.Users
-                },
-                new Quick_Stat_Model
-                {
-                    Title = "Custodian",
-                    Value = Users.Count(u => u.role == "Custodian"), // sample
-                    Icon = IconChar.UserShield
-                },
-                new Quick_Stat_Model
-                {
-                    Title = "Student Training Assistant",
-                    Value = Users.Count(u => u.role == "STA"), // sample
-                    Icon = IconChar.UserGraduate
-                }
+                new Quick_Stat_Model { Title = "Total Users", Value = Users.Count, Icon = IconChar.Users },
+                new Quick_Stat_Model { Title = "Custodian", Value = Users.Count(u => u.role == "Custodian"), Icon = IconChar.UserShield },
+                new Quick_Stat_Model { Title = "Student Training Assistant", Value = Users.Count(u => u.role == "STA"), Icon = IconChar.UserGraduate }
             };
         }
 
@@ -170,64 +192,23 @@ namespace che_system.view_model
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error loading users: {ex.Message}");
-                Users = new ObservableCollection<User_Model>();
-                OnPropertyChanged(nameof(Users));
-                ApplyUserFilters();
-                LoadUserStats();
             }
-        }
-
-        private bool ParseTextMatch(string text, SearchFilter filter)
-        {
-            var value = filter.Value?.ToString() ?? "";
-            return filter.Op.ToLower() switch
-            {
-                "=" => string.Equals(text, value, StringComparison.OrdinalIgnoreCase),
-                "contains" => text.Contains(value, StringComparison.OrdinalIgnoreCase),
-                "startswith" => text.StartsWith(value, StringComparison.OrdinalIgnoreCase),
-                "endswith" => text.EndsWith(value, StringComparison.OrdinalIgnoreCase),
-                _ => false
-            };
-        }
-
-        private bool ApplyExactMatch(string text, SearchFilter filter)
-        {
-            var value = filter.Value?.ToString() ?? "";
-            return string.Equals(text, value, StringComparison.OrdinalIgnoreCase);
         }
 
         private void UpdateSelectedBirthdayUsers()
         {
-            if (SelectedDate == null || !FilteredUsers.Any())
+            if (!SelectedDate.HasValue)
             {
                 SelectedBirthdayUsers = new ObservableCollection<User_Model>();
                 return;
             }
 
-            var targetMonth = SelectedDate.Value.Month;
-            var targetDay = SelectedDate.Value.Day;
+            var target = SelectedDate.Value;
+            var matches = Users.Where(u =>
+                DateTime.TryParse(u.birthday, out var b) &&
+                b.Month == target.Month && b.Day == target.Day);
 
-            var matchingUsers = FilteredUsers.Where(user =>
-            {
-                if (DateTime.TryParse(user.birthday, out var birthDate))
-                {
-                    return birthDate.Month == targetMonth && birthDate.Day == targetDay;
-                }
-                return false;
-            }).ToList();
-
-            SelectedBirthdayUsers = new ObservableCollection<User_Model>(matchingUsers);
-        }
-
-        private void ExecuteAddUser(object? obj)
-        {
-            var addUserView = new Add_User_View();
-            addUserView.DataContext = new Add_User_View_Model();
-            var result = addUserView.ShowDialog();
-            if (result == true)
-            {
-                LoadUsers();
-            }
+            SelectedBirthdayUsers = new ObservableCollection<User_Model>(matches);
         }
     }
 }

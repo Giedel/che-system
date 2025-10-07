@@ -390,5 +390,135 @@ namespace che_system.repositories
 
             return null;
         }
+
+        // Update detail release and stock
+        public void UpdateDetailReleaseAndStock(int detailId, int itemId, int newReleased, int oldReleased)
+        {
+            int delta = newReleased - oldReleased;
+            using var connection = GetConnection();
+            connection.Open();
+            using var tx = connection.BeginTransaction();
+
+            try
+            {
+                // Update Slip_Detail
+                string detailSql = newReleased > 0
+                    ? @"UPDATE Slip_Detail SET quantity_released=@qr, date_released=GETDATE() WHERE slip_detail_id=@id"
+                    : @"UPDATE Slip_Detail SET quantity_released=@qr, date_released=NULL WHERE slip_detail_id=@id";
+                using (var cmd = new SqlCommand(detailSql, connection, tx))
+                {
+                    cmd.Parameters.AddWithValue("@qr", newReleased);
+                    cmd.Parameters.AddWithValue("@id", detailId);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Adjust stock only by delta (decrement when delta > 0, increment when delta < 0)
+                if (delta != 0)
+                {
+                    using var stockCmd = new SqlCommand(
+                        "UPDATE Item SET quantity = quantity - @delta WHERE item_id = @itemId", connection, tx);
+                    stockCmd.Parameters.AddWithValue("@delta", delta);  // delta positive subtracts; negative adds
+                    stockCmd.Parameters.AddWithValue("@itemId", itemId);
+                    stockCmd.ExecuteNonQuery();
+                }
+
+                tx.Commit();
+            }
+            catch
+            {
+                tx.Rollback();
+                throw;
+            }
+        }
+
+        // Update detail return and stock
+        public void UpdateDetailReturnAndStock(int detailId, int itemId, int newReturned, int oldReturned)
+        {
+            int delta = newReturned - oldReturned; // positive => more returned (stock increases)
+            using var connection = GetConnection();
+            connection.Open();
+            using var tx = connection.BeginTransaction();
+
+            try
+            {
+                string detailSql = newReturned > 0
+                    ? @"UPDATE Slip_Detail SET quantity_returned=@qr, date_returned=GETDATE() WHERE slip_detail_id=@id"
+                    : @"UPDATE Slip_Detail SET quantity_returned=@qr, date_returned=NULL WHERE slip_detail_id=@id";
+
+                using (var cmd = new SqlCommand(detailSql, connection, tx))
+                {
+                    cmd.Parameters.AddWithValue("@qr", newReturned);
+                    cmd.Parameters.AddWithValue("@id", detailId);
+                    cmd.ExecuteNonQuery();
+                }
+
+                if (delta > 0)
+                {
+                    using var stockCmd = new SqlCommand(
+                        "UPDATE Item SET quantity = quantity + @delta WHERE item_id = @itemId", connection, tx);
+                    stockCmd.Parameters.AddWithValue("@delta", delta);
+                    stockCmd.Parameters.AddWithValue("@itemId", itemId);
+                    stockCmd.ExecuteNonQuery();
+                }
+
+                tx.Commit();
+            }
+            catch
+            {
+                tx.Rollback();
+                throw;
+            }
+        }
+
+        // Delete slip by ID
+        public void DeleteSlip(int slipId, bool restoreStock)
+        {
+            using (var conn = GetConnection())
+            {
+                conn.Open();
+                using (var tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        if (restoreStock)
+                        {
+                            // Restore stock for each detail
+                            string restoreStockQuery = @"
+                                UPDATE Item
+                                SET quantity = quantity + sd.quantity_released
+                                FROM Slip_Detail sd
+                                WHERE sd.slip_id = @SlipId AND sd.item_id = Item.item_id";
+
+                            using (var cmd = new SqlCommand(restoreStockQuery, conn, tran))
+                            {
+                                cmd.Parameters.AddWithValue("@SlipId", slipId);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        // Delete slip details
+                        using (var cmd = new SqlCommand("DELETE FROM Slip_Detail WHERE slip_id = @SlipId", conn, tran))
+                        {
+                            cmd.Parameters.AddWithValue("@SlipId", slipId);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Delete slip
+                        using (var cmd = new SqlCommand("DELETE FROM Borrower_Slip WHERE slip_id = @SlipId", conn, tran))
+                        {
+                            cmd.Parameters.AddWithValue("@SlipId", slipId);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        tran.Commit();
+                    }
+                    catch
+                    {
+                        tran.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
     }
 }

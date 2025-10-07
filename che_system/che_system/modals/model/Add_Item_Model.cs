@@ -18,6 +18,8 @@ namespace che_system.modals.model
         private string _location = "";
         private DateTime? _expiryDate;
         private string _status = "Available";
+        private int _threshold;
+        private DateTime? _calibrationDate;
 
         public int ItemId
         {
@@ -77,6 +79,18 @@ namespace che_system.modals.model
         {
             get => _status;
             set { _status = value; OnPropertyChanged(nameof(Status)); }
+        }
+
+        public int Threshold
+        {
+            get => _threshold;
+            set { _threshold = value; OnPropertyChanged(); }
+        }
+
+        public DateTime? CalibrationDate
+        {
+            get => _calibrationDate;
+            set { _calibrationDate = value; OnPropertyChanged(); }
         }
 
         public string QuantityWithUnit
