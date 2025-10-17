@@ -78,53 +78,154 @@ namespace che_system.modals.model
             set { _dateOfUse = value; OnPropertyChanged(); }
         }
 
+        // ========================= Received By =========================
         public string ReceivedBy
         {
             get => _receivedBy;
-            set { _receivedBy = value; OnPropertyChanged(); }
+            set
+            {
+                _receivedBy = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ReceivedByDisplay));
+                OnPropertyChanged(nameof(ReceivedByFirstNameRoleDisplay));
+            }
         }
 
         private string _receivedByRole = "";
         public string ReceivedByRole
         {
             get => _receivedByRole;
-            set { _receivedByRole = value; OnPropertyChanged(); }
+            set
+            {
+                _receivedByRole = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ReceivedByDisplay));
+                OnPropertyChanged(nameof(ReceivedByFirstNameRoleDisplay));
+            }
         }
+
         public string ReceivedByDisplay => string.IsNullOrEmpty(ReceivedByRole)
             ? ReceivedBy
             : $"{ReceivedBy} ({ReceivedByRole})";
 
+        public string ReceivedByFirstNameRoleDisplay
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(ReceivedBy))
+                    return string.Empty;
+
+                // If it's already formatted like "Firstname (Role)"
+                if (ReceivedBy.Contains("(") && ReceivedBy.Contains(")"))
+                    return ReceivedBy;
+
+                var firstName = ExtractFirstName(ReceivedBy);
+                return string.IsNullOrEmpty(ReceivedByRole)
+                    ? firstName
+                    : $"{firstName} ({ReceivedByRole})";
+            }
+        }
+
+        // ========================= Released By =========================
         public string ReleasedBy
         {
             get => _releasedBy;
-            set { _releasedBy = value; OnPropertyChanged(); }
+            set
+            {
+                _releasedBy = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ReleasedByDisplay));
+                OnPropertyChanged(nameof(ReleasedByFirstNameRoleDisplay));
+            }
         }
 
         private string _releasedByRole = "";
         public string ReleasedByRole
         {
             get => _releasedByRole;
-            set { _releasedByRole = value; OnPropertyChanged(); }
+            set
+            {
+                _releasedByRole = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ReleasedByDisplay));
+                OnPropertyChanged(nameof(ReleasedByFirstNameRoleDisplay));
+            }
         }
+
         public string ReleasedByDisplay => string.IsNullOrEmpty(ReleasedByRole)
             ? ReleasedBy
             : $"{ReleasedBy} ({ReleasedByRole})";
 
+        public string ReleasedByFirstNameRoleDisplay
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(ReleasedBy))
+                    return string.Empty;
+
+                if (ReleasedBy.Contains("(") && ReleasedBy.Contains(")"))
+                    return ReleasedBy;
+
+                var firstName = ExtractFirstName(ReleasedBy);
+                return string.IsNullOrEmpty(ReleasedByRole)
+                    ? firstName
+                    : $"{firstName} ({ReleasedByRole})";
+            }
+        }
+
+        // ========================= Checked By =========================
         public string CheckedBy
         {
             get => _checkedBy;
-            set { _checkedBy = value; OnPropertyChanged(); }
+            set
+            {
+                _checkedBy = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CheckedByDisplay));
+                OnPropertyChanged(nameof(CheckedByFirstNameRoleDisplay));
+            }
         }
 
         private string _checkedByRole = "";
         public string CheckedByRole
         {
             get => _checkedByRole;
-            set { _checkedByRole = value; OnPropertyChanged(); }
+            set
+            {
+                _checkedByRole = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CheckedByDisplay));
+                OnPropertyChanged(nameof(CheckedByFirstNameRoleDisplay));
+            }
         }
+
         public string CheckedByDisplay => string.IsNullOrEmpty(CheckedByRole)
             ? CheckedBy
             : $"{CheckedBy} ({CheckedByRole})";
+
+        public string CheckedByFirstNameRoleDisplay
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(CheckedBy))
+                    return string.Empty;
+
+                if (CheckedBy.Contains("(") && CheckedBy.Contains(")"))
+                    return CheckedBy;
+
+                var firstName = ExtractFirstName(CheckedBy);
+                return string.IsNullOrEmpty(CheckedByRole)
+                    ? firstName
+                    : $"{firstName} ({CheckedByRole})";
+            }
+        }
+
+        // ========================= Helper & Misc =========================
+        private static string ExtractFirstName(string nameOrUsername)
+        {
+            var parts = (nameOrUsername ?? "").Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            return parts.Length > 0 ? parts[0] : nameOrUsername ?? "";
+        }
 
         public string Remarks
         {
@@ -132,21 +233,37 @@ namespace che_system.modals.model
             set { _remarks = value; OnPropertyChanged(); }
         }
 
-        public bool IsActive
-        {
-            get
-            {
-                // Slip is active if any released quantity is > 0
-                return Details != null && Details.Any(d => d.QuantityReleased > 0);
-            }
-        }
-
+        public bool IsActive => Details != null && Details.Any(d => d.QuantityReleased > 0);
 
         public ObservableCollection<SlipDetail_Model> Details
         {
             get => _details;
             set { _details = value; OnPropertyChanged(); }
         }
+
+        // === Proof Image (optional) ===
+        private byte[] _proofImage;
+        public byte[] ProofImage
+        {
+            get => _proofImage;
+            set { _proofImage = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasProofImage)); }
+        }
+
+        private string _proofImageFileName = "";
+        public string ProofImageFileName
+        {
+            get => _proofImageFileName;
+            set { _proofImageFileName = value; OnPropertyChanged(); }
+        }
+
+        private string _proofImageContentType = "";
+        public string ProofImageContentType
+        {
+            get => _proofImageContentType;
+            set { _proofImageContentType = value; OnPropertyChanged(); }
+        }
+
+        public bool HasProofImage => ProofImage != null && ProofImage.Length > 0;
 
         public class ValidationResult
         {

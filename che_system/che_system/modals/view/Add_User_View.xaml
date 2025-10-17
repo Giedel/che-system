@@ -164,6 +164,7 @@
                     BorderThickness="0"
                     Content="Save"
                     Command="{Binding Save_Command}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                     Width="100"/>
                 </StackPanel>
             </Grid>

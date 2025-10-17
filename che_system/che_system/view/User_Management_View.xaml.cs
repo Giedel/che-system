@@ -13,7 +13,6 @@ namespace che_system.view
         public User_Management_View()
         {
             InitializeComponent();
-            DataContext = new User_Management_View_Model();
         }
     }
 }

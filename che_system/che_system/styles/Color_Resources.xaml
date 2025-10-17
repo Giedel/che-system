@@ -26,7 +26,8 @@
     <!-- Custom -->
     <Color x:Key="CreamWhite">#FFDEAD</Color>
     <Color x:Key="FaintRed">#FFEBEB</Color>
-    <Color x:Key="HoverRed">#FCC5C5</Color>
+    <Color x:Key="HoverRed">#800b0b</Color>
+    <Color x:Key="PressedRed">#700b0b</Color>
 
     <!-- ========== 🖌 SOLID BRUSHES ========== -->
     <!-- Backgrounds -->

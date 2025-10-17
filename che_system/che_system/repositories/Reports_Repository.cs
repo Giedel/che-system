@@ -18,6 +18,7 @@ namespace che_system.repositories
             string query = @"
         SELECT 
             i.name AS ChemicalName,
+            i.unit AS Unit,
             SUM(sd.quantity_released) AS TotalConsumption
         FROM Slip_Detail sd
         INNER JOIN Item i ON sd.item_id = i.item_id
@@ -26,7 +27,7 @@ namespace che_system.repositories
             sd.date_released IS NOT NULL AND
             MONTH(sd.date_released) = @Month AND
             YEAR(sd.date_released) = @Year
-        GROUP BY i.name
+        GROUP BY i.name, i.unit
         ORDER BY TotalConsumption DESC;";
 
             using var command = new SqlCommand(query, connection);
@@ -42,6 +43,7 @@ namespace che_system.repositories
                 {
                     Rank = rank++,
                     ChemicalName = reader["ChemicalName"].ToString(),
+                    Unit = reader["Unit"]?.ToString(),
                     TotalConsumption = Convert.ToInt32(reader["TotalConsumption"])
                 });
             }

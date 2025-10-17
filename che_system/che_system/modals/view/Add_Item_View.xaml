@@ -1,11 +1,12 @@
 ﻿<!-- Add_Item_View.xaml -->
-    
-    <Window x:Class="che_system.modals.view.Add_Item_View"
+<Window x:Class="che_system.modals.view.Add_Item_View"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:che_system.modals.view" xmlns:view_model="clr-namespace:che_system.modals.view_model" d:DataContext="{d:DesignInstance Type=view_model:Add_Item_View_Model}"
+        xmlns:local="clr-namespace:che_system.modals.view"
+        xmlns:view_model="clr-namespace:che_system.modals.view_model"
+        d:DataContext="{d:DesignInstance Type=view_model:Add_Item_View_Model}"
         mc:Ignorable="d"
         Title="Add_Item_View"
         AllowsTransparency="True"
@@ -28,17 +29,17 @@
                 <!-- Control Bar -->
                 <TextBlock Text="Add Item" Foreground="{StaticResource FontDark}" FontSize="26" FontWeight="Bold"/>
                 <StackPanel x:Name="Control_Bar_Panel"
-                                Orientation="Horizontal"
-                                FlowDirection="RightToLeft"
-                                Background="Transparent"
-                                Margin="2"
-                                MouseLeftButtonDown="Control_Bar_Panel_MouseLeftButtonDown"
-                                MouseEnter="Control_Bar_Panel_MouseEnter">
+                            Orientation="Horizontal"
+                            FlowDirection="RightToLeft"
+                            Background="Transparent"
+                            Margin="2"
+                            MouseLeftButtonDown="Control_Bar_Panel_MouseLeftButtonDown"
+                            MouseEnter="Control_Bar_Panel_MouseEnter">
                     <Button x:Name="Close_Button"
-                                Command="{Binding Cancel_Command}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                Style="{StaticResource Control_Button}"
-                                Tag="{StaticResource FontDark}">
+                            Command="{Binding Cancel_Command}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                            Style="{StaticResource Control_Button}"
+                            Tag="{StaticResource FontDark}">
                         <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8BB;" FontSize="15"/>
                     </Button>
 
@@ -55,7 +56,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Margin="0 0 0 20">
-                    <TextBlock Text="Item Name" FontSize="20"/>
+                    <TextBlock Text="Item Name *" FontSize="20"/>
                     <TextBox Text="{Binding New_Item.ItemName, UpdateSourceTrigger=PropertyChanged}" 
                              Style="{StaticResource InputTextBoxStyle}"
                              FontSize="16"
@@ -80,7 +81,7 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="Quantity" FontSize="20"/>
+                        <TextBlock Text="Quantity *" FontSize="20"/>
                         <TextBox Text="{Binding New_Item.Quantity, UpdateSourceTrigger=PropertyChanged}" 
                                  Style="{StaticResource InputTextBoxStyle}"
                                  FontSize="16"
@@ -89,7 +90,7 @@
                                  Padding="5 12"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
-                        <TextBlock Text="Unit" FontSize="20"/>
+                        <TextBlock Text="Unit *" FontSize="20"/>
                         <ComboBox SelectedValue="{Binding New_Item.Unit, UpdateSourceTrigger=PropertyChanged}"
                                   SelectedValuePath="Content"
                                   VerticalContentAlignment="Center" 
@@ -115,7 +116,7 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" VerticalAlignment="Top">
-                        <TextBlock Text="Category" FontSize="20"/>
+                        <TextBlock Text="Category *" FontSize="20"/>
                         <ComboBox SelectedValue="{Binding New_Item.Category, UpdateSourceTrigger=PropertyChanged}"
                                   SelectedValuePath="Content"
                                   HorizontalContentAlignment="Center"
@@ -132,7 +133,7 @@
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
-                        <TextBlock Text="Location" FontSize="20"/>
+                        <TextBlock Text="Location *" FontSize="20" ToolTip="Required field"/>
                         <TextBox Text="{Binding New_Item.Location, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource InputTextBoxStyle}"
                                  FontSize="16"
@@ -152,14 +153,14 @@
                     <StackPanel Grid.Column="0" HorizontalAlignment="Left">
                         <TextBlock Text="Expiry Date" FontSize="20"/>
                         <DatePicker SelectedDate="{Binding New_Item.ExpiryDate, UpdateSourceTrigger=PropertyChanged}" 
-                                Focusable="False"
-                                Width="200"
-                                FontSize="16"
-                                Padding="5 10"/>
+                                    Focusable="False"
+                                    Width="200"
+                                    FontSize="16"
+                                    Padding="5 10"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" VerticalAlignment="Top">
-                        <TextBlock Text="Type" FontSize="20"/>
+                        <TextBlock Text="Type *" FontSize="20"/>
                         <ComboBox SelectedValue="{Binding New_Item.Type, UpdateSourceTrigger=PropertyChanged}"
                                   SelectedValuePath="Content"
                                   HorizontalContentAlignment="Center"
@@ -204,24 +205,24 @@
 
             <!-- Footer Buttons -->
             <StackPanel Orientation="Horizontal"
-                    Grid.Row="4"
-                    HorizontalAlignment="Right"
-                    Margin="0 10 0 0">
+                        Grid.Row="4"
+                        HorizontalAlignment="Right"
+                        Margin="0 10 0 0">
                 <Button Style="{DynamicResource OriginalButtonStyle}"
-                    Content="Cancel"
-                    Command="{Binding Cancel_Command}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                    Width="100"
-                    Background="#E0E0E0"
-                    Foreground="{StaticResource FontDark}"
-                    BorderThickness="0"
-                    Margin="0 0 10 0"/>
+                        Content="Cancel"
+                        Command="{Binding Cancel_Command}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        Width="100"
+                        Background="#E0E0E0"
+                        Foreground="{StaticResource FontDark}"
+                        BorderThickness="0"
+                        Margin="0 0 10 0"/>
                 <Button Style="{DynamicResource OriginalButtonStyle}"
-                    BorderThickness="0"
-                    Content="Save"
-                    Command="{Binding Save_Command}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                    Width="100"/>
+                        BorderThickness="0"
+                        Content="Save"
+                        Command="{Binding Save_Command}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        Width="100"/>
             </StackPanel>
         </Grid>
     </Border>

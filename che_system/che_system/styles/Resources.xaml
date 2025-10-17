@@ -2,7 +2,8 @@
     
     <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+    xmlns:local="clr-namespace:che_system.converters"> <!-- Add your namespace here -->
 
     <FontFamily x:Key="Inter">pack://application:,,,/fonts/#Inter</FontFamily>
     
@@ -53,4 +54,11 @@
             </MultiTrigger>
         </Style.Triggers>
     </Style>
+
+    <!-- Add the BooleanToVisibilityConverter resource -->
+    <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+    <!-- Converter: returns true when NOT null/whitespace -->
+    <local:NullOrWhiteSpaceToBoolConverter x:Key="NullOrWhiteSpaceToBoolConverter"/>
+
 </ResourceDictionary>

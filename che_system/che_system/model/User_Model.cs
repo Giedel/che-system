@@ -10,6 +10,11 @@ namespace che_system.model
         public string? username { get; set; }
         public string? password { get; set; }
         public string? birthday { get; set; }
-        public string? role { get; set; } // "STA" or "Custodian"
+        public string? role { get; set; } // "STA" or "Custodian" or "SuperAdmin"
+        public string? created_by { get; set; }
+        public string? created_at { get; set; }
+
+        // NEW: soft-delete/visibility control
+        public string? status { get; set; } // "Active" | "Inactive"
     }
 }

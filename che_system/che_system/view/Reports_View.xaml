@@ -5,133 +5,179 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:che_system.view"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
-        <!-- Top Search Bar -->
-        <Grid DockPanel.Dock="Top" Margin="10 10 0 10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <DockPanel>
+            <!-- Top Search Bar -->
+            <Grid DockPanel.Dock="Top" Margin="10 10 0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <TextBox VerticalAlignment="Center" x:Name="MyTextBox" FontSize="20" FontFamily="{StaticResource Inter}" Padding="0 5" Width="500" BorderThickness="0 0 0 1" Background="Transparent" CaretBrush="White" Foreground="{StaticResource FontPrimary}"
-                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Margin="5 0 0 0"/>
-                <TextBlock Text="Search reports..." 
-                           Foreground="{StaticResource OpaqueWhite}"
-                           FontFamily="{StaticResource Inter}"
-                           FontSize="20"
-                           Padding="3 0 0 0"
-                           VerticalAlignment="Center"
-                           Margin="5,0,0,0"
-                           IsHitTestVisible="False">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Text, ElementName=MyTextBox}" Value="">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <Grid Grid.Column="0">
+                    <TextBox VerticalAlignment="Center" x:Name="MyTextBox" FontSize="20" FontFamily="{StaticResource Inter}" Padding="0 5" Width="500"
+                             BorderThickness="0 0 0 1" Background="Transparent" CaretBrush="White" Foreground="{StaticResource FontPrimary}"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Margin="5 0 0 0"/>
+                    <TextBlock Text="Search reports..." 
+                               Foreground="{StaticResource OpaqueWhite}"
+                               FontFamily="{StaticResource Inter}"
+                               FontSize="20"
+                               Padding="3 0 0 0"
+                               VerticalAlignment="Center"
+                               Margin="5,0,0,0"
+                               IsHitTestVisible="False">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=MyTextBox}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+
+                <!-- Export current tab -->
+                <Button Grid.Column="2"
+                        Style="{StaticResource LightButtonStyle}"
+                        Content="📤 Export PDF"
+                        Margin="0 0 5 0"
+                        FlowDirection="LeftToRight"
+                        Click="ExportButton_Click"/>
             </Grid>
+            
+            <!-- TabControl for Reports -->
+            <TabControl x:Name="ReportsTabControl" Margin="5">
+                <!-- Monthly Usage -->
+                <TabItem Header="Monthly Chemical Usage">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-            <Button Style="{DynamicResource OriginalButtonStyle}" Grid.Column="2" Content="📤 Export" Margin="0 0 5 0" FlowDirection="LeftToRight" Command="{Binding Open_Add_Slip_Command}"/>
-        </Grid>
-        
-        <!-- TabControl for Reports -->
-        <TabControl Margin="5">
-            <!-- Monthly Usage -->
-            <TabItem Header="Monthly Chemical Usage">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                        <TextBlock Text="Monthly Chemical Usage Ranking"
+                                   FontSize="20" FontWeight="Bold" Margin="10"/>
 
-                    <TextBlock Text="Monthly Chemical Usage Ranking" 
-                   FontSize="20" FontWeight="Bold" Margin="10"/>
-
-                    <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding ChemicalUsage}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" Width="Auto"/>
+                        <DataGrid x:Name="MonthlyUsageGrid"
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding ChemicalUsage}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" Width="Auto"/>
                             <DataGridTextColumn Header="Chemical Name" Binding="{Binding ChemicalName}" Width="*"/>
-                            <DataGridTextColumn Header="Total Consumption" Binding="{Binding TotalConsumption}" Width="*"/>
+                            <DataGridTextColumn Header="Total Consumption" Binding="{Binding TotalConsumptionWithUnit}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!-- Inventory Status -->
+                <TabItem Header="Inventory Status">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Inventory Status Report" FontSize="20" FontWeight="Bold" Margin="10"/>
+
+                        <DataGrid x:Name="InventoryStatusGrid"
+                                  Grid.Row="1" 
+                                  ItemsSource="{Binding InventoryItems}" 
+                                  AutoGenerateColumns="False" 
+                                  Margin="10"
+                                  IsReadOnly="False"
+                                  RowEditEnding="InventoryStatusGrid_RowEditEnding">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="4*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" IsReadOnly="True"/>
+
+                                <!-- merged totals -->
+                                <DataGridTextColumn Header="Total Stock" Binding="{Binding TotalStockWithUnit}" Width="1.1*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Available" Binding="{Binding AvailableWithUnit}" Width="*" IsReadOnly="True"/>
+
+                                <!-- removed standalone Unit column (merged above) -->
+
+                                <DataGridTextColumn Header="Threshold" Binding="{Binding Threshold}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="1.4*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Last Released" Binding="{Binding LastReleased, StringFormat={}{0:MMM dd, yyyy}}" Width="1.2*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Received at" Binding="{Binding ReceivedAt, StringFormat={}{0:MMM dd, yyyy}}" Width="1.2*" IsReadOnly="True"/>
+
+                            <!-- Received By (fetched from DB, read-only) -->
+                            <DataGridTextColumn Header="Received By"
+                                                Binding="{Binding ReceivedBy}"
+                                                Width="1.5*"
+                                                IsReadOnly="True"/>
+
+                            <!-- Custodian Remarks (editable on single click, save on Enter) -->
+                            <DataGridTemplateColumn Header="Custodian Remarks" Width="2*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding CustodianRemarks}" 
+                                                   TextWrapping="Wrap"
+                                                   VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding CustodianRemarks, UpdateSourceTrigger=PropertyChanged}"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 VerticalAlignment="Center"
+                                                 MinHeight="40"
+                                                 Padding="4"
+                                                 PreviewKeyDown="CustodianRemarks_PreviewKeyDown"
+                                                 Background="Transparent"
+                                                 BorderThickness="0"
+                                                 FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </TabItem>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
 
-            <!-- Inventory Status -->
-            <TabItem Header="Inventory Status">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <!-- Replacements History -->
+                <TabItem Header="Replacements History">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                    <TextBlock Text="Inventory Status Report" FontSize="20" FontWeight="Bold" Margin="10"/>
+                        <TextBlock Text="Damages for Replacement Report"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Margin="10"/>
 
-                    <DataGrid Grid.Row="1" 
-                              ItemsSource="{Binding InventoryItems}" 
-                              AutoGenerateColumns="False" 
-                              IsReadOnly="True" 
-                              Margin="10">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="*"/>
-                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*"/>
-                            <DataGridTextColumn Header="Total Stock" Binding="{Binding TotalStock}" Width="*"/>
-                            <DataGridTextColumn Header="Available" Binding="{Binding AvailableQuantity}" Width="*"/>
-                            <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="*"/>
-                            <DataGridTextColumn Header="Threshold" Binding="{Binding Threshold}" Width="*"/>
-                            <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="*"/>
-                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
-                            <DataGridTextColumn Header="Last Released" Binding="{Binding LastReleased}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                </Grid>
-            </TabItem>
-
-            <!-- Replacements History -->
-            <TabItem Header="Replacements History">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="Damages for Replacement Report"
-                   FontSize="20"
-                   FontWeight="Bold"
-                   Margin="10"/>
-
-                    <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding ReplacementHistory}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  Margin="10">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="*"/>
-                            <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
-                            <DataGridTextColumn Header="Group" Binding="{Binding GroupName}" Width="*"/>
-                            <DataGridTextColumn Header="Subject Code" Binding="{Binding SubjectCode}" Width="*"/>
-                            <DataGridTextColumn Header="Instructor" Binding="{Binding Instructor}" Width="*"/>
-                            <DataGridTextColumn Header="Reference No." Binding="{Binding ReferenceNo}" Width="*"/>
-                            <DataGridTextColumn Header="Date Settled" Binding="{Binding DateSettled}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </TabItem>
-        </TabControl>
-    </DockPanel>
-</UserControl>
+                        <DataGrid x:Name="ReplacementsGrid"
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding ReplacementHistory}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  Margin="10">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="*"/>
+                                <!-- merged -->
+                                <DataGridTextColumn Header="Quantity" Binding="{Binding QuantityWithUnit}" Width="*"/>
+                                <DataGridTextColumn Header="Group" Binding="{Binding GroupNo}" Width="*"/>
+                                <DataGridTextColumn Header="Subject Code" Binding="{Binding SubjectCode}" Width="*"/>
+                                <DataGridTextColumn Header="Instructor" Binding="{Binding Instructor}" Width="*"/>
+                                <DataGridTextColumn Header="Reference No." Binding="{Binding ReferenceNo}" Width="*"/>
+                                <DataGridTextColumn Header="Date Settled" Binding="{Binding DateSettled}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </UserControl>

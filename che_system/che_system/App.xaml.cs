@@ -2,6 +2,7 @@
 
 using che_system.view;
 using che_system.view_model;
+using QuestPDF.Infrastructure;
 using System.Windows;
 
 namespace che_system
@@ -16,6 +17,7 @@ namespace che_system
         {
             System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level =
             System.Diagnostics.SourceLevels.Error | System.Diagnostics.SourceLevels.Warning;
+            QuestPDF.Settings.License = LicenseType.Community;
         }
 
 

@@ -8,12 +8,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace che_system.view_model
 {
     public class Dashboard_View_Model : View_Model_Base
     {
-        private readonly Dashboard_Repository _repo = new Dashboard_Repository();
+        private readonly Dashboard_Repository _repo = new();
+        private readonly DispatcherTimer _alertRefreshTimer;
 
         private ObservableCollection<Quick_Stat_Model> _quickStats;
         public ObservableCollection<Quick_Stat_Model> QuickStats
@@ -29,15 +31,13 @@ namespace che_system.view_model
             set { _itemUsage = value; OnPropertyChanged(nameof(ItemUsage)); }
         }
 
-        // 🔹 System Alerts
-        private ObservableCollection<Dashboard_Repository.Alert_Model> _systemAlerts;
+        private ObservableCollection<Dashboard_Repository.Alert_Model> _systemAlerts = new();
         public ObservableCollection<Dashboard_Repository.Alert_Model> SystemAlerts
         {
             get => _systemAlerts;
             set { _systemAlerts = value; OnPropertyChanged(nameof(SystemAlerts)); }
         }
 
-        // 🔹 Recent Activities
         private ObservableCollection<Dashboard_Repository.Activity_Model> _recentActivities;
         public ObservableCollection<Dashboard_Repository.Activity_Model> RecentActivities
         {
@@ -45,8 +45,6 @@ namespace che_system.view_model
             set { _recentActivities = value; OnPropertyChanged(nameof(RecentActivities)); }
         }
 
-
-        // 🔹 Years for filter (Now supports range)
         private ObservableCollection<int> _availableYears;
         public ObservableCollection<int> AvailableYears
         {
@@ -84,21 +82,23 @@ namespace che_system.view_model
             }
         }
 
-        // Commands for Quick Actions
+        // Quick Actions
         public ICommand Create_Borrowing_Slip_Command { get; }
         public ICommand Search_Inventory_Command { get; }
         public ICommand Process_Return_Command { get; }
         public ICommand Generate_Report_Command { get; }
 
-        // Commands for QuickStats navigation
+        // Navigation
         public ICommand Navigate_To_Inventory_Chemicals_Command { get; }
         public ICommand Navigate_To_Inventory_Apparatus_Command { get; }
         public ICommand Navigate_To_Borrowing_Pending_Command { get; }
         public ICommand Navigate_To_Inventory_Low_Stock_Command { get; }
 
+        // Dashboard refresh (used by XAML)
+        public ICommand RefreshDashboardCommand { get; }
+
         public Dashboard_View_Model()
         {
-            // Initialize commands
             Create_Borrowing_Slip_Command = new View_Model_Command(Execute_Create_Borrowing_Slip);
             Search_Inventory_Command = new View_Model_Command(Execute_Search_Inventory);
             Process_Return_Command = new View_Model_Command(Execute_Process_Return);
@@ -109,21 +109,38 @@ namespace che_system.view_model
             Navigate_To_Borrowing_Pending_Command = new View_Model_Command(Execute_Navigate_To_Borrowing_Pending);
             Navigate_To_Inventory_Low_Stock_Command = new View_Model_Command(Execute_Navigate_To_Inventory_Low_Stock);
 
+            RefreshDashboardCommand = new View_Model_Command(_ => RefreshAll());
+
             LoadYears();
 
-            // Default range: From oldest to latest (handles single-year case)
             if (AvailableYears.Count > 1)
             {
                 SelectedToYear = AvailableYears.First();   // newest
                 SelectedFromYear = AvailableYears.Last();  // oldest
             }
-            else
+            else if (AvailableYears.Count == 1)
             {
-                SelectedFromYear = SelectedToYear = AvailableYears.First(); // same year
+                SelectedFromYear = SelectedToYear = AvailableYears.First();
             }
 
-
+            // Initial load
             ReloadDataForYearRange();
+            LoadSystemAlerts();
+            LoadRecentActivities();
+
+            _alertRefreshTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMinutes(5)
+            };
+            _alertRefreshTimer.Tick += (_, __) => LoadSystemAlerts();
+            _alertRefreshTimer.Start();
+        }
+
+        private void RefreshAll()
+        {
+            ReloadDataForYearRange();
+            LoadSystemAlerts();
+            LoadRecentActivities();
         }
 
         private void LoadYears()
@@ -132,18 +149,41 @@ namespace che_system.view_model
 
             if (AvailableYears == null || AvailableYears.Count == 0)
             {
-                // fallback if database returns nothing
+                // fallback: last 6 years descending
                 AvailableYears = new ObservableCollection<int>(
                     Enumerable.Range(DateTime.Now.Year - 5, 6).Reverse()
                 );
             }
         }
 
-        // 🔹 Load Data Methods
-        private void LoadDashboardData()
+        private void LoadRecentActivities()
         {
-            SystemAlerts = _repo.GetSystemAlerts();
-            RecentActivities = _repo.GetRecentActivities();
+            RecentActivities = _repo.GetRecentActivities() ?? new ObservableCollection<Dashboard_Repository.Activity_Model>();
+        }
+
+        private void LoadSystemAlerts()
+        {
+            var alerts = _repo.GetSystemAlerts() ?? new ObservableCollection<Dashboard_Repository.Alert_Model>();
+
+            int SeverityRank(string type) => type?.Trim().ToUpperInvariant() switch
+            {
+                "EXPIRED" => 0,
+                "EXPIRING" => 0,
+                "NEAR EXPIRY" => 0,
+                "LOW_STOCK" => 1,
+                "CRITICAL_STOCK" => 1,
+                "WARNING" => 2,
+                "INFO" => 3,
+                _ => 99
+            };
+
+            var ordered = alerts
+                .OrderBy(a => SeverityRank(a.Type))
+                .ThenBy(a => a.LoggedAt)
+                .Take(30)
+                .ToList();
+
+            SystemAlerts = new ObservableCollection<Dashboard_Repository.Alert_Model>(ordered);
         }
 
         private void ReloadDataForYearRange()
@@ -156,53 +196,55 @@ namespace che_system.view_model
             }
 
             QuickStats = _repo.GetQuickStatsRange(SelectedFromYear, SelectedToYear);
-
-            LoadDashboardData();
+            ItemUsage = _repo.GetItemUsageRange(SelectedFromYear, SelectedToYear);
         }
 
-        // Quick Actions
         private void Execute_Create_Borrowing_Slip(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
-            MessageBox.Show("Navigate to Borrowing View and open Create Slip modal", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("An error has occured :(", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Execute_Search_Inventory(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
+            MessageBox.Show("An error has occured :(", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Execute_Process_Return(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
+            MessageBox.Show("An error has occured :(", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Execute_Generate_Report(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
+            MessageBox.Show("An error has occured :(", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        // QuickStats navigation
         private void Execute_Navigate_To_Inventory_Chemicals(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
+            MessageBox.Show("An error has occured :(", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Execute_Navigate_To_Inventory_Apparatus(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
+            MessageBox.Show("An error has occured :(", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Execute_Navigate_To_Borrowing_Pending(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
+            MessageBox.Show("An error has occured :(", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Execute_Navigate_To_Inventory_Low_Stock(object? obj)
         {
             var mainWindow = Application.Current.MainWindow?.DataContext as Main_View_Model;
+            MessageBox.Show("An error has occured :(", "Quick Action", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
-
     }
 }

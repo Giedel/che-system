@@ -9,6 +9,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace che_system.modals.view_model
 {
@@ -22,14 +25,25 @@ namespace che_system.modals.view_model
     /// </summary>
     public class Slip_Details_ViewModel : View_Model_Base
     {
+        private readonly Main_View_Model _mainVM;
         private readonly Borrower_Repository _repository = new();
-        private readonly string _currentUser;
+        private readonly string _currentUserDisplay;    // "FirstName (Role)" for DB
+        private string _currentUserFirstName = "";
+        private string _currentUserRole = "";
         private Slip_Model _slip;
 
         public Slip_Model Slip
         {
             get => _slip;
-            set { _slip = value; OnPropertyChanged(nameof(Slip)); OnPropertyChanged(nameof(Details)); RewireDetailEvents(); EvaluateCanDelete(); }
+            set
+            {
+                _slip = value;
+                OnPropertyChanged(nameof(Slip));
+                OnPropertyChanged(nameof(Details));
+                RewireDetailEvents();
+                EvaluateCanDelete();
+                LoadProofImage();
+            }
         }
 
         public ObservableCollection<SlipDetail_Model> Details => Slip.Details;
@@ -37,7 +51,6 @@ namespace che_system.modals.view_model
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        // Exposed for XAML enable/disable of Delete button
         private bool _canDelete;
         public bool CanDelete
         {
@@ -45,12 +58,63 @@ namespace che_system.modals.view_model
             private set { _canDelete = value; OnPropertyChanged(nameof(CanDelete)); }
         }
 
-        public Slip_Details_ViewModel(Slip_Model slip, string currentUser)
+        private ImageSource _slipProofImage;
+        public ImageSource SlipProofImage
+        {
+            get => _slipProofImage;
+            private set { _slipProofImage = value; OnPropertyChanged(nameof(SlipProofImage)); }
+        }
+
+        private void LoadProofImage()
+        {
+            try
+            {
+                if (Slip == null) return;
+                var res = _repository.GetSlipProofImage(Slip.SlipId);
+                if (res == null)
+                {
+                    SlipProofImage = null;
+                    return;
+                }
+
+                var (bytes, fileName, contentType) = res.Value;
+                Slip.ProofImage = bytes;
+                Slip.ProofImageFileName = fileName;
+                Slip.ProofImageContentType = contentType;
+
+                if (bytes is { Length: > 0 })
+                {
+                    using var ms = new MemoryStream(bytes);
+                    var bmp = new BitmapImage();
+                    bmp.BeginInit();
+                    bmp.CacheOption = BitmapCacheOption.OnLoad;
+                    bmp.StreamSource = ms;
+                    bmp.EndInit();
+                    bmp.Freeze();
+                    SlipProofImage = bmp;
+                }
+                else
+                {
+                    SlipProofImage = null;
+                }
+            }
+            catch
+            {
+                SlipProofImage = null;
+            }
+        }
+
+        public Slip_Details_ViewModel(Slip_Model slip, string currentUser, string currentUserDisplay)
         {
             Slip = slip;
-            _currentUser = currentUser;
 
-            // Capture DB baseline (pre-edit) for delta computations
+            // Always resolve to "FirstName (Role)" even if caller passed id_number or username
+            var identityInput = string.IsNullOrWhiteSpace(currentUserDisplay) ? currentUser : currentUserDisplay;
+            _currentUserDisplay = _repository.ResolveUserDisplay(identityInput);
+
+            // Parse FirstName and Role from display string "FirstName (Role)"
+            (_currentUserFirstName, _currentUserRole) = ParseFirstNameRole(_currentUserDisplay);
+
             foreach (var d in Slip.Details)
             {
                 d.OriginalQuantityReleased = d.QuantityReleased;
@@ -64,6 +128,26 @@ namespace che_system.modals.view_model
             DeleteCommand = new View_Model_Command(ExecuteDelete, _ => CanDelete);
         }
 
+        private static (string FirstName, string Role) ParseFirstNameRole(string display)
+        {
+            if (string.IsNullOrWhiteSpace(display))
+                return ("", "");
+
+            // Expect "FirstName (Role)"; tolerate missing role
+            var first = display;
+            var role = "";
+
+            int open = display.LastIndexOf(" (", StringComparison.Ordinal);
+            int close = display.EndsWith(")") ? display.Length - 1 : -1;
+            if (open >= 0 && close > open)
+            {
+                first = display.Substring(0, open).Trim();
+                role = display.Substring(open + 2, close - (open + 2)).Trim();
+            }
+
+            return (first, role);
+        }
+
         private void RewireDetailEvents()
         {
             foreach (var d in Slip.Details)
@@ -75,6 +159,21 @@ namespace che_system.modals.view_model
 
         private void Detail_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
+            if (sender is SlipDetail_Model d && e.PropertyName == nameof(SlipDetail_Model.QuantityReturned))
+            {
+                // Update "Received By" for this item only
+                if ((d.QuantityReturned ?? 0) > 0)
+                {
+                    d.ReceiverFirstName = _currentUserFirstName;
+                    d.ReceiverRole = _currentUserRole;
+                }
+                else
+                {
+                    d.ReceiverFirstName = "";
+                    d.ReceiverRole = "";
+                }
+            }
+
             if (e.PropertyName is nameof(SlipDetail_Model.QuantityReleased) or nameof(SlipDetail_Model.QuantityReturned))
             {
                 EvaluateCanDelete();
@@ -83,7 +182,6 @@ namespace che_system.modals.view_model
 
         private void EvaluateCanDelete()
         {
-            // Deletion allowed ONLY if ALL details have zero / null released AND zero / null returned
             CanDelete = Details.All(d =>
                 (d.QuantityReleased ?? 0) == 0 &&
                 (d.QuantityReturned ?? 0) == 0);
@@ -93,69 +191,132 @@ namespace che_system.modals.view_model
         {
             try
             {
+                bool hasValidationErrors = false;
+
+                // First pass: Validate all rows without stopping
                 foreach (var d in Slip.Details)
                 {
                     int borrowed = d.QuantityBorrowed;
                     int newReleased = d.QuantityReleased ?? 0;
-                    int oldReleased = d.OriginalQuantityReleased ?? 0;
+                    int newReturned = d.QuantityReturned ?? 0;
 
-                    // Rule 4: quantity released must not exceed borrowed
+                    // Validate release quantity
                     if (newReleased > borrowed)
                     {
                         MessageBox.Show(
                             $"Released quantity cannot exceed borrowed quantity for '{d.ItemName}'.",
                             "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        // Skip this line; do not persist invalid state.
-                        continue;
+                        hasValidationErrors = true;
+                        continue; // Skip this item but continue with others
                     }
 
-                    // Apply release delta if changed
+                    // Validate return quantity for non-consumables
+                    bool isNonConsumable = string.Equals(d.Type, "non-consumable", StringComparison.OrdinalIgnoreCase);
+                    if (isNonConsumable && newReturned > newReleased)
+                    {
+                        MessageBox.Show(
+                            $"Returned quantity cannot exceed released quantity for '{d.ItemName}'.",
+                            "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        hasValidationErrors = true;
+                    }
+                }
+
+                // If validation errors found, stop the save operation
+                if (hasValidationErrors)
+                    return;
+
+                // Second pass: Process all valid rows
+                bool anyReleaseUpdated = false;
+                bool anyReturnUpdated = false;
+
+                foreach (var d in Slip.Details)
+                {
+                    int borrowed = d.QuantityBorrowed;
+                    int newReleased = d.QuantityReleased ?? 0;
+                    int oldReleased = d.OriginalQuantityReleased ?? 0;
+                    int newReturned = d.QuantityReturned ?? 0;
+                    int oldReturned = d.OriginalQuantityReturned ?? 0;
+
+                    // Release updates (delta-based)
                     if (newReleased != oldReleased)
                     {
-                        _repository.UpdateDetailReleaseAndStock(d.DetailId, d.ItemId, newReleased, oldReleased);
+                        var currentUserDisplay = _currentUserDisplay;
+                        // Update detail + adjust stock
+                        _repository.UpdateDetailReleaseAndStock(d.DetailId, d.ItemId, newReleased, oldReleased, currentUserDisplay);
                         d.AcceptReleaseChanges();
+                        anyReleaseUpdated = true;
+
+                        // Update receiver info for release
+                        if (newReleased > 0)
+                        {
+                            d.ReceiverFirstName = _currentUserFirstName;
+                            d.ReceiverRole = _currentUserRole;
+                        }
+                        else
+                        {
+                            d.ReceiverFirstName = "";
+                            d.ReceiverRole = "";
+                        }
                     }
 
-                    // Returns only meaningful for non-consumable
+                    // Return updates (Non-consumable only)
                     bool isNonConsumable = string.Equals(d.Type, "non-consumable", StringComparison.OrdinalIgnoreCase);
                     if (isNonConsumable)
                     {
-                        int newReturned = d.QuantityReturned ?? 0;
-                        int oldReturned = d.OriginalQuantityReturned ?? 0;
-
-                        // Rule 5: returned <= released
-                        if (newReturned > newReleased)
-                        {
-                            MessageBox.Show(
-                                $"Returned quantity cannot exceed released quantity for '{d.ItemName}'.",
-                                "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            continue;
-                        }
-
                         if (newReturned != oldReturned)
                         {
-                            _repository.UpdateDetailReturnAndStock(d.DetailId, d.ItemId, newReturned, oldReturned);
+                            _repository.UpdateDetailReturnAndStock(
+                                d.DetailId,
+                                d.ItemId,
+                                newReturned,
+                                oldReturned,
+                                _currentUserDisplay
+                            );
                             d.AcceptReturnChanges();
+                            anyReturnUpdated = true;
+
+                            // Update receiver info for return (per-item)
+                            if (newReturned > 0)
+                            {
+                                d.ReceiverFirstName = _currentUserFirstName;
+                                d.ReceiverRole = _currentUserRole;
+                            }
+                            else
+                            {
+                                d.ReceiverFirstName = "";
+                                d.ReceiverRole = "";
+                            }
                         }
                     }
                 }
 
-                // Mark slip as 'released' if any line now has a release and it wasn't previously marked
-                if (Details.Any(x => (x.QuantityReleased ?? 0) > 0) &&
-                    string.IsNullOrWhiteSpace(Slip.ReleasedBy))
+                // Update ReleasedBy if any release activity occurred
+                if (anyReleaseUpdated)
                 {
-                    _repository.UpdateSlipRelease(Slip.SlipId, _currentUser);
+                    var currentUserDisplay = _currentUserDisplay;
+                    _repository.UpdateSlipRelease(Slip.SlipId, currentUserDisplay);
+                    Slip.ReleasedBy = _currentUserDisplay;
                 }
 
-                // Rule 2 & 3: Completed ONLY if every line fully released (borrowed == released).
-                // (Returns are NOT required for completion per current spec.)
-                bool fullyReleased = Details.All(d =>
-                    d.QuantityBorrowed > 0 &&
-                    (d.QuantityReleased ?? 0) == d.QuantityBorrowed);
-
-                if (fullyReleased && string.IsNullOrWhiteSpace(Slip.CheckedBy))
+                // NEW: Only set CheckedBy when returns make the slip fully returned.
+                // We consider only non-consumable items for the "return completion" check.
+                // The user requested: checked_by should be saved during return if Qty Returned matches Qty Borrowed.
+                if (anyReturnUpdated)
                 {
-                    _repository.UpdateSlipCheck(Slip.SlipId, _currentUser);
+                    bool allReturned = Slip.Details.All(d =>
+                    {
+                        // For non-consumables, returned must equal borrowed.
+                        if (string.Equals(d.Type, "non-consumable", StringComparison.OrdinalIgnoreCase))
+                            return (d.QuantityReturned ?? 0) >= d.QuantityBorrowed;
+                        // For consumables, ignore returns (or treat as already "returned")
+                        return true;
+                    });
+
+                    if (allReturned && Slip.Details.Count > 0)
+                    {
+                        _repository.UpdateSlipCheck(Slip.SlipId, _currentUserDisplay);
+                        Slip.CheckedBy = _currentUserDisplay;
+                    }
                 }
 
                 EvaluateCanDelete();
@@ -172,7 +333,6 @@ namespace che_system.modals.view_model
 
         private void ExecuteDelete(object parameter)
         {
-            // Safety check (UI already disables)
             if (!CanDelete)
             {
                 MessageBox.Show("Slip cannot be deleted because some items were already released or returned.",
@@ -188,8 +348,7 @@ namespace che_system.modals.view_model
 
             try
             {
-                // No stock adjustments needed because nothing was released
-                _repository.DeleteSlip(Slip.SlipId, restoreStock: false);
+                _repository.DeleteSlip(Slip.SlipId, restoreStock: false, _currentUserDisplay);
 
                 if (parameter is Window w)
                     w.DialogResult = true;

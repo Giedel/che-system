@@ -9,7 +9,7 @@ namespace che_system.modals.repositories
 {
     public class Add_Slip_Repository : Repository_Base
     {
-        public int InsertSlip(Add_Slip_View_Model slip)
+        public int InsertSlip(Add_Slip_View_Model slip, string currentUser)
         {
             int slipId;
 
@@ -17,7 +17,7 @@ namespace che_system.modals.repositories
             {
                 using (var cmd = new SqlCommand("InsertBorrowerWithSlipAndDetails", connection))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     // === Borrower Info ===
                     cmd.Parameters.AddWithValue("@name", slip.Name ?? (object)DBNull.Value);
@@ -32,7 +32,7 @@ namespace che_system.modals.repositories
                     cmd.Parameters.AddWithValue("@received_by", slip.ReceivedBy ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@remarks", slip.Remarks ?? (object)DBNull.Value);
 
-                    // === Slip Details ===
+                    // === Slip Details TVP ===
                     var detailsTable = new DataTable();
                     detailsTable.Columns.Add("item_id", typeof(int));
                     detailsTable.Columns.Add("quantity_borrowed", typeof(int));
@@ -52,8 +52,44 @@ namespace che_system.modals.repositories
                 }
             }
 
+            // ✅ Log creation of slip
+            try
+            {
+                new AuditRepository().LogAction(
+                    currentUser,
+                    "Add Slip",
+                    $"Added new borrower slip for '{slip.Name}' (Slip ID: {slipId}, Subject: {slip.SubjectTitle}).",
+                    "Borrower_Slip",
+                    slipId.ToString()
+                );
+            }
+            catch (Exception logEx)
+            {
+                // Optional: silently handle logging errors (do not stop main flow)
+                Console.WriteLine($"[Audit Log Failed] {logEx.Message}");
+            }
+
             return slipId;
         }
 
+        // Second-phase update for proof image (if proc not yet extended)
+        public void UpdateSlipProofImage(int slipId, byte[] imageBytes, string fileName, string contentType)
+        {
+            using var connection = GetConnection();
+            using var cmd = new SqlCommand(@"
+UPDATE Borrower_Slip
+SET proof_image = @img,
+    proof_image_file_name = @fn,
+    proof_image_content_type = @ct
+WHERE slip_id = @id;", connection);
+
+            cmd.Parameters.AddWithValue("@id", slipId);
+            cmd.Parameters.AddWithValue("@img", imageBytes ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@fn", string.IsNullOrEmpty(fileName) ? (object)DBNull.Value : fileName);
+            cmd.Parameters.AddWithValue("@ct", string.IsNullOrEmpty(contentType) ? (object)DBNull.Value : contentType);
+
+            connection.Open();
+            cmd.ExecuteNonQuery();
+        }
     }
 }

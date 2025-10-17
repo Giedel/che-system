@@ -77,7 +77,7 @@ namespace che_system.custom_controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/che_system;V1.0.0.0;component/custom_controls/numericupdown.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/che_system;component/custom_controls/numericupdown.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\custom_controls\NumericUpDown.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

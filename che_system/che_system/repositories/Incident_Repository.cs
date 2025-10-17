@@ -115,7 +115,6 @@ namespace che_system.repositories
             return incidentId;
         }
 
-
         public void UpdateIncident(IncidentModel incident, string currentUser)
         {
             using var connection = GetConnection();

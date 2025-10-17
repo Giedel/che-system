@@ -6,6 +6,7 @@ namespace che_system.model
     {
         public string? Username { get; set; }
         public string? Display_Name { get; set; }
+        public string? Display_FirstNameRole { get; set; }
         public byte[] Profile_Picture { get; set; }
         public string? Role { get; set; }
     }

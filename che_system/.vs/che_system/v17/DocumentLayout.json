@@ -3,16 +3,31 @@
   "WorkspaceRootPath": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\view_model\\add_item_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\view_model\\add_item_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\view_model\\add_slip_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\view_model\\add_slip_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\repositories\\add_item_repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\repositories\\add_item_repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\view_model\\borrowing_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\view_model\\borrowing_view_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\view\\add_item_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\view\\add_item_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Giedel\\AppData\\Local\\Temp\\.vsdbgsrc\\1b77cb146b3dc6f60ca3b7de619b68fc3904b4f03155b255fa425d7d7bd36ae9\\PropertyPathWorker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\repositories\\borrower_repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\repositories\\borrower_repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\view_model\\slipdetails_viewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\view_model\\slipdetails_viewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\model\\slipdetail_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\model\\slipdetail_model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|c:\\users\\giedel\\documents\\che-system\\che_system\\che_system\\modals\\view\\slip_details_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3C74E77F-9CD6-42B9-B5DC-30B924F13CC5}|che_system\\che_system.csproj|solutionrelative:che_system\\modals\\view\\slip_details_view.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,46 +36,93 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 265,
-          "SelectedChildIndex": 1,
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Add_Item_Repository.cs",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\repositories\\Add_Item_Repository.cs",
-              "RelativeDocumentMoniker": "che_system\\modals\\repositories\\Add_Item_Repository.cs",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\repositories\\Add_Item_Repository.cs",
-              "RelativeToolTip": "che_system\\modals\\repositories\\Add_Item_Repository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-07T02:36:17.105Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Add_Item_View_Model.cs",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view_model\\Add_Item_View_Model.cs",
-              "RelativeDocumentMoniker": "che_system\\modals\\view_model\\Add_Item_View_Model.cs",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view_model\\Add_Item_View_Model.cs",
-              "RelativeToolTip": "che_system\\modals\\view_model\\Add_Item_View_Model.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAA3wEEAAAAYAAAAAAAAAA==",
+              "Title": "Add_Slip_View_Model.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view_model\\Add_Slip_View_Model.cs",
+              "RelativeDocumentMoniker": "che_system\\modals\\view_model\\Add_Slip_View_Model.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view_model\\Add_Slip_View_Model.cs",
+              "RelativeToolTip": "che_system\\modals\\view_model\\Add_Slip_View_Model.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMwAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-07T02:36:14.31Z",
+              "WhenOpened": "2025-10-16T05:08:04.84Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Add_Item_View.xaml",
-              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view\\Add_Item_View.xaml",
-              "RelativeDocumentMoniker": "che_system\\modals\\view\\Add_Item_View.xaml",
-              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view\\Add_Item_View.xaml",
-              "RelativeToolTip": "che_system\\modals\\view\\Add_Item_View.xaml",
+              "Title": "PropertyPathWorker.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\AppData\\Local\\Temp\\.vsdbgsrc\\1b77cb146b3dc6f60ca3b7de619b68fc3904b4f03155b255fa425d7d7bd36ae9\\PropertyPathWorker.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\1b77cb146b3dc6f60ca3b7de619b68fc3904b4f03155b255fa425d7d7bd36ae9\\PropertyPathWorker.cs",
+              "ToolTip": "C:\\Users\\Giedel\\AppData\\Local\\Temp\\.vsdbgsrc\\1b77cb146b3dc6f60ca3b7de619b68fc3904b4f03155b255fa425d7d7bd36ae9\\PropertyPathWorker.cs [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\1b77cb146b3dc6f60ca3b7de619b68fc3904b4f03155b255fa425d7d7bd36ae9\\PropertyPathWorker.cs [Read Only]",
+              "ViewState": "AgIAAJwEAAAAAAAAAAAIwKIEAAAAAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-16T03:21:31.432Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SlipDetail_Model.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\SlipDetail_Model.cs",
+              "RelativeDocumentMoniker": "che_system\\modals\\model\\SlipDetail_Model.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\model\\SlipDetail_Model.cs",
+              "RelativeToolTip": "che_system\\modals\\model\\SlipDetail_Model.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T13:11:08.977Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Borrower_Repository.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\repositories\\Borrower_Repository.cs",
+              "RelativeDocumentMoniker": "che_system\\repositories\\Borrower_Repository.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\repositories\\Borrower_Repository.cs",
+              "RelativeToolTip": "che_system\\repositories\\Borrower_Repository.cs",
+              "ViewState": "AgIAAJ8BAAAAAAAAAAAcwFQCAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T12:53:42.303Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Slip_Details_View.xaml",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view\\Slip_Details_View.xaml",
+              "RelativeDocumentMoniker": "che_system\\modals\\view\\Slip_Details_View.xaml",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view\\Slip_Details_View.xaml",
+              "RelativeToolTip": "che_system\\modals\\view\\Slip_Details_View.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-07T02:22:52.211Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-15T12:45:48.65Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SlipDetails_ViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view_model\\SlipDetails_ViewModel.cs",
+              "RelativeDocumentMoniker": "che_system\\modals\\view_model\\SlipDetails_ViewModel.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\modals\\view_model\\SlipDetails_ViewModel.cs",
+              "RelativeToolTip": "che_system\\modals\\view_model\\SlipDetails_ViewModel.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAA5wEYBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T12:44:05.148Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Borrowing_View_Model.cs",
+              "DocumentMoniker": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Borrowing_View_Model.cs",
+              "RelativeDocumentMoniker": "che_system\\view_model\\Borrowing_View_Model.cs",
+              "ToolTip": "C:\\Users\\Giedel\\Documents\\che-system\\che_system\\che_system\\view_model\\Borrowing_View_Model.cs",
+              "RelativeToolTip": "che_system\\view_model\\Borrowing_View_Model.cs",
+              "ViewState": "AgIAANwAAAAAAAAAAAAAAOkAAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-15T12:25:56.718Z"
             }
           ]
         }

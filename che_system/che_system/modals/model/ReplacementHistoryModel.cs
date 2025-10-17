@@ -16,5 +16,11 @@ namespace che_system.modals.model
         public string? Description { get; set; }
         public string? SubjectCode { get; set; }
         public string? Instructor { get; set; }
+
+        // NEW
+        public string? Unit { get; set; }
+        public string QuantityWithUnit => string.IsNullOrWhiteSpace(Unit)
+            ? Quantity.ToString()
+            : $"{Quantity} {Unit}";
     }
 }

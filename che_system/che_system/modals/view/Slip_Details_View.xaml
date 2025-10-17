@@ -8,162 +8,231 @@
         xmlns:conv="clr-namespace:che_system.converters"
         xmlns:local="clr-namespace:che_system.modals.view"
         mc:Ignorable="d"
-        Title="Slip Details" Height="900" Width="850"
+        Title="Slip Details" Height="900" Width="1450"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         WindowStyle="SingleBorderWindow">
 
     <Window.Resources>
         <conv:NonConsumableToBoolConverter x:Key="NonConsumableToBoolConverter"/>
+        <!-- NEW -->
+        <conv:ConsumableCompletedToEnabledConverter x:Key="ConsumableCompletedToEnabledConverter"/>
     </Window.Resources>
-        
-    <Grid Margin="15">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
 
-        <!-- Slip Summary -->
-        <Border BorderThickness="0 0 0 1" BorderBrush="LightGray" Padding="30" Margin="0 0 0 20">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".4*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0" Margin="0 0 20 0">
+        <!-- Proof Image Panel -->
+        <Grid Grid.Column="0" Background="#FAFAFA">
+            <Border Margin="15" BorderBrush="#DDD" BorderThickness="1" CornerRadius="8" Background="White" Padding="10">
+                <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Margin="0 0 0 15">
-                        <TextBlock Text="Borrower" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
-                        <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
-                            <TextBlock Text="{Binding Slip.BorrowerName}" Foreground="{StaticResource FontDark}" FontWeight="SemiBold" FontSize="18"/>
-                        </Border>
-                    </StackPanel>
+                    <TextBlock Text="Borrower Slip Proof" FontSize="20" FontWeight="Bold" Margin="0 0 0 10" Foreground="{StaticResource FontDark}"/>
 
-                    <StackPanel Grid.Row="1" Margin="0 0 0 15">
-                        <TextBlock Text="Subject Title" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
-                        <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
-                            <TextBlock Text="{Binding Slip.SubjectTitle}" FontSize="18"/>
-                        </Border>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="2" Margin="0 0 0 15">
-                        <TextBlock Text="Subject Code" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
-                        <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
-                            <TextBlock Text="{Binding Slip.SubjectCode}" Foreground="Gray" FontSize="18"/>
-                        </Border>
-                    </StackPanel>
+                    <Border Grid.Row="1" Background="#F5F5F5" CornerRadius="5" Padding="5">
+                        <Grid>
+                            <Image Source="{Binding SlipProofImage}"
+                                   Stretch="Uniform"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   SnapsToDevicePixels="True"/>
+                            <TextBlock Text="No proof image available."
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="Gray"
+                                       FontStyle="Italic">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SlipProofImage}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
                 </Grid>
+            </Border>
+        </Grid>
 
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+        <!-- (Existing right side unchanged) -->
+        <Grid Margin="15" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0">
-                        <TextBlock Text="Class Schedule" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
-                        <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
-                            <TextBlock Text="{Binding Slip.ClassSchedule}" FontSize="18" Margin="10 0 0 0"/>
-                        </Border>
-                    </StackPanel>
+            <!-- Slip Summary -->
+            <Border BorderThickness="0 0 0 1" BorderBrush="LightGray" Padding="30" Margin="0 0 0 20">
+                <!-- (Original content preserved) -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- Left summary column -->
+                    <Grid Grid.Column="0" Margin="0 0 20 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="1">
-                        <TextBlock Text="Instructor" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
-                        <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
-                            <TextBlock Text="{Binding Slip.Instructor}" FontSize="18" Margin="10 0 0 0"/>
-                        </Border>
-                    </StackPanel>
+                        <StackPanel Grid.Row="0" Margin="0 0 0 15">
+                            <TextBlock Text="Borrower" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
+                            <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
+                                <TextBlock Text="{Binding Slip.BorrowerName}" Foreground="{StaticResource FontDark}" FontWeight="SemiBold" FontSize="18"/>
+                            </Border>
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="2">
-                        <TextBlock Text="Date of Use" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
-                        <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
-                            <TextBlock Text="{Binding Slip.DateOfUse}" FontSize="18" Margin="10 0 0 0"/>
-                        </Border>
-                    </StackPanel>
+                        <StackPanel Grid.Row="1" Margin="0 0 0 15">
+                            <TextBlock Text="Subject Title" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
+                            <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
+                                <TextBlock Text="{Binding Slip.SubjectTitle}" FontSize="18"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Margin="0 0 0 15">
+                            <TextBlock Text="Subject Code" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
+                            <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
+                                <TextBlock Text="{Binding Slip.SubjectCode}" Foreground="Gray" FontSize="18"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Right summary column -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Text="Class Schedule" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
+                            <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
+                                <TextBlock Text="{Binding Slip.ClassSchedule}" FontSize="18" Margin="10 0 0 0"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1">
+                            <TextBlock Text="Instructor" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
+                            <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
+                                <TextBlock Text="{Binding Slip.Instructor}" FontSize="18" Margin="10 0 0 0"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2">
+                            <TextBlock Text="Date of Use" Foreground="{StaticResource FontDark}" FontSize="20" FontWeight="Bold"/>
+                            <Border BorderBrush="Gray" BorderThickness="0 0 0 .5" Padding="0 5">
+                                <TextBlock Text="{Binding Slip.DateOfUse}" FontSize="18" Margin="10 0 0 0"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Border>
+            </Border>
 
-        <!-- Items List -->
-        <DataGrid ItemsSource="{Binding Details}"
-                  AutoGenerateColumns="False"
-                  Grid.Row="1"
-                  CanUserAddRows="False"
-                  IsReadOnly="False"
-                  Margin="0 0 0 10"
-                  HorizontalScrollBarVisibility="Auto"
-                  MinWidth="800">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Item" Binding="{Binding ItemName}" Width="300" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Qty Borrowed" Binding="{Binding QuantityBorrowed}" Width="150" IsReadOnly="True"/>
-                
-                <!-- Qty Released: Editable, integer only -->
-                <DataGridTemplateColumn Header="Qty Released" Width="150">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBox Text="{Binding QuantityReleased, TargetNullValue='', Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     PreviewTextInput="NumericOnly_PreviewTextInput"
-                                     Width="140"
-                                     Background="Transparent"
-                                     BorderThickness="0"
-                                     Padding="0 10"
-                                     VerticalContentAlignment="Center"
-                                     MaxLength="5"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+            <!-- Items List (unchanged) -->
+            <DataGrid ItemsSource="{Binding Details}"
+                      AutoGenerateColumns="False"
+                      Grid.Row="1"
+                      CanUserAddRows="False"
+                      IsReadOnly="False"
+                      Margin="0 0 0 10"
+                      HorizontalScrollBarVisibility="Auto"
+                      MinWidth="800">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="IsEnabled">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource ConsumableCompletedToEnabledConverter}">
+                                    <Binding Path="Type"/>
+                                    <Binding Path="QuantityBorrowed"/>
+                                    <Binding Path="QuantityReleased"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
 
-                <DataGridTextColumn Header="Date Released" Binding="{Binding DateReleased, StringFormat=d, TargetNullValue=''}" Width="150" IsReadOnly="True"/>
-                
-                <!-- Qty Returned: Editable, integer only -->
-                <DataGridTemplateColumn Header="Qty Returned" Width="150">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBox Text="{Binding QuantityReturned, TargetNullValue='', Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                     IsEnabled="{Binding Type, Converter={StaticResource NonConsumableToBoolConverter}}"
-                                     Width="140"
-                                     Background="Transparent"
-                                     IsReadOnly="True"
-                                     IsHitTestVisible="False"
-                                     BorderThickness="0"
-                                     Padding="0 10"
-                                     VerticalContentAlignment="Center"
-                                     MaxLength="5"
-                                     PreviewTextInput="NumericOnly_PreviewTextInput"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Item" Binding="{Binding ItemName}" Width="300" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Qty Borrowed" Binding="{Binding QuantityBorrowed}" Width="150" IsReadOnly="True"/>
 
-                <DataGridTextColumn Header="Date Returned" Binding="{Binding DateReturned, StringFormat=d, TargetNullValue=''}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="150" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" Width="Auto" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
+                    <DataGridTemplateColumn Header="Qty Released" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding QuantityReleased, TargetNullValue='', Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         PreviewTextInput="NumericOnly_PreviewTextInput"
+                                         Width="140"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Padding="0 10"
+                                         VerticalContentAlignment="Center"
+                                         MaxLength="5"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-        <!-- Buttons -->
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-            <Button Content="Delete"
-                    Width="100"
-                    Margin="0 0 10 0"
-                    Style="{StaticResource OriginalButtonStyle}"
-                    Background="#FF5C5C"
-                    Foreground="White"
-                    Command="{Binding DeleteCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                    IsEnabled="{Binding CanDelete}"/>   
-            <Button Content="Save"
-                    Style="{StaticResource OriginalButtonStyle}"
-                    Width="100"
-                    Command="{Binding SaveCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-        </StackPanel>
+                    <DataGridTextColumn Header="Date Released" Binding="{Binding DateReleased, StringFormat=d, TargetNullValue=''}" Width="150" IsReadOnly="True"/>
+
+                    <DataGridTemplateColumn Header="Qty Returned" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding QuantityReturned, TargetNullValue='', Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         IsEnabled="{Binding Type, Converter={StaticResource NonConsumableToBoolConverter}}"
+                                         Width="140"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Padding="0 10"
+                                         VerticalContentAlignment="Center"
+                                         MaxLength="5"
+                                         PreviewTextInput="NumericOnly_PreviewTextInput"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Header="Date Returned" Binding="{Binding DateReturned, StringFormat=d, TargetNullValue=''}" IsReadOnly="True"/>
+
+                    <!-- Replace the existing "Received By" column -->
+                    <DataGridTextColumn Header="Received By"
+                                        Binding="{Binding ReceivedBy, TargetNullValue=''}"
+                                        Width="180"
+                                        IsReadOnly="True"/>
+
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="150" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" Width="Auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                <Button Content="Delete"
+                        Width="100"
+                        Margin="0 0 10 0"
+                        Style="{StaticResource OriginalButtonStyle}"
+                        Background="#FF5C5C"
+                        Foreground="White"
+                        Command="{Binding DeleteCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        IsEnabled="{Binding CanDelete}"/>
+                <Button Content="Save"
+                        Style="{StaticResource OriginalButtonStyle}"
+                        Width="100"
+                        Command="{Binding SaveCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

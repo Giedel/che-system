@@ -4,7 +4,10 @@ using che_system.modals.model;
 using che_system.modals.view;
 using che_system.modals.view_model;
 using che_system.repositories;
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace che_system.view_model
@@ -12,6 +15,8 @@ namespace che_system.view_model
     public class Inventory_View_Model : View_Model_Base
     {
         private readonly Item_Repository _repository = new();
+        private const string InactiveStatus = "Inactive";
+
         public ObservableCollection<Add_Item_Model> Items { get; set; } = new();
         public ObservableCollection<Add_Item_Model> Chemicals { get; set; } = new();
         public ObservableCollection<Add_Item_Model> Apparatus { get; set; } = new();
@@ -19,10 +24,8 @@ namespace che_system.view_model
         public ObservableCollection<Add_Item_Model> Miscellaneous { get; set; } = new();
         public ObservableCollection<Add_Item_Model> Equipment { get; set; } = new();
 
-
         public ObservableCollection<Add_Item_Model> LowStockItems { get; set; } = new();
         public ObservableCollection<Add_Item_Model> ExpiringItems { get; set; } = new();
-
 
         // Filtered collections for search
         public ObservableCollection<Add_Item_Model> FilteredItems { get; set; } = new();
@@ -31,7 +34,6 @@ namespace che_system.view_model
         public ObservableCollection<Add_Item_Model> FilteredSupplies { get; set; } = new();
         public ObservableCollection<Add_Item_Model> FilteredMiscellaneous { get; set; } = new();
         public ObservableCollection<Add_Item_Model> FilteredEquipment { get; set; } = new();
-
 
         public ICommand Open_Add_Item_Command { get; }
         public ICommand Edit_Item_Command { get; }
@@ -63,7 +65,6 @@ namespace che_system.view_model
 
             if (filters.Count == 0 || string.IsNullOrWhiteSpace(SearchText))
             {
-                // No search or global text search
                 FilteredItems = FilterCollection(Items, SearchText,
                     item => item.ItemName ?? "",
                     item => item.ChemicalFormula ?? "",
@@ -94,7 +95,6 @@ namespace che_system.view_model
             }
             else
             {
-                // Advanced field-specific filtering
                 FilteredItems = FilterCollection(Items, filters);
                 FilteredChemicals = FilterCollection(Chemicals, filters);
                 FilteredApparatus = FilterCollection(Apparatus, filters);
@@ -179,7 +179,7 @@ namespace che_system.view_model
             var modal = new Add_Item_View();
             if (modal.ShowDialog() == true)
             {
-                Load_Items(); // Refresh after add
+                Load_Items();
             }
         }
 
@@ -189,24 +189,54 @@ namespace che_system.view_model
             {
                 var modal = new Edit_Item_View
                 {
-                    DataContext = new Edit_Item_View_Model(item, null) // attach a ViewModel
+                    DataContext = new Edit_Item_View_Model(item, null)
                 };
 
                 if (modal.ShowDialog() == true)
                 {
-                    Load_Items(); // refresh after saving edits
+                    Load_Items();
                 }
             }
         }
 
-
+        // Modified: double confirmation + soft delete
         private void Execute_Delete_Item(object? obj)
         {
-            if (obj is Add_Item_Model item)
+            if (obj is not Add_Item_Model item)
+                return;
+
+            if (string.Equals(item.Status, InactiveStatus, StringComparison.OrdinalIgnoreCase))
             {
-                // Confirm delete (assume in view)
-                _repository.Delete_Item(item.ItemId);
-                Load_Items(); // Refresh
+                MessageBox.Show("Item is already inactive.", "Delete", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var first = MessageBox.Show(
+                $"Are you sure you want to delete '{item.ItemName}'?",
+                "Confirm Deletion",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (first != MessageBoxResult.Yes)
+                return;
+
+            var second = MessageBox.Show(
+                "This action will mark the item as inactive (soft delete) and hide it from the list.\nDo you want to continue?",
+                "Confirm Deletion",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (second != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                _repository.Soft_Delete_Item(item.ItemId); // new soft delete
+                Load_Items();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to delete item: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -219,22 +249,24 @@ namespace che_system.view_model
         {
             LowStockItems = _repository.Get_Low_Stock_Items();
             OnPropertyChanged(nameof(LowStockItems));
-            // Assume view switches to low stock tab/filter
         }
 
         private void Execute_Show_Expiring(object? obj)
         {
             ExpiringItems = _repository.Get_Expiring_Items();
             OnPropertyChanged(nameof(ExpiringItems));
-            // Assume view switches to expiring tab/filter
         }
 
         private void Load_Items()
         {
-            Items = _repository.Get_All_Items();
+            var all = _repository.Get_All_Items();
+
+            // Only show items that are not soft deleted (status != Inactive)
+            Items = new ObservableCollection<Add_Item_Model>(
+                all.Where(i => !string.Equals(i.Status, InactiveStatus, StringComparison.OrdinalIgnoreCase)));
+
             OnPropertyChanged(nameof(Items));
 
-            // Filter for tabs
             Chemicals = new ObservableCollection<Add_Item_Model>(Items.Where(i => i.Category == "Chemical"));
             OnPropertyChanged(nameof(Chemicals));
 
@@ -250,7 +282,6 @@ namespace che_system.view_model
             Equipment = new ObservableCollection<Add_Item_Model>(Items.Where(i => i.Category == "Equipment"));
             OnPropertyChanged(nameof(Equipment));
 
-            // Apply current search filter to updated collections
             ApplyFilters();
         }
     }

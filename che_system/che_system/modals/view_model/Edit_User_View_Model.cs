@@ -115,7 +115,8 @@ namespace che_system.modals.view_model
                     username = Username,
                     role = Role,
                     birthday = Birthday.Value.ToString("yyyy-MM-dd"),
-                    password = passwordToSave
+                    password = passwordToSave,
+                    status = "Active"
                 };
 
                 _repo.Update(updated);

@@ -1,11 +1,11 @@
-//-- Add_User_View_Model.cs --
+﻿//-- Add_User_View_Model.cs --
 
 using che_system.model;
 using che_system.repositories;
 using che_system.view_model;
 using System;
 using System.Collections.ObjectModel;
-using System.Security;
+using System.Threading; // ✅ NEW (for Thread.CurrentPrincipal)
 using System.Windows;
 using System.Windows.Input;
 
@@ -14,8 +14,10 @@ namespace che_system.modals.view_model
     public class Add_User_View_Model : View_Model_Base
     {
         private readonly ObservableCollection<RoleItem> _availableRoles;
-
         public ObservableCollection<RoleItem> AvailableRoles => _availableRoles;
+
+        // New event: parent ViewModel (that owns the DataGrid) can subscribe and refresh its user list.
+        public event EventHandler? RequestUsersRefresh;
 
         public class RoleItem
         {
@@ -102,17 +104,6 @@ namespace che_system.modals.view_model
 
         private void ExecuteSave(object? obj)
         {
-            MessageBox.Show(
-                $"IdNumber: {IdNumber}\n" +
-                $"FirstName: {FirstName}\n" +
-                $"LastName: {LastName}\n" +
-                $"Username: {Username}\n" +
-                $"Password: {Password}\n" +
-                $"ConfirmPassword: {ConfirmPassword}\n" +
-                $"Birthday: {Birthday}\n" +
-                $"Role: {Role}"
-            );
-
             // Validation
             if (string.IsNullOrWhiteSpace(IdNumber) || string.IsNullOrWhiteSpace(FirstName) ||
                 string.IsNullOrWhiteSpace(LastName) || string.IsNullOrWhiteSpace(Username) ||
@@ -137,6 +128,9 @@ namespace che_system.modals.view_model
 
             try
             {
+                // ✅ NEW: Get the currently logged-in username
+                var createdBy = Thread.CurrentPrincipal?.Identity?.Name ?? "Unknown";
+
                 var userModel = new User_Model
                 {
                     user_id = IdNumber,
@@ -145,22 +139,32 @@ namespace che_system.modals.view_model
                     username = Username,
                     password = Password,
                     birthday = Birthday.Value.ToString("yyyy-MM-dd"),
-                    role = Role
+                    role = Role,
+                    created_by = createdBy
                 };
 
                 _userRepo.Add(userModel);
 
                 MessageBox.Show("User added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                if (obj is Window window)
-                {
-                    window.DialogResult = true;
-                    window.Close();
-                }
+                // Refresh & close
+                CloseWindowAndRequestRefresh(obj);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error adding user: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Helper to refresh parent + close dialog
+        private void CloseWindowAndRequestRefresh(object? obj)
+        {
+            RequestUsersRefresh?.Invoke(this, EventArgs.Empty);
+
+            if (obj is Window window)
+            {
+                window.DialogResult = true;
+                window.Close();
             }
         }
 

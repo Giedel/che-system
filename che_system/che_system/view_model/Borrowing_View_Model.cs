@@ -4,7 +4,10 @@ using che_system.modals.model;
 using che_system.modals.view;
 using che_system.modals.view_model;
 using che_system.repositories;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -24,14 +27,10 @@ namespace che_system.view_model
         public ObservableCollection<Slip_Model> FilteredActiveSlips { get; set; } = new();
         public ObservableCollection<Slip_Model> FilteredCompletedSlips { get; set; } = new();
 
-
         // Command to open Add Slip modal
         public ICommand Open_Add_Slip_Command { get; }
         public ICommand Release_Slip_Command { get; }
         public ICommand Check_Slip_Command { get; }
-
-
-
         public ICommand Open_Slip_Details_Command { get; }
 
         public Borrowing_View_Model(Main_View_Model mainVM)
@@ -40,7 +39,6 @@ namespace che_system.view_model
             Open_Add_Slip_Command = new View_Model_Command(Execute_Open_Add_Slip);
             Release_Slip_Command = new View_Model_Command(Execute_Release_Slip);
             Check_Slip_Command = new View_Model_Command(Execute_Check_Slip);
-
             Open_Slip_Details_Command = new View_Model_Command(OpenSlipDetails);
 
             LoadSlips();
@@ -135,27 +133,109 @@ namespace che_system.view_model
             }
         }
 
+        #region Slip Loading & Classification (UPDATED)
+
+        // Classification rules (per request):
+        // Pending Tab : ALL slip detail lines must have Status == "Pending" (or no details).
+        // Active Tab  : Any slip having AT LEAST ONE detail with Status == "Active".
+        // History Tab : ALL slip detail lines must have Status == "Completed".
+        //
+        // Edge Case: A slip with a mix of "Pending" and "Completed" but NO "Active".
+        // Not explicitly specified; we treat it as Active fallback so it remains visible.
+        private static string ComputeSlipStatus(Slip_Model slip)
+        {
+            if (slip?.Details == null || slip.Details.Count == 0)
+                return "Pending";
+
+            bool allPending = slip.Details.All(d => d.Status == "Pending");
+            if (allPending) return "Pending";
+
+            bool allCompleted = slip.Details.All(d => d.Status == "Completed");
+            if (allCompleted) return "Completed";
+
+            bool anyActive = slip.Details.Any(d => d.Status == "Active");
+            if (anyActive) return "Active";
+
+            // Mixed Pending + Completed (no Active) => treat as Active (fallback)
+            return "Active";
+        }
+
         private void LoadSlips()
         {
-            PendingSlips = _repository.GetPendingSlips();
-            ActiveSlips = _repository.GetActiveSlips();
-            CompletedSlips = _repository.GetCompletedSlips();
+            // Keep existing repository calls (unchanged logic for data retrieval)
+            var pendingRaw = _repository.GetPendingSlips();
+            var activeRaw = _repository.GetActiveSlips();
+            var completedRaw = _repository.GetCompletedSlips();
+
+            // Merge distinct slips by SlipId
+            var merged = new Dictionary<int, Slip_Model>();
+
+            void MergeIn(IEnumerable<Slip_Model> source)
+            {
+                foreach (var s in source)
+                {
+                    if (!merged.TryGetValue(s.SlipId, out var existing))
+                    {
+                        merged[s.SlipId] = s;
+                    }
+                    else
+                    {
+                        // If existing has no details but new one does, prefer richer one
+                        if ((existing.Details == null || existing.Details.Count == 0) &&
+                            s.Details != null && s.Details.Count > 0)
+                        {
+                            merged[s.SlipId] = s;
+                        }
+                    }
+                }
+            }
+
+            MergeIn(pendingRaw);
+            MergeIn(activeRaw);
+            MergeIn(completedRaw);
+
+            var pending = new List<Slip_Model>();
+            var active = new List<Slip_Model>();
+            var completed = new List<Slip_Model>();
+
+            foreach (var slip in merged.Values)
+            {
+                var status = ComputeSlipStatus(slip);
+                switch (status)
+                {
+                    case "Pending":
+                        pending.Add(slip);
+                        break;
+                    case "Completed":
+                        completed.Add(slip);
+                        break;
+                    default: // Active
+                        active.Add(slip);
+                        break;
+                }
+            }
+
+            PendingSlips = new ObservableCollection<Slip_Model>(pending.OrderBy(s => s.DateFiled));
+            ActiveSlips = new ObservableCollection<Slip_Model>(active.OrderBy(s => s.DateFiled));
+            CompletedSlips = new ObservableCollection<Slip_Model>(completed.OrderByDescending(s => s.DateFiled));
+
             OnPropertyChanged(nameof(PendingSlips));
             OnPropertyChanged(nameof(ActiveSlips));
             OnPropertyChanged(nameof(CompletedSlips));
 
-            // Apply current search filter to updated collections
-            ApplyFilters();
+            ApplyFilters(); // re-apply any search
         }
+
+        #endregion
 
         private void Execute_Open_Add_Slip(object? obj)
         {
             var currentUser = _mainVM.Current_User_Account.Username;
-            var currentUserDsplay = _mainVM.Current_User_Account.Username + " (" + _mainVM.Current_User_Account.Role + ")";
-            var modal = new Add_Slip_View(currentUser, currentUserDsplay);
+            var currentUserDisplay = _mainVM.Current_User_Account.Display_FirstNameRole;
+
+            var modal = new Add_Slip_View(currentUserDisplay, currentUser);
             if (modal.ShowDialog() == true)
             {
-                // Reload slips after adding
                 LoadSlips();
             }
         }
@@ -164,9 +244,9 @@ namespace che_system.view_model
         {
             if (obj is Slip_Model slip)
             {
-                var currentUser = _mainVM.Current_User_Account.Display_Name;
+                var currentUser = _mainVM.Current_User_Account.Display_FirstNameRole;
                 _repository.UpdateSlipRelease(slip.SlipId, currentUser);
-                LoadSlips(); // Refresh
+                LoadSlips();
             }
         }
 
@@ -174,9 +254,9 @@ namespace che_system.view_model
         {
             if (obj is Slip_Model slip)
             {
-                var currentUser = _mainVM.Current_User_Account.Display_Name;
+                var currentUser = _mainVM.Current_User_Account.Display_FirstNameRole;
                 _repository.UpdateSlipCheck(slip.SlipId, currentUser);
-                LoadSlips(); // Refresh
+                LoadSlips();
             }
         }
 
@@ -203,8 +283,9 @@ namespace che_system.view_model
                 );
 
                 var currentUser = _mainVM.Current_User_Account.Username;
+                var currentUserDisplay = _mainVM.Current_User_Account.Display_FirstNameRole;
 
-                var detailsVM = new Slip_Details_ViewModel(slip, currentUser);
+                var detailsVM = new Slip_Details_ViewModel(slip, currentUser, currentUserDisplay);
                 var detailsView = new Slip_Details_View
                 {
                     DataContext = detailsVM
@@ -212,11 +293,9 @@ namespace che_system.view_model
 
                 if (detailsView.ShowDialog() == true)
                 {
-                    // After saving → reload lists
                     LoadSlips();
                 }
             }
         }
-
     }
 }

@@ -89,6 +89,8 @@
                         <TextBox Text="{Binding Edited_Item.Quantity, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource InputTextBoxStyle}"
                                  FontSize="16"
+                                 IsReadOnly="True"
+                                 IsHitTestVisible="False"
                                  Background="{StaticResource InputBackgroundColor}"
                                  BorderThickness="0"
                                  Padding="5 10"/>

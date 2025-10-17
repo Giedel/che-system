@@ -83,9 +83,6 @@ namespace che_system.modals.view_model
 
         private void Execute_AddItem(SlipItemSelection_Model selItem)
         {
-            // Debug: confirm command fired and parameter is correct
-            MessageBox.Show($"Execute_AddItem fired. selItem null? {selItem == null}. ItemName: {(selItem?.Item?.ItemName ?? "null")}",
-                            "DEBUG - AddItem", MessageBoxButton.OK, MessageBoxImage.Information);
 
             if (selItem == null) return;
 
@@ -106,7 +103,6 @@ namespace che_system.modals.view_model
                     SelectedItem = selItem.Item
                 };
                 _parent.SlipDetails.Add(newDetail);
-                MessageBox.Show($"Parent SlipDetails count after add: {_parent.SlipDetails.Count}", "DEBUG - ParentCollection", MessageBoxButton.OK, MessageBoxImage.Information);
                 _parent.NotifySlipDetailsChanged();
             }
             _parent.NotifySlipDetailsChanged();

@@ -18,6 +18,7 @@ namespace che_system.repositories
                 SELECT 
                     i.incident_id,
                     it.name AS item_name,
+                    it.unit AS unit,
                     g.group_no,
                     i.quantity,
                     i.date_of_incident,
@@ -42,6 +43,7 @@ namespace che_system.repositories
                 {
                     IncidentId = reader.GetInt32(reader.GetOrdinal("incident_id")),
                     ItemName = reader.GetString(reader.GetOrdinal("item_name")),
+                    Unit = reader.IsDBNull(reader.GetOrdinal("unit")) ? null : reader.GetString(reader.GetOrdinal("unit")),
                     GroupNo = reader.GetString(reader.GetOrdinal("group_no")),
                     Quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
                     DateOfIncident = reader.GetDateTime(reader.GetOrdinal("date_of_incident")),

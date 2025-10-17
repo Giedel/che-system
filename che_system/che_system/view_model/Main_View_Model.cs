@@ -1,9 +1,11 @@
-﻿//-- Main_View_model.cs --
+﻿//-- Main_View_Model.cs --
 
 using che_system.model;
 using che_system.repositories;
 using FontAwesome.Sharp;
+using System.Diagnostics;
 using System.Security.Principal;
+using System.Windows;
 using System.Windows.Input;
 
 namespace che_system.view_model
@@ -37,16 +39,13 @@ namespace che_system.view_model
             {
                 _current_child_view = value;
                 OnPropertyChanged(nameof(Current_Child_View));
-                // 🚀 NEW: Notify the UI that the active view's type (Dashboard status) may have changed
+                // Notify the UI that dashboard state may have changed
                 OnPropertyChanged(nameof(IsDashboardActive));
             }
         }
 
-        // 🚀 NEW: Property for XAML binding to control the Year Filter visibility
-        public bool IsDashboardActive
-        {
-            get => Current_Child_View is Dashboard_View_Model;
-        }
+        // For showing year filters on Dashboard only
+        public bool IsDashboardActive => Current_Child_View is Dashboard_View_Model;
 
         public string Caption
         {
@@ -57,6 +56,7 @@ namespace che_system.view_model
                 OnPropertyChanged(nameof(Caption));
             }
         }
+
         public IconChar Icon
         {
             get => _icon;
@@ -67,7 +67,7 @@ namespace che_system.view_model
             }
         }
 
-        //<!-- Commands -->
+        // Commands
         public ICommand Show_Dashboard_View_Command { get; }
         public ICommand Show_Inventory_View_Command { get; }
         public ICommand Show_Borrowing_View_Command { get; }
@@ -75,27 +75,33 @@ namespace che_system.view_model
         public ICommand Show_Reports_View_Command { get; }
         public ICommand Show_User_Management_View_Command { get; }
 
-        //-- LOG OUT FUNCTIONALITY
+        // Logout event
         public event Action Request_Logout;
         public ICommand Logout_Command { get; }
 
         private void Execute_Logout_Command(object obj)
         {
-            // Clear the current user's identity
-            Thread.CurrentPrincipal = new GenericPrincipal(
-                new GenericIdentity(string.Empty), null);
+            var result = MessageBox.Show(
+                "Are you sure you want to logout?",
+                "Logout Confirmation",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
 
-            // Trigger the logout event
-            Request_Logout?.Invoke();
+            if (result == MessageBoxResult.Yes)
+            {
+                Thread.CurrentPrincipal = new GenericPrincipal(
+                    new GenericIdentity(string.Empty), null);
+
+                Request_Logout?.Invoke();
+            }
         }
 
         public Main_View_Model()
         {
             _user_repository = new User_Repository();
-            _current_user_account = new User_Account_Model();   // always initialized
+            _current_user_account = new User_Account_Model();
 
-            //Commands Initialization
-
+            // Initialize Commands
             Show_Dashboard_View_Command = new View_Model_Command(Execute_Show_Dashboard_View_Command);
             Show_Inventory_View_Command = new View_Model_Command(Execute_Show_Inventory_View_Command);
             Show_Borrowing_View_Command = new View_Model_Command(Execute_Show_Borrowing_View_Command);
@@ -104,15 +110,39 @@ namespace che_system.view_model
             Show_User_Management_View_Command = new View_Model_Command(Execute_Show_User_Management_View_Command);
             Logout_Command = new View_Model_Command(Execute_Logout_Command);
 
-            //Default View
+            // Default View
             Execute_Show_Dashboard_View_Command(null);
 
+            // Load current user info (after login)
             Load_Current_User_Data();
         }
 
+        // ------------------------------
+        //  View Navigation Commands
+        // ------------------------------
+
         private void Execute_Show_User_Management_View_Command(object? obj)
         {
-            Current_Child_View = new User_Management_View_Model();
+            Debug.WriteLine($"[Main] Showing User Management. Current_User_Account.Role='{Current_User_Account?.Role}'");
+
+            var userManagementVM = new User_Management_View_Model();
+
+            // ✅ Set the flag first
+            if (string.Equals(Current_User_Account.Role, "Custodian", StringComparison.OrdinalIgnoreCase))
+            {
+                userManagementVM.IsCustodianViewer = true;
+                Debug.WriteLine("[Main] IsCustodian detected -> userManagementVM.IsCustodianViewer set to TRUE");
+            }
+            else
+            {
+                Debug.WriteLine("[Main] Not a Custodian -> userManagementVM.IsCustodianViewer remains FALSE");
+            }
+
+            // ✅ Call ApplyUserFilters() AFTER setting the flag
+            userManagementVM.ApplyUserFilters();
+            Debug.WriteLine($"[Main] After setup: userManagementVM.IsCustodianViewer = {userManagementVM.IsCustodianViewer}");
+
+            Current_Child_View = userManagementVM;
             Caption = "User Management";
             Icon = IconChar.UserGroup;
         }
@@ -151,6 +181,10 @@ namespace che_system.view_model
             Caption = "Dashboard";
             Icon = IconChar.Home;
         }
+
+        // ------------------------------
+        //  Role-based flags
+        // ------------------------------
         private bool _isCustodian;
         public bool IsCustodian
         {
@@ -165,22 +199,34 @@ namespace che_system.view_model
             set { _isSTA = value; OnPropertyChanged(nameof(IsSTA)); }
         }
 
+        // ------------------------------
+        //  Load current user info
+        // ------------------------------
         private void Load_Current_User_Data()
         {
             var username = Thread.CurrentPrincipal?.Identity?.Name;
+            Debug.WriteLine($"[Main] Load_Current_User_Data: Thread.CurrentPrincipal?.Identity?.Name = '{username}'");
 
             if (!string.IsNullOrEmpty(username))
             {
                 var user = _user_repository.GetByUsername(username);
                 if (user != null)
                 {
-                    Current_User_Account.Username = user.username ?? string.Empty;
+                    Debug.WriteLine($"[Main] User repo returned: username='{user.username}', id='{user.user_id}', role='{user.role}', status='{user.status}'");
+
+                    Current_User_Account.Username = string.IsNullOrWhiteSpace(user.user_id)
+                        ? (user.username ?? string.Empty)
+                        : user.user_id;
+
                     Current_User_Account.Display_Name = $"{user.first_name} {user.last_name}";
+                    Current_User_Account.Display_FirstNameRole = $"{user.first_name} ({user.role})";
                     Current_User_Account.Role = user.role ?? "STA"; // fallback role
 
-                    // set flags
-                    IsCustodian = user.role == "Custodian";
-                    IsSTA = user.role == "STA";
+                    // Set role flags (SuperAdmin gets full access)
+                    IsCustodian = user.role == "Custodian" || user.role == "SuperAdmin";
+                    IsSTA = user.role == "STA" || user.role == "SuperAdmin";
+
+                    Debug.WriteLine($"[Main] Current_User_Account.Role='{Current_User_Account.Role}', IsCustodian={IsCustodian}, IsSTA={IsSTA}");
                     return;
                 }
             }

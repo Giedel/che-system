@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:che_system.view"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -43,7 +44,7 @@
                 </TextBlock>
             </Grid>
 
-            <Button Style="{DynamicResource OriginalButtonStyle}" Grid.Column="2" Content="➕ Create Slip" Margin="0 0 5 0" FlowDirection="LeftToRight" Command="{Binding Open_Add_Slip_Command}"/>
+            <Button Style="{StaticResource LightButtonStyle}" Grid.Column="2" Content="➕ Create Slip" Margin="0 0 5 0" FlowDirection="LeftToRight" Command="{Binding Open_Add_Slip_Command}"/>
         </Grid>
         
         <!-- TabControl for Slips -->
@@ -56,16 +57,17 @@
                         <DataGridTextColumn Header="Subject Code" Binding="{Binding SubjectCode}" Width="*"/>
                         <DataGridTextColumn Header="Date Filed" Binding="{Binding DateFiled, StringFormat=d}" Width="*"/>
                         <DataGridTextColumn Header="Date of Use" Binding="{Binding DateOfUse, StringFormat=d}" Width="*"/>
-                        <DataGridTextColumn Header="Received By" Binding="{Binding ReceivedByDisplay}" Width="*"/>
+                        <DataGridTextColumn Header="Received By" Binding="{Binding ReceivedByFirstNameRoleDisplay}" Width="*"/>
                         <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" Width="*"/>
                         <DataGridTemplateColumn Header="Actions" Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="View Details"
-                                            Style="{DynamicResource OriginalButtonStyle}"
-                                            Command="{Binding DataContext.Open_Slip_Details_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Padding="5,2"/> 
+                                    <Button Command="{Binding DataContext.Open_Slip_Details_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Edit"
+                                                Style="{StaticResource IconButtonStyle}">
+                                        <fa:IconBlock Icon="Eye" Foreground="#1B7DB5" Width="20" Height="20" FontSize="18"/>
+                                    </Button>
 
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -82,17 +84,18 @@
                         <DataGridTextColumn Header="Subject Code" Binding="{Binding SubjectCode}" Width="*"/>
                         <DataGridTextColumn Header="Date Filed" Binding="{Binding DateFiled, StringFormat=d}" Width="*"/>
                         <DataGridTextColumn Header="Date of Use" Binding="{Binding DateOfUse, StringFormat=d}" Width="*"/>
-                        <DataGridTextColumn Header="Received By" Binding="{Binding ReceivedByDisplay}" Width="*"/>
-                        <DataGridTextColumn Header="Released By" Binding="{Binding ReleasedByDisplay}" Width="*"/>
+                        <DataGridTextColumn Header="Received By" Binding="{Binding ReceivedByFirstNameRoleDisplay}" Width="*"/>
+                        <DataGridTextColumn Header="Released By" Binding="{Binding ReleasedByFirstNameRoleDisplay}" Width="*"/>
                         <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" Width="*"/>
                         <DataGridTemplateColumn Header="Actions" Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="View Details"
-                                            Style="{DynamicResource OriginalButtonStyle}"
-                                            Command="{Binding DataContext.Open_Slip_Details_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Padding="5,2"/>
+                                    <Button Command="{Binding DataContext.Open_Slip_Details_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Edit"
+                                                Style="{StaticResource IconButtonStyle}">
+                                        <fa:IconBlock Icon="Eye" Foreground="#1B7DB5" Width="20" Height="20" FontSize="18"/>
+                                    </Button>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -109,18 +112,19 @@
                         <DataGridTextColumn Header="Subject Code" Binding="{Binding SubjectCode}" Width="*"/>
                         <DataGridTextColumn Header="Date Filed" Binding="{Binding DateFiled, StringFormat=d}" Width="*"/>
                         <DataGridTextColumn Header="Date of Use" Binding="{Binding DateOfUse, StringFormat=d}" Width="*"/>
-                        <DataGridTextColumn Header="Received By" Binding="{Binding ReceivedByDisplay}" Width="*"/>
-                        <DataGridTextColumn Header="Released By" Binding="{Binding ReleasedByDisplay}" Width="*"/>
-                        <DataGridTextColumn Header="Checked By" Binding="{Binding CheckedBy}" Width="*"/>
+                        <DataGridTextColumn Header="Received By" Binding="{Binding ReceivedByFirstNameRoleDisplay}" Width="*"/>
+                        <DataGridTextColumn Header="Released By" Binding="{Binding ReleasedByFirstNameRoleDisplay}" Width="*"/>
+                        <DataGridTextColumn Header="Checked By" Binding="{Binding CheckedByFirstNameRoleDisplay}" Width="*"/>
                         <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" Width="*"/>
                         <DataGridTemplateColumn Header="Actions">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="View Details"
-                                            Style="{DynamicResource OriginalButtonStyle}"
-                                            Command="{Binding DataContext.Open_Slip_Details_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Padding="5,2"/>
+                                    <Button Command="{Binding DataContext.Open_Slip_Details_Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="View Details"
+                                                Style="{StaticResource IconButtonStyle}">
+                                        <fa:IconBlock Icon="Eye" Foreground="#1B7DB5" Width="20" Height="20" FontSize="18"/>
+                                    </Button>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

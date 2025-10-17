@@ -1,6 +1,4 @@
-﻿//-- SlipDetail_Model.cs --
-
-using System;
+﻿using System;
 using System.Windows;
 using che_system.modals.view_model;
 using che_system.repositories;
@@ -28,9 +26,6 @@ namespace che_system.modals.model
         #region Database Fields
 
         private int _detailId;
-        /// <summary>
-        /// Primary key in Slip_Detail table
-        /// </summary>
         public int DetailId
         {
             get => _detailId;
@@ -38,9 +33,6 @@ namespace che_system.modals.model
         }
 
         private int _itemId;
-        /// <summary>
-        /// Foreign key referencing Item table
-        /// </summary>
         public int ItemId
         {
             get => _itemId;
@@ -48,9 +40,6 @@ namespace che_system.modals.model
         }
 
         private string _itemName = "";
-        /// <summary>
-        /// Display name of the item from Item table
-        /// </summary>
         public string ItemName
         {
             get => _itemName;
@@ -78,8 +67,6 @@ namespace che_system.modals.model
         public void AcceptReleaseChanges() => OriginalQuantityReleased = QuantityReleased;
         public void AcceptReturnChanges() => OriginalQuantityReturned = QuantityReturned;
 
-
-
         private int _quantityBorrowed;
         public int QuantityBorrowed
         {
@@ -88,16 +75,12 @@ namespace che_system.modals.model
             {
                 if (_quantityBorrowed == value) return;
 
-                // Validate against available stock
                 if (SelectedItem != null && value > SelectedItem.Quantity)
                 {
                     MessageBox.Show($"Cannot borrow more than available stock ({SelectedItem.Quantity}).",
-                                    "Stock Limit Exceeded",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Warning);
+                        "Stock Limit Exceeded", MessageBoxButton.OK, MessageBoxImage.Warning);
                     _quantityBorrowed = SelectedItem.Quantity;
                 }
-                // Remove if quantity is 0 or negative
                 else if (value <= 0)
                 {
                     RequestRemove();
@@ -111,6 +94,7 @@ namespace che_system.modals.model
                 _quantityBorrowedText = _quantityBorrowed.ToString();
                 OnPropertyChanged(nameof(QuantityBorrowed));
                 OnPropertyChanged(nameof(QuantityBorrowedText));
+                OnPropertyChanged(nameof(Status));
             }
         }
 
@@ -121,7 +105,6 @@ namespace che_system.modals.model
             set
             {
                 var text = value?.Trim() ?? "";
-
                 if (string.IsNullOrEmpty(text))
                 {
                     RequestRemove();
@@ -130,7 +113,6 @@ namespace che_system.modals.model
 
                 if (!int.TryParse(text, out var parsed))
                 {
-                    // not numeric → revert
                     OnPropertyChanged(nameof(QuantityBorrowedText));
                     return;
                 }
@@ -138,9 +120,7 @@ namespace che_system.modals.model
                 if (SelectedItem != null && parsed > SelectedItem.Quantity)
                 {
                     MessageBox.Show($"Cannot borrow more than available stock ({SelectedItem.Quantity}).",
-                                    "Stock Limit Exceeded",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Warning);
+                        "Stock Limit Exceeded", MessageBoxButton.OK, MessageBoxImage.Warning);
                     parsed = SelectedItem.Quantity;
                 }
 
@@ -154,6 +134,7 @@ namespace che_system.modals.model
                 _quantityBorrowedText = parsed.ToString();
                 OnPropertyChanged(nameof(QuantityBorrowed));
                 OnPropertyChanged(nameof(QuantityBorrowedText));
+                OnPropertyChanged(nameof(Status));
             }
         }
 
@@ -180,16 +161,13 @@ namespace che_system.modals.model
                     _quantityReleased = value;
                     DateReleased = DateTime.Now;
                 }
+
                 OnPropertyChanged(nameof(QuantityReleased));
                 OnPropertyChanged(nameof(DateReleased));
                 OnPropertyChanged(nameof(Status));
             }
         }
 
-        /// <summary>
-        /// Quantity returned by borrower. Only applicable for non-consumable items.
-        /// Updates DateReturned when set. Triggers database update when modified.
-        /// </summary>
         private int? _quantityReturned;
         public int? QuantityReturned
         {
@@ -224,6 +202,7 @@ namespace che_system.modals.model
                 OnPropertyChanged(nameof(QuantityReturned));
                 OnPropertyChanged(nameof(DateReturned));
                 OnPropertyChanged(nameof(Status));
+                OnPropertyChanged(nameof(ReceivedBy)); // triggers ReceivedBy refresh
             }
         }
 
@@ -265,59 +244,100 @@ namespace che_system.modals.model
             }
         }
 
-        // Passthrough for Chemical Formula
         public string ChemicalFormula => SelectedItem?.ChemicalFormula ?? "";
-
-        // Passthrough for Available Quantity
         public string AvailableQuantity => SelectedItem == null ? "" : $"{SelectedItem.Quantity}{SelectedItem.Unit}";
 
-        // --- Type property (Consumable / Non-Consumable) --- //
         private string _type = "consumable";
         public string Type
         {
             get => _type;
-            set { _type = value?.ToLower() ?? "consumable"; System.Diagnostics.Debug.WriteLine($"SlipDetail_Model.Type set to: {_type}"); OnPropertyChanged(nameof(Type)); }
+            set
+            {
+                _type = value?.ToLower() ?? "consumable";
+                OnPropertyChanged(nameof(Type));
+                OnPropertyChanged(nameof(Status));
+            }
+        }
+
+        #endregion
+
+        #region Receiver (for "Received By" column)
+
+        private string _receiverFirstName = "";
+        public string ReceiverFirstName
+        {
+            get => _receiverFirstName;
+            set
+            {
+                _receiverFirstName = (value ?? "").Trim();
+                OnPropertyChanged(nameof(ReceiverFirstName));
+                OnPropertyChanged(nameof(ReceivedBy));
+            }
+        }
+
+        private string _receiverRole = "";
+        public string ReceiverRole
+        {
+            get => _receiverRole;
+            set
+            {
+                _receiverRole = (value ?? "").Trim();
+                OnPropertyChanged(nameof(ReceiverRole));
+                OnPropertyChanged(nameof(ReceivedBy));
+            }
+        }
+
+        private string _receivedBy = "";
+        public string ReceivedBy
+        {
+            get
+            {
+                // if loaded from database, just display it directly
+                if (!string.IsNullOrWhiteSpace(_receivedBy))
+                    return _receivedBy;
+
+                // otherwise, generate dynamically when qty returned > 0
+                if ((QuantityReturned ?? 0) > 0 && !string.IsNullOrWhiteSpace(ReceiverFirstName))
+                {
+                    return string.IsNullOrWhiteSpace(ReceiverRole)
+                        ? ReceiverFirstName
+                        : $"{ReceiverFirstName} ({ReceiverRole})";
+                }
+
+                return string.Empty;
+            }
+            set
+            {
+                _receivedBy = value?.Trim() ?? "";
+                OnPropertyChanged(nameof(ReceivedBy));
+            }
         }
 
         #endregion
 
         #region Status Management
 
-        /// <summary>
-        /// Calculates the current status of the slip detail based on quantities and type
-        /// </summary>
         public string Status
         {
             get
             {
+                int borrowed = QuantityBorrowed;
                 int released = QuantityReleased ?? 0;
                 int returned = QuantityReturned ?? 0;
-                int borrowed = QuantityBorrowed;
+                bool releasedEmpty = !QuantityReleased.HasValue || released == 0;
+                bool returnedEmpty = !QuantityReturned.HasValue || returned == 0;
+                bool isConsumable = string.Equals(Type, "consumable", StringComparison.OrdinalIgnoreCase);
 
-                // Pending if nothing released yet
-                if (released == 0)
-                    return "Pending";
-
-                // Not all released yet
-                if (released < borrowed)
-                    return "Partially Released";
-
-                // Fully released
-                if (string.Equals(Type, "consumable", StringComparison.OrdinalIgnoreCase))
+                if (isConsumable)
                 {
-                    // Consumables are considered consumed once fully released
-                    return "Consumed";
+                    if (releasedEmpty) return "Pending";
+                    if (borrowed > 0 && released == borrowed) return "Completed";
+                    return "Active";
                 }
 
-                // Non-consumable paths
-                if (returned == 0)
-                    return "Released";              // Fully released, none returned yet
-                if (returned < released)
-                    return "Partially Returned";    // Some returned
-                if (returned == released)
-                    return "Returned";              // All returned
-
-                return "Unknown";
+                if (releasedEmpty && returnedEmpty) return "Pending";
+                if (borrowed > 0 && released == borrowed && returned == borrowed) return "Completed";
+                return "Active";
             }
         }
 

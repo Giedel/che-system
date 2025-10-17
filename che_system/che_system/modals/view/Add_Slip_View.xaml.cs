@@ -17,7 +17,7 @@ namespace che_system.modals.view
         public Add_Slip_View(string currentUser, string currentUserDisplay)
         {
             InitializeComponent();
-            DataContext = new Add_Slip_View_Model(currentUser, currentUserDisplay);
+            DataContext = new Add_Slip_View_Model(currentUserDisplay, currentUser);
         }
 
         private static readonly Regex _numericRegex = new Regex("^[0-9]+$");
